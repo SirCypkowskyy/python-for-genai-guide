@@ -37,6 +37,25 @@ Python to przede wszystkim potężny ekosystem bibliotek. Poniżej znajduje się
 > [!WARNING]
 > Zanim zaczniesz, upewnij się, że rozumiesz, jak zarządzać zależnościami. Szczegółowe informacje znajdziesz w przewodniku o środowiskach i narzędziach.
 
+## Zasoby do Dalszej Nauki
+
+Poniższe materiały są absolutnie najlepszym punktem startowym i są **całkowicie darmowe**.
+
+### Dokumentacja oficjalna i książki
+
+  * **Oficjalna dokumentacja Pythona (PL)**: https://docs.python.org/pl/3.11/
+  * ***Automate the Boring Stuff with Python***: https://automatetheboringstuff.com/
+  * ***Python for Everybody***: https://www.py4e.com/
+
+### Najlepsze kursy wideo
+
+  * ***CS50's Introduction to Programming with Python*** (Harvard): https://cs50.harvard.edu/python/2022/
+  * ***programming-23.mooc.fi*** (Uniwersytet Helsiński): https://programming-23.mooc.fi/
+
+### Narzędzia
+
+  * **Python Tutor**: http://pythontutor.com/ - wizualizacja wykonania kodu krok po kroku.
+
 ---
 *Dokumentacja wygenerowana [^1] na podstawie materiałów wewnętrznych.*
 
