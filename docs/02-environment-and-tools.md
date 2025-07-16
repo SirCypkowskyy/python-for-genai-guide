@@ -40,7 +40,7 @@
     pip freeze > requirements.txt
     ```
 
-> [!INFO]
+> [!NOTE]
 > Plik `requirements.txt` jest standardowym sposobem na zarządzanie zależnościami w projektach Python. Jest to plik tekstowy, w którym zapisane są wszystkie zależności projektu, wraz z ich wersjami. Jest to przydatne, gdy chcemy zainstalować wszystkie zależności w jednym kroku, na przykład w środowisku produkcyjnym. Używamy wtedy instalatora `pip` z opcją `-r` (read from file), np. `pip install -r requirements.txt`.
 
 ---
@@ -107,7 +107,7 @@ uv pip sync requirements.txt
 
 ## [Jupyter Notebooks](https://jupyter.org/) - Interaktywne Programowanie
 
-> [!INFO]
+> [!NOTE]
 > Jupyter Notebook to jedna z najpopularniejszych form pracy z Pythonem, szczególnie w data science, badaniach i nauczaniu. To interaktywne środowisko, gdzie kod, jego wyniki, wizualizacje i tekst (w formacie Markdown) współistnieją w jednym dokumencie (`.ipynb`).
 
 Notebooki pozwalają na wykonywanie kodu w małych, niezależnych fragmentach (komórkach), co jest idealne do eksploracji danych i prototypowania algorytmów.
@@ -139,5 +139,5 @@ plt.show()
   * **VS Code**: Doskonałe, wbudowane wsparcie dla plików `.ipynb`, łączące zalety IDE i notebooka.
   * **Platformy chmurowe**: Databricks, Kaggle, Deepnote oferują zaawansowane, zespołowe środowiska notebookowe.
 
-> [\!WARNING]
+> [!WARNING]
 > Notebooki mogą prowadzić do problemów z reprodukowalnością kodu, ponieważ kolejność wykonywania komórek ma znaczenie. Dla kodu produkcyjnego, który ma być uruchamiany automatycznie, preferowaną formą są standardowe pliki `.py`.

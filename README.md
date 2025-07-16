@@ -25,45 +25,6 @@ Ten przewodnik został stworzony z myślą o osobach, które chcą szybko wejś�
 
 Niezależnie od tego, czy chcesz analizować dane, budować API, trenować modele ML czy eksperymentować z generatywną AI – Python otwiera przed Tobą nowe możliwości. Zacznijmy tę podróż!
 
-## Kluczowe Filozofie: Odmienne Spojrzenie
-
-Przejście z języków kompilowanych, takich jak C++ czy C#, na Pythona to przede wszystkim zmiana sposobu myślenia. Python optymalizuje czas pracy dewelopera, kładąc nacisk na czytelność i szybkość tworzenia oprogramowania, podczas gdy C++ optymalizuje czas wykonania przez maszynę. Kluczowa różnica tkwi w **dynamicznym typowaniu**, gdzie typ jest powiązany z obiektem w pamięci, a nie ze zmienną, co pozwala na przypisanie do tej samej zmiennej wartości różnych typów w trakcie działania programu. Jest to fundamentalnie inne podejście niż statyczne typowanie znane z C++, nawet przy użyciu słowa kluczowego `auto`.
-
-Kolejną fundamentalną zmianą jest **automatyczne zarządzanie pamięcią**. Python wykorzystuje mechanizm zliczania referencji oraz `Garbage Collector (GC)` do automatycznego zwalniania pamięci, co eliminuje konieczność manualnej alokacji (`new`/`delete`, `malloc`/`free`) i całą klasę błędów związanych z wyciekami pamięci czy wiszącymi wskaźnikami. Cała filozofia czytelności kodu jest zawarta w dokumencie ["The Zen of Python"](https://peps.python.org/pep-0020/) (dostępnym po wpisaniu `import this` w interpreterze), a jej przejawem jest użycie **znaczących wcięć** (ang. "significant whitespace") zamiast nawiasów klamrowych do definiowania bloków kodu, co wymusza czystą i spójną strukturę.
-
-**Przykład:**
-
-**C++ (manualna alokacja pamięci, bloki kodu z nawiasami klamrowymi):**
-```cpp
-#include <iostream>
-
-int main() {
-    int* ptr = new int(42); // manualna alokacja pamięci
-    if (*ptr > 0) {
-        std::cout << "Wartość: " << *ptr << std::endl;
-    }
-    delete ptr; // manualne zwalnianie pamięci
-    return 0;
-}
-```
-
-**Python (automatyczne zarządzanie pamięcią, bloki kodu przez wcięcia):**
-```python
-x = 42  # automatyczna alokacja i zwalnianie pamięci
-if x > 0: # wcięcia (4 spacje lub tab, ale nigdy nie oba na raz) definują blok kodu
-    print(f"Wartość: {x}")
-# Nie musisz niczego zwalniać – Python zrobi to za Ciebie!
-```
-
-**Porównanie podstawowych koncepcji:**
-
-| Cecha | Python (Dynamicznie Typowany) | C++ / C# (Statycznie Typowane) |
-| :--- | :--- | :--- |
-| **Typowanie** | `x = 10;` <br> `x = "hello"` (Typ powiązany z obiektem) | `int x = 10;` <br> `x = "hello"; // Błąd kompilacji` (Typ powiązany ze zmienną) |
-| **Zarządzanie Pamięcią** | Automatyczne (Garbage Collector) | Manualne (`new`/`delete`) lub pół-automatyczne (RAII, GC w .NET) |
-| **Składnia** | Wcięcia do definiowania bloków | Nawiasy klamrowe `{}` |
-| **Model parametrów** | "Pass-by-object-reference" | "Pass-by-value" / "Pass-by-reference" |
-
 ## Ekosystem Narzędzi: Twój Nowy Zestaw
 
 Python to przede wszystkim potężny ekosystem bibliotek. Poniżej znajduje się mapa kluczowych narzędzi, z którymi będziesz pracować.
