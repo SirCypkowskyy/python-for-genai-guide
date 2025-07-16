@@ -3,6 +3,18 @@
 > [!NOTE]
 > Siema! Ten przewodnik to Twój szybki start w świecie Pythona. Został zaprojektowany, abyś mógł/mogła jak najszybciej wykorzystać swoje dotychczasowe doświadczenie programistyczne do produktywnej pracy w naszym ekosystemie Data Science, Machine Learning i AI.
 
+## Struktura Przewodnika
+
+Ten dokument to tylko wierzchołek góry lodowej. Pełna wiedza została podzielona na tematyczne moduły. Zacznij od pierwszego i przechodź kolejno przez następne.
+
+* **1. 📖 [Filozofia i Podstawy](./docs/01-philosophy-and-basics.md)**: Zrozum, dlaczego Python działa inaczej.
+* **2. 🛠️ [Środowiska i Narzędzia](./docs/02-environment-and-tools.md)**: Naucz się zarządzać projektami jak profesjonalista.
+* **3. 📊 [Stos Technologiczny Data Science](./docs/03-data-science-stack.md)**: Poznaj biblioteki do pracy z danymi.
+* **4. 🌐 [Web Development i API](./docs/04-web-development.md)**: Twórz backendy i usługi.
+* **5. 🤖 [Przewodnik po Machine Learningu](./docs/05-machine-learning-guide.md)**: Trenuj swoje pierwsze modele.
+* **6. 🧠 [Aplikacje GenAI i RAG](./docs/06-generative-ai-and-rag.md)**: Buduj inteligentne systemy oparte na LLM.
+* **7. 📚 [Słowniczek Pojęć](./docs/07-glossary.md)**: Szybko sprawdź nieznane terminy.
+
 ## Wprowadzenie
 
 Python to nie tylko język programowania – to cała filozofia pracy, społeczność oraz ekosystem narzędzi, które napędzają współczesną analizę danych, machine learning, sztuczną inteligencję i nowoczesne aplikacje webowe. Jeśli masz już doświadczenie w innych językach, takich jak `C++`, `C#` czy `Java`, ten przewodnik pomoże Ci szybko odnaleźć się w nowym środowisku, zrozumieć kluczowe różnice i wykorzystać swoje dotychczasowe umiejętności w praktyce.
@@ -63,18 +75,6 @@ Python to przede wszystkim potężny ekosystem bibliotek. Poniżej znajduje się
 
 > [!WARNING]
 > Zanim zaczniesz, upewnij się, że rozumiesz, jak zarządzać zależnościami. Szczegółowe informacje znajdziesz w przewodniku o środowiskach i narzędziach.
-
-## Struktura Przewodnika
-
-Ten dokument to tylko wierzchołek góry lodowej. Pełna wiedza została podzielona na tematyczne moduły. Zacznij od pierwszego i przechodź kolejno przez następne.
-
-* **1. 📖 [Filozofia i Podstawy](./docs/01-philosophy-and-basics.md)**: Zrozum, dlaczego Python działa inaczej.
-* **2. 🛠️ [Środowiska i Narzędzia](./docs/02-environment-and-tools.md)**: Naucz się zarządzać projektami jak profesjonalista.
-* **3. 📊 [Stos Technologiczny Data Science](./docs/03-data-science-stack.md)**: Poznaj biblioteki do pracy z danymi.
-* **4. 🌐 [Web Development i API](./docs/04-web-development.md)**: Twórz backendy i usługi.
-* **5. 🤖 [Przewodnik po Machine Learningu](./docs/05-machine-learning-guide.md)**: Trenuj swoje pierwsze modele.
-* **6. 🧠 [Aplikacje GenAI i RAG](./docs/06-generative-ai-and-rag.md)**: Buduj inteligentne systemy oparte na LLM.
-* **7. 📚 [Słowniczek Pojęć](./docs/07-glossary.md)**: Szybko sprawdź nieznane terminy.
 
 ---
 *Dokumentacja wygenerowana [^1] na podstawie materiałów wewnętrznych.*
