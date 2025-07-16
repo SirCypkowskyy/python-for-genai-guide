@@ -1,4 +1,4 @@
-# Python Onboarding dla Nowoczesnego Dewelopera
+# Python - Onboarding dla dewelopera
 
 > [!NOTE]
 > Siema! Ten przewodnik to Twój szybki start w świecie Pythona. Został zaprojektowany, abyś mógł/mogła jak najszybciej wykorzystać swoje dotychczasowe doświadczenie programistyczne do produktywnej pracy w naszym ekosystemie Data Science, Machine Learning i AI.
