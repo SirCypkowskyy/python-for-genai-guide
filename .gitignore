@@ -206,3 +206,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 backup/
+
+# Zensical — strona budowana jest do site/ z kopii build/docs/
+site/
+
+# claude-mem (plugin) — dump kontekstu pamięci, nie część projektu
+AGENTS.md

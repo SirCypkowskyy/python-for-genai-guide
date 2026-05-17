@@ -1,0 +1,115 @@
+# Konfiguracja strony przewodnika (generator: Zensical).
+# Strona budowana jest z katalogu build/docs/ — kopii docs/ z alertami
+# przekonwertowanymi na admonitiony (zob. scripts/prepare_docs.py).
+
+[project]
+site_name = "Python dla Data Science, ML i GenAI"
+site_description = "Przewodnik onboardingowy: Python dla doświadczonych programistów wchodzących w Data Science, Machine Learning i Generative AI."
+site_author = "Cyprian Gburek"
+site_url = "https://sircypkowskyy.github.io/python-for-genai-guide/"
+
+# Strona budowana jest z przygotowanej kopii, nie z docs/ bezpośrednio.
+docs_dir = "build/docs"
+
+# Repozytorium — włącza przyciski "edytuj" / "zobacz źródło".
+# edit_uri celuje w prawdziwe źródła w docs/, nie w kopię build/docs/.
+repo_url = "https://github.com/SirCypkowskyy/python-for-genai-guide"
+repo_name = "SirCypkowskyy/python-for-genai-guide"
+edit_uri = "edit/main/docs/"
+
+copyright = "Copyright &copy; 2026 Cyprian Gburek — treść na licencji repozytorium"
+
+# Jawna nawigacja — kolejność rozdziałów przewodnika.
+nav = [
+  { "Start" = "index.md" },
+  { "1. Filozofia i podstawy" = "01-philosophy-and-basics.md" },
+  { "2. Środowiska i narzędzia" = "02-environment-and-tools.md" },
+  { "3. Stos Data Science" = "03-data-science-stack.md" },
+  { "4. Web Development i API" = "04-web-development.md" },
+  { "5. Machine Learning" = "05-machine-learning-guide.md" },
+  { "6. GenAI i RAG" = "06-generative-ai-and-rag.md" },
+  { "7. Architektura aplikacji" = "07-architecture-and-good-practices.md" },
+  { "8. Słowniczek pojęć" = "08-glossary.md" },
+]
+
+[project.theme]
+language = "pl"
+features = [
+  "announce.dismiss",
+  "content.action.edit",
+  "content.code.annotate",
+  "content.code.copy",
+  "content.code.select",
+  "content.footnote.tooltips",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+# Jasny / ciemny motyw z przełącznikiem.
+[[project.theme.palette]]
+scheme = "default"
+primary = "indigo"
+accent = "indigo"
+toggle.icon = "lucide/sun"
+toggle.name = "Przełącz na tryb ciemny"
+
+[[project.theme.palette]]
+scheme = "slate"
+primary = "indigo"
+accent = "indigo"
+toggle.icon = "lucide/moon"
+toggle.name = "Przełącz na tryb jasny"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/SirCypkowskyy/python-for-genai-guide"
+
+# ----------------------------------------------------------------------------
+# Rozszerzenia Markdown — zestaw domyślny Zensical.
+# Obsługują m.in.: admonitiony, footnote'y, listy definicji, diagramy Mermaid
+# (przez superfences), podświetlanie składni i tabele.
+# ----------------------------------------------------------------------------
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.betterem]
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.magiclink]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" }
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+combine_header_slug = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]

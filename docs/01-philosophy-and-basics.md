@@ -14,9 +14,25 @@ Przejście z C++ czy C# na Pythona to przede wszystkim zmiana sposobu myślenia.
 Określenie Pythona jako języka "interpretowanego" jest uproszczeniem. W rzeczywistości standardowa implementacja (CPython) najpierw **kompiluje** kod źródłowy `.py` do formy pośredniej zwanej **bytecode** i zapisuje go w plikach `.pyc`. Ten bytecode jest następnie wykonywany przez **Maszynę Wirtualną Pythona (PVM)**.
 
 * **Proces ten jest analogiczny do kompilacji C# do CIL (Common Intermediate Language) i wykonywania go przez CLR (.NET Runtime)**.
-* Pliki `.pyc` są tworzone automatycznie, aby przyspieszyć ładowanie modułów przy kolejnych uruchomieniach.
+* Pliki `.pyc` są tworzone automatycznie (w katalogu `__pycache__`), aby przyspieszyć ładowanie modułów przy kolejnych uruchomieniach.
 * Główna różnica polega na tym, że cały proces jest ukryty i dzieje się w locie, co zapewnia błyskawiczny cykl deweloperski (edytuj -> uruchom) bez widocznego etapu kompilacji. Możemy też "na żywo" uruchamiać kod w interpreterze Python, co jest bardzo przydatne podczas debugowania.
 * Konsekwencją jest to, że błędy typów są wykrywane dopiero w momencie wykonania danej linii kodu, a nie na etapie budowania projektu.
+
+```mermaid
+flowchart LR
+    A["Kod źródłowy<br/>.py"] -->|kompilacja| B["Bytecode<br/>.pyc"]
+    B -->|wykonanie| C["Maszyna Wirtualna<br/>Pythona (PVM)"]
+
+    A2["Kod źródłowy<br/>.cs"] -->|kompilacja| B2["CIL<br/>.dll / .exe"]
+    B2 -->|wykonanie JIT| C2["CLR<br/>(.NET Runtime)"]
+
+    subgraph Python
+        A --> B --> C
+    end
+    subgraph "C# (dla porównania)"
+        A2 --> B2 --> C2
+    end
+```
 
 ### Zarządzanie Pamięcią: Komfort i Bezpieczeństwo
 
@@ -26,6 +42,20 @@ To jedna z największych zmian podnoszących komfort pracy. W Pythonie zapominas
 * Dodatkowo **Garbage Collector (GC)** posiada mechanizmy do wykrywania i usuwania cyklicznych odwołań, z którymi sam licznik referencji by sobie nie poradził.
 * Dla dewelopera oznacza to koniec zmartwień o wycieki pamięci (`memory leaks`) czy wiszące wskaźniki (`dangling pointers`), co eliminuje całą klasę trudnych błędów.
 * Ceną za tę wygodę jest pewien narzut wydajnościowy i mniejsza kontrola nad układem danych w pamięci.
+
+> [!NOTE]
+> **Która to wersja Pythona?** Stan na maj 2026: aktualną serią rozwojową jest **Python 3.14** (wydanie 3.14.0 ukazało się 7 października 2025). Równolegle serwisowana jest seria **3.13**, a kolejne wydanie — **3.15** — planowane jest na październik 2026. Dla nowych projektów wybieraj 3.13 lub 3.14; unikaj wersji starszych niż 3.10, które nie otrzymują już pełnego wsparcia.
+
+### GIL i free-threading: koniec ery jednego wątku
+
+To zagadnienie zaskakuje deweloperów przychodzących z C++, C# czy Javy, gdzie prawdziwa, równoległa wielowątkowość jest oczywistością.
+
+* Historycznie CPython chroniony był przez **GIL (Global Interpreter Lock)** — globalną blokadę, która pozwalała wykonywać bytecode tylko **jednemu wątkowi naraz**. Nawet na 16-rdzeniowym procesorze kod Pythona w wątkach (`threading`) nie liczył się równolegle.
+* W praktyce oznaczało to, że wielowątkowość w Pythonie przyspieszała jedynie zadania ograniczone wejściem/wyjściem (I/O-bound: sieć, dysk), a nie zadania obliczeniowe (CPU-bound). Dla równoległości obliczeń stosowano `multiprocessing` (osobne procesy, osobne interpretery) lub przenoszono ciężkie pętle do bibliotek w C/Rust (NumPy).
+* Od **Pythona 3.14** build **free-threaded (no-GIL)** jest **oficjalnie wspierany** ([PEP 779](https://peps.python.org/pep-0779/)) — wcześniej, w 3.13, miał status eksperymentalny. W tej konfiguracji wątki mogą wreszcie wykonywać kod Pythona naprawdę równolegle.
+
+> [!WARNING]
+> Free-threading nie jest jeszcze domyślnym buildem — to osobny wariant interpretera (`python3.14t`). Część bibliotek z rozszerzeniami w C wymaga aktualizacji, a kod jednowątkowy bywa w nim nieco wolniejszy. Na razie traktuj go jako opcję świadomego wyboru, a nie domyślne założenie.
 
 ### Znaczące Wcięcia (Indentation): Koniec z Nawiasami Klamrowymi
 
@@ -111,24 +141,33 @@ Porównanie do `auto` w C++ jest pomocne, ale z kluczową różnicą: `auto` w C
 > [!TIP]
 > Dla dewelopera przyzwyczajonego do języków typowanych statycznie, używanie **type hints** jest **zdecydowanie rekomendowane**.
 
-Python pozwala na dodawanie opcjonalnych wskazówek typów, które nie wpływają na wykonanie kodu (interpreter je ignoruje), ale są nieocenione dla narzędzi do statycznej analizy (jak `mypy`, czy rekomendowany przeze mnie `pyright`), edytorów kodu (lepsze autouzupełnianie) i czytelności.
+Python pozwala na dodawanie opcjonalnych wskazówek typów, które nie wpływają na wykonanie kodu (interpreter je ignoruje), ale są nieocenione dla narzędzi do statycznej analizy, edytorów kodu (lepsze autouzupełnianie) i czytelności.
 
 ```python
 def calculate_price(quantity: int, price: float) -> float:
     return quantity * price
 ```
 
+Wskazówki typów same w sobie niczego nie sprawdzają — potrzebujesz do tego osobnego **type checkera**. Dostępne narzędzia:
+
+* **`mypy`** — dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+* **`pyright`** — type checker od Microsoftu, osiąga ~98% zgodności z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code (rozszerzenie Pylance).
+* **`ty`** — nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne wydanie 1.0 celowane na 2026. Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
+
+> [!TIP]
+> Jeśli zaczynasz nowy projekt, warto od razu skonfigurować type checker i traktować jego ostrzeżenia jak błędy kompilacji znane z C++/C#. Więcej o konfiguracji narzędzi znajdziesz w rozdziale [`02-environment-and-tools.md`](./02-environment-and-tools.md).
+
 -----
 
-## Podstawowe Struktury Danych: Odpowiedniki z C++ i C\#
+## Podstawowe Struktury Danych: Odpowiedniki z C++ i C#
 
-Twoja znajomość kontenerów z biblioteki STL (Standard Template Library) oraz .NET (C\#) jest w pełni transferowalna. Python oferuje wbudowane, niezwykle wydajne i elastyczne odpowiedniki.
+Twoja znajomość kontenerów z biblioteki STL (Standard Template Library) oraz .NET (C#) jest w pełni transferowalna. Python oferuje wbudowane, niezwykle wydajne i elastyczne odpowiedniki.
 
-| Typ w Pythonie | Odpowiednik w C++ | Odpowiednik w C\# | Kluczowe Cechy i Różnice |
+| Typ w Pythonie | Odpowiednik w C++ | Odpowiednik w C# | Kluczowe Cechy i Różnice |
 | :--- | :--- | :--- | :--- |
 | `list` | `std::vector` | `List<T>` | Dynamiczna, **mutowalna** tablica mogąca przechowywać elementy **dowolnych typów**. Pozwala na szybkie dodawanie/usuwanie elementów na końcu (`append`, `pop`). Bardzo uniwersalna, wykorzystywana niemal wszędzie. |
 | `tuple` | `std::pair` / `std::tuple` | `Tuple<T1, T2,...>` / `ValueTuple<T1, T2,...>` | **Niemutowalna** (niezmienna) sekwencja dowolnych obiektów. Idealna do zwracania wielu wartości z funkcji lub jako klucz w słowniku. Zajmuje mniej pamięci niż lista. |
-| `dict` | `std::map` / `std::unordered_map` | `Dictionary<TKey, TValue>` | Słownik (mapa hashowana) – klucz-wartość, bardzo szybki dostęp (uśredniony O(1)). Klucze muszą być typu niemutowalnego. Od Pythona 3.7 zachowuje kolejność wstawiania. |
+| `dict` | `std::map` / `std::unordered_map` | `Dictionary<TKey, TValue>` | Słownik (mapa hashowana) – klucz-wartość, bardzo szybki dostęp (uśredniony O(1)). Klucze muszą być typu niemutowalnego. Gwarantuje kolejność wstawiania (cecha języka od 3.7). |
 | `set` | `std::set` / `std::unordered_set` | `HashSet<T>` | **Mutowalny** zbiór **unikalnych**, niemutowalnych elementów. Nieuporządkowany. Oferuje bardzo szybkie operacje teoriomnogościowe (suma `|`, iloczyn `&`, różnica `-`). |
 | `str` | `std::string` | `string` | **Niemutowalny** łańcuch znaków Unicode. Każda operacja "modyfikująca" (np. konkatenacja) tworzy nowy obiekt. Posiada bogaty zestaw metod do przetwarzania tekstu. |
 
@@ -188,8 +227,6 @@ Python nie ma słów kluczowych `public`, `private` czy `protected`. Zamiast teg
 
   * `_atrybut`: Traktowany jako "chroniony". Deweloperzy wiedzą, że nie powinni go używać poza klasą lub jej podklasami.
   * `__atrybut`: Traktowany jako "prywatny". Python stosuje tzw. **name mangling**, zmieniając nazwę na `_NazwaKlasy__atrybut`, co utrudnia przypadkowy dostęp.
-
-<!-- end list -->
 
 ```python
 class KontoBankowe:
@@ -316,6 +353,13 @@ Debugowanie to proces znajdowania i naprawiania błędów.
   * **Prosta technika**: Używanie `print()` do śledzenia wartości zmiennych w różnych punktach programu.
   * **Analiza śladu błędu (traceback)**: Python w razie błędu wyświetla ślad, który należy czytać od dołu do góry, aby zlokalizować linię i typ błędu.
   * **Debuggery**: Zaawansowane narzędzia (wbudowane w IDE jak PyCharm, VS Code lub `pdb` w terminalu) pozwalają na zatrzymywanie wykonania programu, inspekcję zmiennych i śledzenie krok po kroku.
+  * **Funkcja `breakpoint()`**: Wbudowana funkcja (od Pythona 3.7) i nowoczesny sposób wejścia do debuggera. Wystarczy wstawić w kodzie linię `breakpoint()` zamiast dawnego `import pdb; pdb.set_trace()`. Domyślnie uruchamia `pdb`, ale poprzez zmienną środowiskową `PYTHONBREAKPOINT` można podpiąć dowolny inny debugger (lub całkowicie go wyłączyć: `PYTHONBREAKPOINT=0`).
+
+```python
+def podziel(a: float, b: float) -> float:
+    breakpoint()  # wykonanie zatrzyma się tutaj — wejdziesz w interaktywny debugger
+    return a / b
+```
 
 -----
 
@@ -342,9 +386,8 @@ print(df[df['PKB (mld USD)'] > 1000]) # Filtrowanie
 ### Wizualizacja Danych z `matplotlib` i `plotly`
 
   * **Matplotlib**: Standardowa biblioteka do tworzenia statycznych wykresów wysokiej jakości.
+  * **Seaborn**: Nadbudowa nad Matplotlibem — udostępnia wysokopoziomowe API do estetycznych wykresów statystycznych (rozkłady, korelacje, mapy ciepła) i dobrze współpracuje z `DataFrame`.
   * **Plotly**: Służy do tworzenia interaktywnych wykresów, idealnych do aplikacji webowych i dashboardów.
-
-<!-- end list -->
 
 ```python
 import matplotlib.pyplot as plt
@@ -363,8 +406,21 @@ plt.show()
 
 Pygame to popularna biblioteka do tworzenia gier 2D, która obsługuje grafikę, dźwięk i obsługę zdarzeń.
 
-### Uczenie Maszynowe
+### Uczenie Maszynowe i Deep Learning
 
-  * **Scikit-learn**: Podstawowa biblioteka do klasycznego uczenia maszynowego (klasyfikacja, regresja, klasteryzacja).
-  * **Keras / TensorFlow / PyTorch**: Zaawansowane frameworki do budowy i trenowania głębokich sieci neuronowych.
-  * **LangChain**: Framework ułatwiający tworzenie aplikacji opartych na dużych modelach językowych (LLM).
+  * **Scikit-learn**: Podstawowa biblioteka do klasycznego uczenia maszynowego (klasyfikacja, regresja, klasteryzacja). Pierwszy wybór dla danych tabelarycznych.
+  * **PyTorch**: Dziś **dominujący framework deep learningu** — zarówno w badaniach, jak i w produkcji. Jego dynamiczny graf obliczeniowy i pythonowe API uczyniły go faktycznym standardem.
+  * **Keras 3**: Współcześnie **wieloplatformowy (multi-backend)** — ta sama wysokopoziomowa nadbudowa potrafi działać na PyTorch, JAX lub TensorFlow. Dawny opis „Keras + TensorFlow jako nierozłączna para” jest już nieaktualny.
+  * **TensorFlow / JAX**: TensorFlow wciąż obecny, zwłaszcza w istniejących systemach produkcyjnych; JAX ceniony w badaniach za szybkie obliczenia numeryczne i automatyczne różniczkowanie.
+
+### Generatywne AI (GenAI) i LLM
+
+  * **Hugging Face**: Centrum ekosystemu modeli otwartych. Biblioteki `transformers` (modele) i `datasets` (zbiory danych) to standard pracy z gotowymi modelami.
+  * **Klienci API LLM**: Oficjalne SDK dostawców modeli komercyjnych — `openai`, `anthropic`, `google-genai`.
+  * **LangChain 1.0 + LangGraph 1.0**: Frameworki do budowy aplikacji LLM. LangGraph wnosi koncepcję **trwałych agentów (durable agents)** — agentów o jawnym stanie, zdolnych do wznawiania pracy.
+  * **PydanticAI**: Framework agentowy oparty na Pydantic, ze ścisłym typowaniem i walidacją wyjścia modelu.
+  * **LlamaIndex**: Wyspecjalizowany w budowie potoków RAG (Retrieval-Augmented Generation) i indeksowaniu danych.
+  * **CrewAI**: Framework do orkiestracji wielu współpracujących agentów (multi-agent).
+
+> [!NOTE]
+> Tematy GenAI, agentów i RAG rozwijamy szczegółowo w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).

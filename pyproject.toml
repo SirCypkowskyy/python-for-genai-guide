@@ -1,0 +1,24 @@
+# Konfiguracja narzędzi do budowania strony przewodnika.
+# To NIE jest pakiet do dystrybucji — tylko zestaw zależności
+# potrzebnych do zbudowania dokumentacji generatorem Zensical.
+#
+# Lokalny podgląd:
+#   uv sync
+#   uv run python scripts/prepare_docs.py
+#   uv run zensical serve
+
+[project]
+name = "python-for-genai-guide"
+version = "0"
+description = "Przewodnik onboardingowy: Python dla Data Science, ML i GenAI."
+requires-python = ">=3.11"
+dependencies = [
+    # Generator statycznej strony (zespół Material for MkDocs).
+    # Pin dokładnej wersji — Zensical jest we wczesnej fazie 0.0.x,
+    # więc reprodukowalny build jest ważniejszy niż automatyczne aktualizacje.
+    "zensical==0.0.42",
+]
+
+[tool.uv]
+# Repozytorium dokumentacji, nie biblioteka — nie buduj go jako pakietu.
+package = false
