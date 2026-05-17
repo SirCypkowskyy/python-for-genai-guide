@@ -15,7 +15,7 @@ Aby efektywnie pracować z LLM, warto zrozumieć, co dzieje się "pod maską". P
 
 * **Teoria dla każdego (Intuicja wizualna)**: Jeśli chcesz zrozumieć, jak naprawdę działa deep learning i modele językowe AI, koniecznie zobacz serię [**3Blue1Brown o sieciach neuronowych**](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1\_67000Dx\_ZCJB-3pi). To jedne z najlepszych istniejących materiałów, które w sposób wizualny i przystępny tłumaczą podstawowe idee stojące za nowoczesnymi modelami AI i machine learningiem. Idealne na start, by zbudować intuicję i "poczuć" jak myśli sieć neuronowa oraz (dalej) modele językowe.
 * **Wszystko w jednym wykładzie**: Wykład [***Andrieja Karpathy'ego* *"Intro to Large Language Models"***](https://www.youtube.com/watch?v=kCc8FmEb1nY) to jedno z lepszych wprowadzeń w temat, jakie istnieje. Karpathy, jako jeden z czołowych ekspertów w dziedzinie, w przystępny sposób wyjaśnia architekturę Transformerów, proces treningu i skalowania - wszystko w formie jednego, długiego i interaktywnego wykładu.
-* **Bieżące nowości**: Świat GenAI zmienia się z tygodnia na tydzień. Kanał YouTube [**bycloud**](https://www.youtube.com/@bycloud) to doskonałe źródło podsumowań najnowszych prac badawczych i przełomowych modeli, prezentowanych w technicznym, ale zrozumiałym, atrakcyjnym wizualnie formacie.
+* **Bieżące nowości**: Świat GenAI zmienia się z tygodnia na tydzień. Kanał YouTube [**bycloud**](https://www.youtube.com/@bycloudAI) to doskonałe źródło podsumowań najnowszych prac badawczych i przełomowych modeli, prezentowanych w technicznym, ale zrozumiałym, atrakcyjnym wizualnie formacie.
 
 ---
 
