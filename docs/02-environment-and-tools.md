@@ -7,7 +7,7 @@
 
 ## Podatek dziesięciu narzędzi
 
-Deweloper przychodzący z C#/Java oczekuje jednego, spójnego toolingu: `dotnet` lub `cargo`/`mvn` robią praktycznie wszystko. W Pythonie przez lata było inaczej. Tradycyjny, „klasyczny" stos to **około jedenastu osobnych narzędzi**, które trzeba zainstalować, skonfigurować i utrzymać w spójności wersji w całym zespole — **zanim napiszesz pierwszą linijkę kodu produkcyjnego**:
+Deweloper przychodzący z C#/Java oczekuje jednego, spójnego toolingu: `dotnet` lub `cargo`/`mvn` robią praktycznie wszystko. W Pythonie przez lata było inaczej. Tradycyjny, „klasyczny" stos to **około jedenastu osobnych narzędzi**, które trzeba zainstalować, skonfigurować i utrzymać w spójności wersji w całym zespole - **zanim napiszesz pierwszą linijkę kodu produkcyjnego**:
 
 | # | Narzędzie | Odpowiedzialność |
 | :--- | :--- | :--- |
@@ -23,9 +23,9 @@ Deweloper przychodzący z C#/Java oczekuje jednego, spójnego toolingu: `dotnet`
 | 10 | `bandit` | analiza bezpieczeństwa |
 | 11 | `mypy` | kontrola typów |
 
-Każde z tych narzędzi ma własny plik konfiguracyjny i własny cykl wydawniczy. To jedenaście niezależnych miejsc, w których wersje mogą się rozjechać między laptopem juniora, laptopem seniora a CI — i jedenaście rzeczy, które nowa osoba w zespole musi poprawnie skonfigurować, zanim cokolwiek zadziała.
+Każde z tych narzędzi ma własny plik konfiguracyjny i własny cykl wydawniczy. To jedenaście niezależnych miejsc, w których wersje mogą się rozjechać między laptopem juniora, laptopem seniora a CI - i jedenaście rzeczy, które nowa osoba w zespole musi poprawnie skonfigurować, zanim cokolwiek zadziała.
 
-Współczesny ekosystem (stan na maj 2026) redukuje ten stos do **dwóch narzędzi** — `uv` + `ruff` — a wkrótce do **trzech** (po dodaniu `ty`). Wszystkie pochodzą od jednej firmy ([Astral](https://astral.sh/)), wszystkie napisano w Rust, wszystkie czytają jeden plik konfiguracyjny `pyproject.toml` i ze sobą współpracują.
+Współczesny ekosystem (stan na maj 2026) redukuje ten stos do **dwóch narzędzi** - `uv` + `ruff` - a wkrótce do **trzech** (po dodaniu `ty`). Wszystkie pochodzą od jednej firmy ([Astral](https://astral.sh/)), wszystkie napisano w Rust, wszystkie czytają jeden plik konfiguracyjny `pyproject.toml` i ze sobą współpracują.
 
 > [!TIP]
 > Trzy narzędzia, które ze sobą nie walczą, zastępują jedenaście, które walczyły.
@@ -50,27 +50,27 @@ flowchart LR
         direction TB
         U["uv<br/>(pakiety, venv, wersje, narzędzia, projekt)"]
         R["ruff<br/>(linting + formatowanie)"]
-        TY["ty<br/>(kontrola typów — beta)"]
+        TY["ty<br/>(kontrola typów - beta)"]
     end
     OLD ==>|konsolidacja| NEW
 ```
 
 ---
 
-## uv — kompleksowe zarządzanie projektem
+## uv - kompleksowe zarządzanie projektem
 
 > [!TIP]
 > **`uv` to domyślna rekomendacja dla nowych projektów w Pythonie (stan na maj 2026).** Jedno binarium zastępuje cały dolny rząd klasycznego stosu: `pip`, `virtualenv`, `pyenv`, `pipx`, `poetry`, `pip-tools` oraz `twine`.
 
 `uv` to pojedyncze, samodzielne binarium napisane w języku Rust. Jego cechy:
 
-* **Wydajność** — operacje na zależnościach wykonuje **10–100x szybciej niż `pip`**.
-* **Licencja MIT** — w pełni otwarte oprogramowanie.
-* **Brak vendor lock-in** — `uv` trzyma się standardowego pliku `pyproject.toml` ([PEP 621](https://peps.python.org/pep-0621/)). Projekt zarządzany przez `uv` pozostaje w pełni kompatybilny z `pip` i innymi narzędziami zgodnymi ze standardami.
+* **Wydajność** - operacje na zależnościach wykonuje **10–100x szybciej niż `pip`**.
+* **Licencja MIT** - w pełni otwarte oprogramowanie.
+* **Brak vendor lock-in** - `uv` trzyma się standardowego pliku `pyproject.toml` ([PEP 621](https://peps.python.org/pep-0621/)). Projekt zarządzany przez `uv` pozostaje w pełni kompatybilny z `pip` i innymi narzędziami zgodnymi ze standardami.
 
 ### Instalacja
 
-`uv` instaluje się **samodzielnym instalatorem**, a nie przez `pip` — w ten sposób `uv` jest niezależne od jakiejkolwiek konkretnej instalacji Pythona (potrafi nawet sam pobierać interpretery):
+`uv` instaluje się **samodzielnym instalatorem**, a nie przez `pip` - w ten sposób `uv` jest niezależne od jakiejkolwiek konkretnej instalacji Pythona (potrafi nawet sam pobierać interpretery):
 
 ```bash
 # Linux / macOS
@@ -82,7 +82,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ### Workflow projektowy
 
-To **główny, zalecany sposób** pracy z `uv` — pełne zarządzanie projektem, a nie tylko instalacja pakietów:
+To **główny, zalecany sposób** pracy z `uv` - pełne zarządzanie projektem, a nie tylko instalacja pakietów:
 
 ```bash
 uv init my-project           # nowy projekt: tworzy pyproject.toml i strukturę (venv + uv.lock powstają leniwie przy pierwszym `uv sync`/`uv run`)
@@ -98,7 +98,18 @@ uv tool install ruff         # globalne narzędzie (zastępuje pipx)
 uv pip sync requirements.txt # tryb kompatybilny z pip (dla starszych projektów)
 ```
 
-Zwróć uwagę na `uv run` — `uv` sam dba o to, by skrypt wykonał się w odpowiednim środowisku wirtualnym z aktualnymi zależnościami. Ręczna aktywacja venva (`source .venv/bin/activate`) staje się zbędna.
+Zwróć uwagę na `uv run` - `uv` sam dba o to, by skrypt wykonał się w odpowiednim środowisku wirtualnym z aktualnymi zależnościami. Ręczna aktywacja venva (`source .venv/bin/activate`) staje się zbędna.
+
+Cały cykl życia projektu sprowadza się do kilku komend, które powtarzasz w pętli:
+
+```mermaid
+flowchart LR
+    A["uv init"] -->|"tworzy pyproject.toml"| B["uv add - zależności"]
+    B -->|"resolve + uv.lock + .venv"| C["uv run - uruchom kod"]
+    C -->|"potrzebna kolejna zależność"| B
+    C -.->|"CI / inna maszyna"| D["uv sync --frozen"]
+    D -.-> C
+```
 
 ### Benchmark wydajności
 
@@ -110,9 +121,9 @@ Pomiar przy zimnym cache, dla projektu `fastapi` + `pydantic` + `pandas` wraz z 
 | Instalacja pakietów | ~1,2 s | ~45 s | ~30 s |
 | Utworzenie lockfile | natychmiast | minuty | brak lockfile |
 
-### PEP 723 — skrypty z zależnościami inline
+### PEP 723 - skrypty z zależnościami inline
 
-To jedna z najbardziej przełomowych funkcji `uv`. [PEP 723](https://peps.python.org/pep-0723/) pozwala zadeklarować zależności **wewnątrz samego pliku skryptu**, w specjalnym komentarzu. Polecenie `uv run hello.py` samo pobierze odpowiednią wersję Pythona, zbuduje tymczasowe środowisko wirtualne i zainstaluje zależności — bez tworzenia projektu i bez `requirements.txt`:
+To jedna z najbardziej przełomowych funkcji `uv`. [PEP 723](https://peps.python.org/pep-0723/) pozwala zadeklarować zależności **wewnątrz samego pliku skryptu**, w specjalnym komentarzu. Polecenie `uv run hello.py` samo pobierze odpowiednią wersję Pythona, zbuduje tymczasowe środowisko wirtualne i zainstaluje zależności - bez tworzenia projektu i bez `requirements.txt`:
 
 ```python
 # /// script
@@ -130,7 +141,7 @@ stars = resp.json()["stargazers_count"]
 print(f"Ruff has {stars} stars!")
 ```
 
-Pojedynczy plik `.py` staje się w pełni samowystarczalnym, reprodukowalnym narzędziem — idealnie nadaje się na skrypty pomocnicze, automatyzacje i przykłady do dokumentacji.
+Pojedynczy plik `.py` staje się w pełni samowystarczalnym, reprodukowalnym narzędziem - idealnie nadaje się na skrypty pomocnicze, automatyzacje i przykłady do dokumentacji.
 
 ### uv w Dockerze i CI
 
@@ -148,9 +159,9 @@ CMD ["uv", "run", "python", "-m", "app"]
 
 ---
 
-## venv i pip — podstawy oraz wiedza legacy
+## venv i pip - podstawy oraz wiedza legacy
 
-`venv` to moduł dostarczany ze standardową biblioteką Pythona, a `pip` to wbudowany instalator pakietów. Warto je znać — to fundament, na którym budują wszystkie nowsze narzędzia, i wciąż spotkasz je w niezliczonych istniejących projektach.
+`venv` to moduł dostarczany ze standardową biblioteką Pythona, a `pip` to wbudowany instalator pakietów. Warto je znać - to fundament, na którym budują wszystkie nowsze narzędzia, i wciąż spotkasz je w niezliczonych istniejących projektach.
 
 **Typowy, klasyczny cykl pracy:**
 
@@ -179,7 +190,7 @@ CMD ["uv", "run", "python", "-m", "app"]
     ```
 
 > [!WARNING]
-> Współczesnym standardem konfiguracji projektu jest **`pyproject.toml`** ([PEP 621](https://peps.python.org/pep-0621/)) wraz z plikiem lock (`uv.lock`), który zamraża dokładny, reprodukowalny zestaw wersji. Para `requirements.txt` + `pip freeze` to działające, ale minimalistyczne i z dzisiejszej perspektywy **legacy** podejście: `pip freeze` zrzuca jednym płaskim spisem zarówno zależności bezpośrednie, jak i tranzytywne — bez ich rozróżnienia — przez co trudno odczytać, czego projekt naprawdę wymaga.
+> Współczesnym standardem konfiguracji projektu jest **`pyproject.toml`** ([PEP 621](https://peps.python.org/pep-0621/)) wraz z plikiem lock (`uv.lock`), który zamraża dokładny, reprodukowalny zestaw wersji. Para `requirements.txt` + `pip freeze` to działające, ale minimalistyczne i z dzisiejszej perspektywy **legacy** podejście: `pip freeze` zrzuca jednym płaskim spisem zarówno zależności bezpośrednie, jak i tranzytywne - bez ich rozróżnienia - przez co trudno odczytać, czego projekt naprawdę wymaga.
 
 **Migracja istniejącego projektu na `uv`** jest prosta:
 
@@ -190,7 +201,7 @@ uv add --requirements requirements.txt   # zaimportuj zależności z requirement
 
 ---
 
-## Poetry — starsza, wciąż popularna alternatywa
+## Poetry - starsza, wciąż popularna alternatywa
 
 [Poetry](https://python-poetry.org/) to dojrzałe narzędzie, które przed nadejściem `uv` było najczęstszym wyborem do zarządzania projektem i budowania pakietów. Wprowadziło do ekosystemu plik `pyproject.toml` jako centrum konfiguracji oraz `poetry.lock` dla deterministycznych instalacji.
 
@@ -205,7 +216,7 @@ uv add --requirements requirements.txt   # zaimportuj zależności z requirement
     cd my-project
     ```
 
-2.  **Dodawanie zależności** — Poetry automatycznie zapisze je w `pyproject.toml`:
+2.  **Dodawanie zależności** - Poetry automatycznie zapisze je w `pyproject.toml`:
     ```bash
     # Zależności produkcyjne
     poetry add pandas numpy
@@ -233,16 +244,16 @@ uv add --requirements requirements.txt   # zaimportuj zależności z requirement
 
 Trzy różne kategorie narzędzi pilnują jakości kodu Pythona. Łatwo je pomylić, więc warto jasno rozdzielić ich role:
 
-* **Linter** (`flake8`, `pylint`, `ruff`) — **czyta kod, ale go nie uruchamia**. Flaguje potencjalne bugi, martwy (nieosiągalny) kod, nieużywane importy i zmienne oraz niebezpieczne wzorce.
-* **Formatter** (`black`, `ruff format`) — **przepisuje kod do jednego, kanonicznego stylu**. Eliminuje dyskusje o stylu na code review: nie ma już „twojego" i „mojego" formatowania, jest jedno.
-* **Type checker** (`mypy`, `pyright`, `ty`) — **łapie błędy typów przed wdrożeniem**. Działa jak kompilator znany z C++/C#, tyle że opcjonalny — analizuje wskazówki typów (`type hints`) i zgłasza niezgodności.
+* **Linter** (`flake8`, `pylint`, `ruff`) - **czyta kod, ale go nie uruchamia**. Flaguje potencjalne bugi, martwy (nieosiągalny) kod, nieużywane importy i zmienne oraz niebezpieczne wzorce.
+* **Formatter** (`black`, `ruff format`) - **przepisuje kod do jednego, kanonicznego stylu**. Eliminuje dyskusje o stylu na code review: nie ma już „twojego" i „mojego" formatowania, jest jedno.
+* **Type checker** (`mypy`, `pyright`, `ty`) - **łapie błędy typów przed wdrożeniem**. Działa jak kompilator znany z C++/C#, tyle że opcjonalny - analizuje wskazówki typów (`type hints`) i zgłasza niezgodności.
 
-### Ruff — jedno narzędzie zamiast pięciu
+### Ruff - jedno narzędzie zamiast pięciu
 
-[Ruff](https://docs.astral.sh/ruff/) (Astral, Rust) łączy w jednym narzędziu funkcje lintera i formattera. Jest **pełnoprawnym zamiennikiem `black`** (formatter) oraz **`isort`** (sortowanie importów), pokrywa też **większość reguł `flake8`** i znaczną część reguł `pylint` oraz `bandit`. Warto jednak wiedzieć, że Ruff **nie jest jeszcze w 100% kompletnym zamiennikiem całego `pylint` ani `bandit`** — część ich reguł i wtyczek wciąż nie ma odpowiednika. Mimo to dla zdecydowanej większości projektów sam Ruff w zupełności wystarcza:
+[Ruff](https://docs.astral.sh/ruff/) (Astral, Rust) łączy w jednym narzędziu funkcje lintera i formattera. Jest **pełnoprawnym zamiennikiem `black`** (formatter) oraz **`isort`** (sortowanie importów), pokrywa też **większość reguł `flake8`** i znaczną część reguł `pylint` oraz `bandit`. Warto jednak wiedzieć, że Ruff **nie jest jeszcze w 100% kompletnym zamiennikiem całego `pylint` ani `bandit`** - część ich reguł i wtyczek wciąż nie ma odpowiednika. Mimo to dla zdecydowanej większości projektów sam Ruff w zupełności wystarcza:
 
 * implementuje **ponad 800 reguł** odtworzonych z **50+ wtyczek** klasycznego ekosystemu `flake8`;
-* jest **10–100x szybszy niż `pylint`** — przelicenie ~50 000 linii kodu zajmuje mu około **1 sekundy**;
+* jest **10–100x szybszy niż `pylint`** - przelicenie ~50 000 linii kodu zajmuje mu około **1 sekundy**;
 * całe codzienne API to **dwie komendy**:
 
 ```bash
@@ -252,10 +263,10 @@ ruff format .         # formatowanie kodu
 
 ### Dwie szkoły konfiguracji w `pyproject.toml`
 
-**Szkoła 1 — inkrementalna**: jawnie wybierasz konkretne rodziny reguł. Bezpieczne podejście do wdrażania `ruff` w istniejącym projekcie:
+**Szkoła 1 - inkrementalna**: jawnie wybierasz konkretne rodziny reguł. Bezpieczne podejście do wdrażania `ruff` w istniejącym projekcie:
 
 ```toml
-# Szkoła 1 — inkrementalna, jawna lista reguł
+# Szkoła 1 - inkrementalna, jawna lista reguł
 [tool.ruff]
 line-length = 88
 target-version = "py312"
@@ -268,10 +279,10 @@ ignore = ["E501"]
 quote-style = "double"
 ```
 
-**Szkoła 2 — „włącz wszystko"**: aktywujesz wszystkie reguły i wyłączasz tylko te, które ci przeszkadzają. Świetne dla nowych projektów i wymagających zespołów:
+**Szkoła 2 - „włącz wszystko"**: aktywujesz wszystkie reguły i wyłączasz tylko te, które ci przeszkadzają. Świetne dla nowych projektów i wymagających zespołów:
 
 ```toml
-# Szkoła 2 — "włącz wszystko"
+# Szkoła 2 - "włącz wszystko"
 [tool.ruff]
 line-length = 88
 preview = true
@@ -303,7 +314,7 @@ Hook `pre-commit` uruchamia `ruff` automatycznie przy każdym commicie, zanim ko
 ```yaml
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6   # użyj najnowszego tagu — `pre-commit autoupdate` zaktualizuje automatycznie
+    rev: v0.8.6   # użyj najnowszego tagu - `pre-commit autoupdate` zaktualizuje automatycznie
     hooks:
       - id: ruff
         args: [--fix]
@@ -316,23 +327,23 @@ repos:
 ```
 
 > [!NOTE]
-> Konkretne wersje hooków (`rev:`) szybko się starzeją — podane numery to tylko przykład z momentu pisania. Po utworzeniu pliku uruchom `pre-commit autoupdate`, aby podciągnąć wszystkie hooki do najnowszych tagów, i powtarzaj to okresowo.
+> Konkretne wersje hooków (`rev:`) szybko się starzeją - podane numery to tylko przykład z momentu pisania. Po utworzeniu pliku uruchom `pre-commit autoupdate`, aby podciągnąć wszystkie hooki do najnowszych tagów, i powtarzaj to okresowo.
 
 ### Type checkery
 
-Wskazówki typów same z siebie niczego nie sprawdzają — potrzebny jest type checker:
+Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type checker:
 
-* **`mypy`** — dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
-* **`pyright`** — type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
-* **`ty`** — type checker od Astral, w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne 1.0 celowane na 2026. Domyka toolchain `uv` + `ruff` + `ty`.
-
-> [!NOTE]
-> Narzędzia `black`, `flake8` oraz `isort` traktuj dziś jako **legacy** — wciąż działają i są obecne w wielu projektach, ale w nowych projektach ich rolę w całości przejmuje `ruff`.
+* **`mypy`** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+* **`pyright`** - type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
+* **`ty`** - type checker od Astral, w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne 1.0 celowane na 2026. Domyka toolchain `uv` + `ruff` + `ty`.
 
 > [!NOTE]
-> W marcu 2026 **OpenAI przejęło firmę Astral** — twórcę `uv`, `ruff` i `ty`. Narzędzia pozostają otwartoźródłowe (licencja MIT) i oparte na standardach PEP, więc dla użytkownika nic się nie zmienia.
+> Narzędzia `black`, `flake8` oraz `isort` traktuj dziś jako **legacy** - wciąż działają i są obecne w wielu projektach, ale w nowych projektach ich rolę w całości przejmuje `ruff`.
+
+> [!NOTE]
+> W marcu 2026 **OpenAI przejęło firmę Astral** - twórcę `uv`, `ruff` i `ty`. Narzędzia pozostają otwartoźródłowe (licencja MIT) i oparte na standardach PEP, więc dla użytkownika nic się nie zmienia.
 >
-> Drugorzędnym, ale istotnym powodem, dla którego szybkość toolingu ma dziś znaczenie, jest **era asystentów kodu**. Modele takie jak Claude, Codex czy Copilot potrafią same wywołać linter lub type checker, sparsować jego wynik i na tej podstawie skorygować kod. Przy linterze działającym 30 sekund taka pętla samokorekty jest niepraktyczna; przy `ruff` zwracającym wynik w ~100 ms — staje się naturalna. Więcej o agentowych pętlach pracy z kodem znajdziesz w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).
+> Drugorzędnym, ale istotnym powodem, dla którego szybkość toolingu ma dziś znaczenie, jest **era asystentów kodu**. Modele takie jak Claude, Codex czy Copilot potrafią same wywołać linter lub type checker, sparsować jego wynik i na tej podstawie skorygować kod. Przy linterze działającym 30 sekund taka pętla samokorekty jest niepraktyczna; przy `ruff` zwracającym wynik w ~100 ms - staje się naturalna. Więcej o agentowych pętlach pracy z kodem znajdziesz w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).
 
 ---
 
@@ -340,14 +351,14 @@ Wskazówki typów same z siebie niczego nie sprawdzają — potrzebny jest type 
 
 ### Zarządzanie wersjami Pythona
 
-* **`pyenv`** — klasyczne narzędzie do instalowania i przełączania wielu wersji interpretera Pythona obok siebie. Wciąż działa, ale w nowoczesnym workflow jest w dużej mierze **zastępowane przez `uv python install`**, które robi to samo bez dodatkowej zależności.
+* **`pyenv`** - klasyczne narzędzie do instalowania i przełączania wielu wersji interpretera Pythona obok siebie. Wciąż działa, ale w nowoczesnym workflow jest w dużej mierze **zastępowane przez `uv python install`**, które robi to samo bez dodatkowej zależności.
 
 ### conda i Anaconda
 
-[conda](https://docs.conda.io/) to menedżer pakietów i środowisk, który wciąż pozostaje istotny w **data science i ML**. Jego przewaga nad `pip` polega na tym, że potrafi instalować nie tylko pakiety Pythona, lecz także zależności spoza ekosystemu Pythona: biblioteki C, kompilatory czy sterowniki **CUDA** — co bywa kluczowe przy konfiguracji środowisk GPU.
+[conda](https://docs.conda.io/) to menedżer pakietów i środowisk, który wciąż pozostaje istotny w **data science i ML**. Jego przewaga nad `pip` polega na tym, że potrafi instalować nie tylko pakiety Pythona, lecz także zależności spoza ekosystemu Pythona: biblioteki C, kompilatory czy sterowniki **CUDA** - co bywa kluczowe przy konfiguracji środowisk GPU.
 
 > [!TIP]
-> Jeśli używasz condy, instaluj pakiety z darmowego, społecznościowego kanału **`conda-forge`** zamiast z domyślnego kanału `defaults` — ten ostatni objęty jest komercyjnymi warunkami licencyjnymi Anacondy, które mogą obowiązywać większe organizacje.
+> Jeśli używasz condy, instaluj pakiety z darmowego, społecznościowego kanału **`conda-forge`** zamiast z domyślnego kanału `defaults` - ten ostatni objęty jest komercyjnymi warunkami licencyjnymi Anacondy, które mogą obowiązywać większe organizacje.
 
 ### pixi
 
@@ -355,7 +366,7 @@ Wskazówki typów same z siebie niczego nie sprawdzają — potrzebny jest type 
 
 ---
 
-## Jupyter Notebooks — interaktywne programowanie
+## Jupyter Notebooks - interaktywne programowanie
 
 > [!NOTE]
 > Jupyter Notebook to jedna z najpopularniejszych form pracy z Pythonem, szczególnie w data science, badaniach i nauczaniu. To interaktywne środowisko, gdzie kod, jego wyniki, wizualizacje i tekst (w formacie Markdown) współistnieją w jednym dokumencie (`.ipynb`).
@@ -383,7 +394,7 @@ plt.show()
 ```
 
 > [!TIP]
-> Dzięki `uv` możesz uruchomić JupyterLab **bez globalnej instalacji** czegokolwiek — `uv` zbuduje na żądanie tymczasowe środowisko z Jupyterem:
+> Dzięki `uv` możesz uruchomić JupyterLab **bez globalnej instalacji** czegokolwiek - `uv` zbuduje na żądanie tymczasowe środowisko z Jupyterem:
 > ```bash
 > uv run --with jupyter jupyter lab
 > ```
@@ -402,11 +413,11 @@ plt.show()
 
 Pliki `.ipynb` to w istocie dokumenty JSON zawierające również wyniki wykonania (w tym binarne obrazy wykresów). To sprawia, że `git diff` na notebooku bywa nieczytelny, a repozytorium puchnie. Dwa narzędzia rozwiązują ten problem:
 
-  * **`jupytext`** — synchronizuje notebook z czytelnym dla człowieka plikiem `.py` (lub Markdown), który dobrze nadaje się do code review i wersjonowania.
-  * **`nbstripout`** — hook czyszczący wyniki komórek przed commitem, dzięki czemu do repozytorium trafia wyłącznie kod.
+  * **`jupytext`** - synchronizuje notebook z czytelnym dla człowieka plikiem `.py` (lub Markdown), który dobrze nadaje się do code review i wersjonowania.
+  * **`nbstripout`** - hook czyszczący wyniki komórek przed commitem, dzięki czemu do repozytorium trafia wyłącznie kod.
 
 ---
 
 ## Źródła i przypisy
 
-[^1]: Benchmarki wydajności mają charakter orientacyjny — rzędy wielkości odpowiadają publikowanym pomiarom Astral; konkretne czasy zależą od projektu, sieci i sprzętu.
+[^1]: Benchmarki wydajności mają charakter orientacyjny - rzędy wielkości odpowiadają publikowanym pomiarom Astral; konkretne czasy zależą od projektu, sieci i sprzętu.

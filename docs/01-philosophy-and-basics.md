@@ -44,18 +44,18 @@ To jedna z największych zmian podnoszących komfort pracy. W Pythonie zapominas
 * Ceną za tę wygodę jest pewien narzut wydajnościowy i mniejsza kontrola nad układem danych w pamięci.
 
 > [!NOTE]
-> **Która to wersja Pythona?** Stan na maj 2026: aktualną serią rozwojową jest **Python 3.14** (wydanie 3.14.0 ukazało się 7 października 2025). Równolegle serwisowana jest seria **3.13**, a kolejne wydanie — **3.15** — planowane jest na październik 2026. Dla nowych projektów wybieraj 3.13 lub 3.14; unikaj wersji starszych niż 3.10, które nie otrzymują już pełnego wsparcia.
+> **Która to wersja Pythona?** Stan na maj 2026: aktualną serią rozwojową jest **Python 3.14** (wydanie 3.14.0 ukazało się 7 października 2025). Równolegle serwisowana jest seria **3.13**, a kolejne wydanie - **3.15** - planowane jest na październik 2026. Dla nowych projektów wybieraj 3.13 lub 3.14; unikaj wersji starszych niż 3.10, które nie otrzymują już pełnego wsparcia.
 
 ### GIL i free-threading: koniec ery jednego wątku
 
 To zagadnienie zaskakuje deweloperów przychodzących z C++, C# czy Javy, gdzie prawdziwa, równoległa wielowątkowość jest oczywistością.
 
-* Historycznie CPython chroniony był przez **GIL (Global Interpreter Lock)** — globalną blokadę, która pozwalała wykonywać bytecode tylko **jednemu wątkowi naraz**. Nawet na 16-rdzeniowym procesorze kod Pythona w wątkach (`threading`) nie liczył się równolegle.
+* Historycznie CPython chroniony był przez **GIL (Global Interpreter Lock)** - globalną blokadę, która pozwalała wykonywać bytecode tylko **jednemu wątkowi naraz**. Nawet na 16-rdzeniowym procesorze kod Pythona w wątkach (`threading`) nie liczył się równolegle.
 * W praktyce oznaczało to, że wielowątkowość w Pythonie przyspieszała jedynie zadania ograniczone wejściem/wyjściem (I/O-bound: sieć, dysk), a nie zadania obliczeniowe (CPU-bound). Dla równoległości obliczeń stosowano `multiprocessing` (osobne procesy, osobne interpretery) lub przenoszono ciężkie pętle do bibliotek w C/Rust (NumPy).
-* Od **Pythona 3.14** build **free-threaded (no-GIL)** jest **oficjalnie wspierany** ([PEP 779](https://peps.python.org/pep-0779/)) — wcześniej, w 3.13, miał status eksperymentalny. W tej konfiguracji wątki mogą wreszcie wykonywać kod Pythona naprawdę równolegle.
+* Od **Pythona 3.14** build **free-threaded (no-GIL)** jest **oficjalnie wspierany** ([PEP 779](https://peps.python.org/pep-0779/)) - wcześniej, w 3.13, miał status eksperymentalny. W tej konfiguracji wątki mogą wreszcie wykonywać kod Pythona naprawdę równolegle.
 
 > [!WARNING]
-> Free-threading nie jest jeszcze domyślnym buildem — to osobny wariant interpretera (`python3.14t`). Część bibliotek z rozszerzeniami w C wymaga aktualizacji, a kod jednowątkowy bywa w nim nieco wolniejszy. Na razie traktuj go jako opcję świadomego wyboru, a nie domyślne założenie.
+> Free-threading nie jest jeszcze domyślnym buildem - to osobny wariant interpretera (`python3.14t`). Część bibliotek z rozszerzeniami w C wymaga aktualizacji, a kod jednowątkowy bywa w nim nieco wolniejszy. Na razie traktuj go jako opcję świadomego wyboru, a nie domyślne założenie.
 
 ### Znaczące Wcięcia (Indentation): Koniec z Nawiasami Klamrowymi
 
@@ -148,11 +148,11 @@ def calculate_price(quantity: int, price: float) -> float:
     return quantity * price
 ```
 
-Wskazówki typów same w sobie niczego nie sprawdzają — potrzebujesz do tego osobnego **type checkera**. Dostępne narzędzia:
+Wskazówki typów same w sobie niczego nie sprawdzają - potrzebujesz do tego osobnego **type checkera**. Dostępne narzędzia:
 
-* **`mypy`** — dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
-* **`pyright`** — type checker od Microsoftu, osiąga ~98% zgodności z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code (rozszerzenie Pylance).
-* **`ty`** — nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne wydanie 1.0 celowane na 2026. Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
+* **`mypy`** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+* **`pyright`** - type checker od Microsoftu, osiąga ~98% zgodności z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code (rozszerzenie Pylance).
+* **`ty`** - nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne wydanie 1.0 celowane na 2026. Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
 
 > [!TIP]
 > Jeśli zaczynasz nowy projekt, warto od razu skonfigurować type checker i traktować jego ostrzeżenia jak błędy kompilacji znane z C++/C#. Więcej o konfiguracji narzędzi znajdziesz w rozdziale [`02-environment-and-tools.md`](./02-environment-and-tools.md).
@@ -220,6 +220,17 @@ class StudentPracujacy(Student, Pracownik):  # Wielodziedziczenie
     def przedstaw_sie(self):
         return f"Jestem {self.imie}. {self.info_studia()} {self.info_praca()}"
 ```
+
+Algorytm MRO ustala liniową kolejność, w jakiej Python przeszukuje klasy w poszukiwaniu metody. Dla powyższej hierarchii wygląda ona tak - od klasy najbardziej szczegółowej aż po wspólną bazę `object`:
+
+```mermaid
+flowchart LR
+    A["StudentPracujacy"] --> B["Student"]
+    B --> C["Pracownik"]
+    C --> D["object"]
+```
+
+Wywołanie metody na obiekcie `StudentPracujacy` sprawdza klasy w tej właśnie kolejności i używa **pierwszej** znalezionej definicji. Kolejność `Student` przed `Pracownik` wynika wprost z kolejności klas bazowych w deklaracji `class StudentPracujacy(Student, Pracownik)`. Pełną listę MRO danej klasy podejrzysz przez `StudentPracujacy.__mro__` lub `StudentPracujacy.mro()`.
 
 ### Enkapsulacja: Konwencja zamiast Wymuszenia
 
@@ -357,7 +368,7 @@ Debugowanie to proces znajdowania i naprawiania błędów.
 
 ```python
 def podziel(a: float, b: float) -> float:
-    breakpoint()  # wykonanie zatrzyma się tutaj — wejdziesz w interaktywny debugger
+    breakpoint()  # wykonanie zatrzyma się tutaj - wejdziesz w interaktywny debugger
     return a / b
 ```
 
@@ -386,7 +397,7 @@ print(df[df['PKB (mld USD)'] > 1000]) # Filtrowanie
 ### Wizualizacja Danych z `matplotlib` i `plotly`
 
   * **Matplotlib**: Standardowa biblioteka do tworzenia statycznych wykresów wysokiej jakości.
-  * **Seaborn**: Nadbudowa nad Matplotlibem — udostępnia wysokopoziomowe API do estetycznych wykresów statystycznych (rozkłady, korelacje, mapy ciepła) i dobrze współpracuje z `DataFrame`.
+  * **Seaborn**: Nadbudowa nad Matplotlibem - udostępnia wysokopoziomowe API do estetycznych wykresów statystycznych (rozkłady, korelacje, mapy ciepła) i dobrze współpracuje z `DataFrame`.
   * **Plotly**: Służy do tworzenia interaktywnych wykresów, idealnych do aplikacji webowych i dashboardów.
 
 ```python
@@ -409,15 +420,15 @@ Pygame to popularna biblioteka do tworzenia gier 2D, która obsługuje grafikę,
 ### Uczenie Maszynowe i Deep Learning
 
   * **Scikit-learn**: Podstawowa biblioteka do klasycznego uczenia maszynowego (klasyfikacja, regresja, klasteryzacja). Pierwszy wybór dla danych tabelarycznych.
-  * **PyTorch**: Dziś **dominujący framework deep learningu** — zarówno w badaniach, jak i w produkcji. Jego dynamiczny graf obliczeniowy i pythonowe API uczyniły go faktycznym standardem.
-  * **Keras 3**: Współcześnie **wieloplatformowy (multi-backend)** — ta sama wysokopoziomowa nadbudowa potrafi działać na PyTorch, JAX lub TensorFlow. Dawny opis „Keras + TensorFlow jako nierozłączna para” jest już nieaktualny.
+  * **PyTorch**: Dziś **dominujący framework deep learningu** - zarówno w badaniach, jak i w produkcji. Jego dynamiczny graf obliczeniowy i pythonowe API uczyniły go faktycznym standardem.
+  * **Keras 3**: Współcześnie **wieloplatformowy (multi-backend)** - ta sama wysokopoziomowa nadbudowa potrafi działać na PyTorch, JAX lub TensorFlow. Dawny opis „Keras + TensorFlow jako nierozłączna para” jest już nieaktualny.
   * **TensorFlow / JAX**: TensorFlow wciąż obecny, zwłaszcza w istniejących systemach produkcyjnych; JAX ceniony w badaniach za szybkie obliczenia numeryczne i automatyczne różniczkowanie.
 
 ### Generatywne AI (GenAI) i LLM
 
   * **Hugging Face**: Centrum ekosystemu modeli otwartych. Biblioteki `transformers` (modele) i `datasets` (zbiory danych) to standard pracy z gotowymi modelami.
-  * **Klienci API LLM**: Oficjalne SDK dostawców modeli komercyjnych — `openai`, `anthropic`, `google-genai`.
-  * **LangChain 1.0 + LangGraph 1.0**: Frameworki do budowy aplikacji LLM. LangGraph wnosi koncepcję **trwałych agentów (durable agents)** — agentów o jawnym stanie, zdolnych do wznawiania pracy.
+  * **Klienci API LLM**: Oficjalne SDK dostawców modeli komercyjnych - `openai`, `anthropic`, `google-genai`.
+  * **LangChain 1.0 + LangGraph 1.0**: Frameworki do budowy aplikacji LLM. LangGraph wnosi koncepcję **trwałych agentów (durable agents)** - agentów o jawnym stanie, zdolnych do wznawiania pracy.
   * **PydanticAI**: Framework agentowy oparty na Pydantic, ze ścisłym typowaniem i walidacją wyjścia modelu.
   * **LlamaIndex**: Wyspecjalizowany w budowie potoków RAG (Retrieval-Augmented Generation) i indeksowaniu danych.
   * **CrewAI**: Framework do orkiestracji wielu współpracujących agentów (multi-agent).

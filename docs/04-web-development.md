@@ -37,12 +37,12 @@ def hello():
 [FastAPI](https://fastapi.tiangolo.com/) to dziś **ugruntowany standard tworzenia API w Pythonie**. Zbudowany od podstaw z myślą o tworzeniu API, łączy wysoką wydajność z bardzo dobrym doświadczeniem deweloperskim i przez ostatnie lata stał się domyślnym wyborem dla nowych usług.
 
   * **Filozofia**: "API first", wydajność i łatwość tworzenia.
-  * **Wydajność**: Jedna z najwyższych w całym ekosystemie Pythona — zasługa działania w oparciu o nowoczesny, **asynchroniczny standard ASGI**.
+  * **Wydajność**: Jedna z najwyższych w całym ekosystemie Pythona - zasługa działania w oparciu o nowoczesny, **asynchroniczny standard ASGI**.
   * **Kluczowe Funkcje**:
       * **Wbudowana walidacja danych**: Wykorzystuje **Pydantic v2** (zob. rozdział o stosie Data Science) i wskazówki typów (`type hints`) do automatycznej walidacji przychodzących żądań i serializacji odpowiedzi.
       * **Automatyczna dokumentacja**: Na podstawie kodu i typów automatycznie generuje interaktywną dokumentację API (w standardach OpenAPI i JSON Schema), dostępną pod adresami `/docs` (Swagger UI) i `/redoc`.
-  * **ORM**: Brak wbudowanego, podobnie jak Flask, najczęściej integrowany z [**SQLAlchemy 2.x**](https://www.sqlalchemy.org/). Linia 2.x wprowadziła ujednolicone API zapytań oparte na funkcji `select()` (te same konstrukcje dla ORM i Core) oraz pełnoprawny **tryb asynchroniczny** (`AsyncSession`, `create_async_engine`) — istotny przy FastAPI, gdzie pozwala wykonywać zapytania do bazy bez blokowania pętli zdarzeń.
-  * **Najlepszy do...**: **Nowoczesnych API REST/HTTP, aplikacji wymagających najwyższej wydajności, mikrousług** i projektów, gdzie bezpieczeństwo typów i dobra dokumentacja są priorytetem. FastAPI to framework do API REST/HTTP — **GraphQL nie jest jego natywną funkcją**; realizuje się go przez osobne biblioteki (np. [Strawberry](https://strawberry.rocks/), [Ariadne](https://ariadnegraphql.org/)) zintegrowane z FastAPI.
+  * **ORM**: Brak wbudowanego, podobnie jak Flask, najczęściej integrowany z [**SQLAlchemy 2.x**](https://www.sqlalchemy.org/). Linia 2.x wprowadziła ujednolicone API zapytań oparte na funkcji `select()` (te same konstrukcje dla ORM i Core) oraz pełnoprawny **tryb asynchroniczny** (`AsyncSession`, `create_async_engine`) - istotny przy FastAPI, gdzie pozwala wykonywać zapytania do bazy bez blokowania pętli zdarzeń.
+  * **Najlepszy do...**: **Nowoczesnych API REST/HTTP, aplikacji wymagających najwyższej wydajności, mikrousług** i projektów, gdzie bezpieczeństwo typów i dobra dokumentacja są priorytetem. FastAPI to framework do API REST/HTTP - **GraphQL nie jest jego natywną funkcją**; realizuje się go przez osobne biblioteki (np. [Strawberry](https://strawberry.rocks/), [Ariadne](https://ariadnegraphql.org/)) zintegrowane z FastAPI.
 
 ```python
 from fastapi import FastAPI
@@ -62,7 +62,7 @@ async def create_user(user: User):
 ```
 
 > [!NOTE]
-> Mimo dojrzałości i powszechnego zastosowania w produkcji, FastAPI formalnie wciąż znajduje się w wersjach **0.x** (w połowie 2026 ~0.136). To dla projektów Pythona dość typowe — numeracja przed `1.0` nie oznacza tu niegotowości; oznacza jedynie, że autorzy zostawiają sobie swobodę wprowadzania zmian w API. W praktyce zmiany te są dobrze udokumentowane i dotyczą zwykle wąskich obszarów.
+> Mimo dojrzałości i powszechnego zastosowania w produkcji, FastAPI formalnie wciąż znajduje się w wersjach **0.x** (w połowie 2026 ~0.136). To dla projektów Pythona dość typowe - numeracja przed `1.0` nie oznacza tu niegotowości; oznacza jedynie, że autorzy zostawiają sobie swobodę wprowadzania zmian w API. W praktyce zmiany te są dobrze udokumentowane i dotyczą zwykle wąskich obszarów.
 
 -----
 
@@ -71,10 +71,10 @@ async def create_user(user: User):
 [Django](https://www.djangoproject.com/) to dojrzały, potężny framework, który podąża za filozofią "wszystko w zestawie". Dostarcza gotowe, zintegrowane rozwiązania dla większości problemów, z jakimi spotykasz się podczas tworzenia dużych aplikacji webowych.
 
   * **Filozofia**: Kompletny, zintegrowany zestaw narzędzi.
-  * **Wsparcie dla async**: Async w Django jest dziś realny — aktualne wydania (**Django 5.2 LTS** oraz **Django 6.0**) mają **async views**, **async middleware** oraz część **asynchronicznych metod ORM**: dla operacji bazodanowych dostępne są warianty z prefiksem `a`, np. `aget()`, `afirst()`, `acreate()`, `asave()`, a zbiory wyników można iterować przez `async for`. Django pozostaje przy tym w pełni zgodne wstecz — kod synchroniczny działa bez zmian. Trzeba jednak zachować właściwą perspektywę: rdzeń frameworka i spora część ekosystemu nadal są zorientowane synchronicznie, a pełny async ORM wciąż dojrzewa. Django to framework o korzeniach synchronicznych z dobudowaną warstwą async — nie stawiaj go w jednym rzędzie z natywnie-asynchronicznym FastAPI.
+  * **Wsparcie dla async**: Async w Django jest dziś realny - aktualne wydania (**Django 5.2 LTS** oraz **Django 6.0**) mają **async views**, **async middleware** oraz część **asynchronicznych metod ORM**: dla operacji bazodanowych dostępne są warianty z prefiksem `a`, np. `aget()`, `afirst()`, `acreate()`, `asave()`, a zbiory wyników można iterować przez `async for`. Django pozostaje przy tym w pełni zgodne wstecz - kod synchroniczny działa bez zmian. Trzeba jednak zachować właściwą perspektywę: rdzeń frameworka i spora część ekosystemu nadal są zorientowane synchronicznie, a pełny async ORM wciąż dojrzewa. Django to framework o korzeniach synchronicznych z dobudowaną warstwą async - nie stawiaj go w jednym rzędzie z natywnie-asynchronicznym FastAPI.
 
 > [!WARNING]
-> Asynchroniczny ORM Django wciąż dojrzewa i ma istotne ograniczenia. Najważniejsze: **transakcje (`transaction.atomic`) nie działają w trybie async** — blok transakcyjny musi pozostać synchroniczny. Jeśli Twoja logika silnie opiera się na transakcjach bazodanowych, traktuj async w Django jako rozwiązanie do konkretnych fragmentów (np. współbieżne wywołania zewnętrznych API), a nie domyślny model całej aplikacji.
+> Asynchroniczny ORM Django wciąż dojrzewa i ma istotne ograniczenia. Najważniejsze: **transakcje (`transaction.atomic`) nie działają w trybie async** - blok transakcyjny musi pozostać synchroniczny. Jeśli Twoja logika silnie opiera się na transakcjach bazodanowych, traktuj async w Django jako rozwiązanie do konkretnych fragmentów (np. współbieżne wywołania zewnętrznych API), a nie domyślny model całej aplikacji.
   * **Kluczowe Funkcje**:
       * **Wbudowany, potężny ORM**: Jedna z głównych zalet Django, głęboko zintegrowana z resztą frameworka.
       * **Wbudowany panel administracyjny**: Django potrafi automatycznie wygenerować w pełni funkcjonalny panel admina na podstawie zdefiniowanych modeli bazy danych, co drastycznie przyspiesza development.
@@ -86,14 +86,31 @@ async def create_user(user: User):
 
 ## Model Asynchroniczny: `async`/`await` w Kontekście Web
 
-Zanim przejdziemy do serwerów, warto utrwalić model mentalny, który leży u podstaw FastAPI i nowoczesnych serwerów ASGI. Typowy handler webowy spędza większość czasu nie na liczeniu, lecz na **czekaniu** — na odpowiedź z bazy danych, na zewnętrzne API, na odczyt pliku. To są operacje **I/O-bound**.
+Zanim przejdziemy do serwerów, warto utrwalić model mentalny, który leży u podstaw FastAPI i nowoczesnych serwerów ASGI. Typowy handler webowy spędza większość czasu nie na liczeniu, lecz na **czekaniu** - na odpowiedź z bazy danych, na zewnętrzne API, na odczyt pliku. To są operacje **I/O-bound**.
 
-W klasycznym modelu synchronicznym (WSGI) wątek obsługujący żądanie podczas takiego oczekiwania jest **zablokowany** — nie robi nic, a mimo to zajmuje zasób. Aby obsłużyć wiele żądań jednocześnie, potrzebujesz wielu wątków/procesów.
+W klasycznym modelu synchronicznym (WSGI) wątek obsługujący żądanie podczas takiego oczekiwania jest **zablokowany** - nie robi nic, a mimo to zajmuje zasób. Aby obsłużyć wiele żądań jednocześnie, potrzebujesz wielu wątków/procesów.
 
-Model `async`/`await` odwraca tę logikę. Gdy handler oznaczony `async def` napotyka `await` na operacji I/O, **oddaje sterowanie** pętli zdarzeń (*event loop*), zamiast blokować wątek. Pętla w tym czasie obsługuje inne żądania, a gdy oczekiwana operacja się zakończy — wraca do zawieszonego handlera. Dzięki temu **jeden wątek** może obsłużyć tysiące współbieżnych żądań I/O-bound.
+Model `async`/`await` odwraca tę logikę. Gdy handler oznaczony `async def` napotyka `await` na operacji I/O, **oddaje sterowanie** pętli zdarzeń (*event loop*), zamiast blokować wątek. Pętla w tym czasie obsługuje inne żądania, a gdy oczekiwana operacja się zakończy - wraca do zawieszonego handlera. Dzięki temu **jeden wątek** może obsłużyć tysiące współbieżnych żądań I/O-bound.
 
 > [!NOTE]
-> Jeśli znasz `async`/`await` z C# albo `Promise`/`async` z JavaScriptu — to dokładnie ten sam model kooperatywnej współbieżności. Kluczowa zasada: async daje przewagę przy zadaniach **I/O-bound** (czekanie). Dla zadań **CPU-bound** (intensywne obliczenia) `await` nie pomaga — ciężkie liczenie wciąż zablokuje pętlę zdarzeń. Takie zadania należy przenieść do osobnego procesu lub puli wątków.
+> Jeśli znasz `async`/`await` z C# albo `Promise`/`async` z JavaScriptu - to dokładnie ten sam model kooperatywnej współbieżności. Kluczowa zasada: async daje przewagę przy zadaniach **I/O-bound** (czekanie). Dla zadań **CPU-bound** (intensywne obliczenia) `await` nie pomaga - ciężkie liczenie wciąż zablokuje pętlę zdarzeń. Takie zadania należy przenieść do osobnego procesu lub puli wątków.
+
+Poniższy diagram pokazuje, jak **jeden wątek** obsługuje dwa żądania naraz - gdy żądanie A czeka na I/O, pętla zdarzeń zajmuje się żądaniem B:
+
+```mermaid
+sequenceDiagram
+    participant A as Żądanie A
+    participant L as Pętla zdarzeń
+    participant B as Żądanie B
+    participant IO as Baza / API
+    A->>L: start handlera (async def)
+    L->>IO: zapytanie I/O (await)
+    Note over L: handler A zawieszony, wątek wolny
+    L->>B: obsługa handlera B
+    IO-->>L: wynik dla A gotowy
+    L->>A: wznowienie handlera A
+    A-->>L: odpowiedź HTTP
+```
 
 ## Komunikacja HTTP i Serwery Aplikacji
 
@@ -107,27 +124,27 @@ Model `async`/`await` odwraca tę logikę. Gdy handler oznaczony `async def` nap
 Aplikacje webowe w Pythonie potrzebują serwera aplikacji, który tłumaczy zapytania HTTP na format zrozumiały dla frameworka. Istnieją dwa standardy tej komunikacji:
 
   * **WSGI (Web Server Gateway Interface)**: Tradycyjny, **synchroniczny** standard, używany przez Flask i Django. Najpopularniejszym, produkcyjnym serwerem WSGI jest [**Gunicorn**](https://gunicorn.org/).
-  * **ASGI (Asynchronous Server Gateway Interface)**: Nowoczesny, **asynchroniczny** standard, który jest sercem FastAPI. Najczęściej używanym serwerem ASGI jest [**Uvicorn**](https://www.uvicorn.org/) — sprawdzony, dobrze udokumentowany, **bezpieczny domyślny wybór**.
+  * **ASGI (Asynchronous Server Gateway Interface)**: Nowoczesny, **asynchroniczny** standard, który jest sercem FastAPI. Najczęściej używanym serwerem ASGI jest [**Uvicorn**](https://www.uvicorn.org/) - sprawdzony, dobrze udokumentowany, **bezpieczny domyślny wybór**.
 
 W klasycznym układzie produkcyjnym używa się **Gunicorna** do zarządzania procesami roboczymi (workerami) Uvicorna, aby połączyć solidne zarządzanie procesami z wysoką wydajnością operacji I/O.
 
 #### [Granian](https://github.com/emmett-framework/granian): Wydajny Serwer Napisany w Rust
 
-W 2026 dojrzałą alternatywą dla pary Gunicorn + Uvicorn jest [**Granian**](https://github.com/emmett-framework/granian) — serwer napisany w **Rust**, obsługujący standardy **ASGI**, **WSGI** oraz natywny **RSGI**. Jego przewagi:
+W 2026 dojrzałą alternatywą dla pary Gunicorn + Uvicorn jest [**Granian**](https://github.com/emmett-framework/granian) - serwer napisany w **Rust**, obsługujący standardy **ASGI**, **WSGI** oraz natywny **RSGI**. Jego przewagi:
 
-* **Wyższa przepustowość** — w zależności od scenariusza zwykle o ok. 20–50% wyższa niż Uvicorn.
-* **Natywne zarządzanie procesami i wątkami** — Granian sam zarządza wieloma procesami roboczymi i wątkami, więc **eliminuje potrzebę Gunicorna jako osobnego process managera**. Cały stos uruchomieniowy to jeden komponent zamiast dwóch.
+* **Wyższa przepustowość** - w zależności od scenariusza zwykle o ok. 20–50% wyższa niż Uvicorn.
+* **Natywne zarządzanie procesami i wątkami** - Granian sam zarządza wieloma procesami roboczymi i wątkami, więc **eliminuje potrzebę Gunicorna jako osobnego process managera**. Cały stos uruchomieniowy to jeden komponent zamiast dwóch.
 
 > [!TIP]
-> Praktyczna rekomendacja: jeśli zaczynasz lub potrzebujesz maksimum stabilności i materiałów pomocniczych — wybierz **Uvicorn** (ewentualnie pod Gunicornem). Gdy przepustowość staje się realnym wymaganiem, a uproszczenie stosu uruchomieniowego jest wartością — rozważ **Granian**.
+> Praktyczna rekomendacja: jeśli zaczynasz lub potrzebujesz maksimum stabilności i materiałów pomocniczych - wybierz **Uvicorn** (ewentualnie pod Gunicornem). Gdy przepustowość staje się realnym wymaganiem, a uproszczenie stosu uruchomieniowego jest wartością - rozważ **Granian**.
 
-### WSGI vs ASGI — Przepływ Żądania
+### WSGI vs ASGI - Przepływ Żądania
 
 Poniższy diagram pokazuje, czym różni się obsługa żądania w modelu synchronicznym (WSGI) i asynchronicznym (ASGI):
 
 ```mermaid
 flowchart TB
-    subgraph WSGI["WSGI — model synchroniczny (Flask, klasyczne Django)"]
+    subgraph WSGI["WSGI - model synchroniczny (Flask, klasyczne Django)"]
         direction TB
         W1["Żądanie HTTP"] --> W2["Serwer WSGI<br/>Gunicorn"]
         W2 --> W3["Worker = 1 wątek<br/>obsługuje 1 żądanie"]
@@ -135,7 +152,7 @@ flowchart TB
         W4 --> W5["Odpowiedź HTTP"]
     end
 
-    subgraph ASGI["ASGI — model asynchroniczny (FastAPI, async Django)"]
+    subgraph ASGI["ASGI - model asynchroniczny (FastAPI, async Django)"]
         direction TB
         A1["Wiele żądań HTTP"] --> A2["Serwer ASGI<br/>Uvicorn / Granian"]
         A2 --> A3["Event loop<br/>1 wątek, wiele żądań naraz"]
@@ -146,4 +163,4 @@ flowchart TB
 ```
 
 > [!TIP]
-> W miarę jak aplikacja rośnie, okazuje się, że o jej utrzymywalności decyduje **nie tyle wybór frameworka, co sposób organizacji kodu** — podział na warstwy lub domeny, granice modułów, kierunek zależności. Dobrze ustrukturyzowana aplikacja we Flasku bywa łatwiejsza w utrzymaniu niż chaotyczna w FastAPI. Tym zagadnieniom — architekturze i dobrym praktykom — poświęcony jest osobny rozdział: [`07-architecture-and-good-practices.md`](./07-architecture-and-good-practices.md).
+> W miarę jak aplikacja rośnie, okazuje się, że o jej utrzymywalności decyduje **nie tyle wybór frameworka, co sposób organizacji kodu** - podział na warstwy lub domeny, granice modułów, kierunek zależności. Dobrze ustrukturyzowana aplikacja we Flasku bywa łatwiejsza w utrzymaniu niż chaotyczna w FastAPI. Tym zagadnieniom - architekturze i dobrym praktykom - poświęcony jest osobny rozdział: [`07-architecture-and-good-practices.md`](./07-architecture-and-good-practices.md).

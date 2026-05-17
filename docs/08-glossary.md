@@ -32,7 +32,7 @@
 : Narzędzie automatycznie przepisujące kod źródłowy do jednego, kanonicznego stylu (np. spójne wcięcia, długość linii, cudzysłowy). Eliminuje dyskusje o stylu w code review. W ekosystemie Pythona tę rolę pełnią m.in. `Ruff` oraz `black`.
 
 **GIL (Global Interpreter Lock)**
-: Mechanizm w standardowym buildzie CPythona, który pozwala tylko jednemu wątkowi na wykonywanie bytecodu Pythona w danym momencie w ramach jednego procesu. Upraszcza zarządzanie pamięcią i zapobiega konfliktom, ale ogranicza rzeczywistą równoległość w programach wielowątkowych, które są mocno obciążone obliczeniami CPU. Powyższy opis dotyczy standardowego buildu CPythona z GIL — od Pythona 3.13/3.14 istnieje oficjalnie wspierany build **free-threaded** (no-GIL), w którym to ograniczenie nie obowiązuje (zob. rozdział 01).
+: Mechanizm w standardowym buildzie CPythona, który pozwala tylko jednemu wątkowi na wykonywanie bytecodu Pythona w danym momencie w ramach jednego procesu. Upraszcza zarządzanie pamięcią i zapobiega konfliktom, ale ogranicza rzeczywistą równoległość w programach wielowątkowych, które są mocno obciążone obliczeniami CPU. Powyższy opis dotyczy standardowego buildu CPythona z GIL - od Pythona 3.13/3.14 istnieje oficjalnie wspierany build **free-threaded** (no-GIL), w którym to ograniczenie nie obowiązuje (zob. rozdział 01).
 
 **Generator**
 : Specjalny typ iteratora, zdefiniowany jako funkcja używająca słowa kluczowego `yield`. Generatory produkują wartości "na żądanie", jedna po drugiej, zamiast tworzyć od razu całą kolekcję w pamięci. Jest to niezwykle wydajne pamięciowo przy pracy z dużymi zbiorami danych.
@@ -50,7 +50,7 @@
 : Zwięzły, czytelny i "pythonowy" sposób tworzenia list na podstawie istniejących sekwencji. Jest to często bardziej wydajna i preferowana alternatywa dla pętli `for` z metodą `.append()`. Przykład: `squares = [x**2 for x in range(10)]`.
 
 **Lockfile**
-: Plik (np. `uv.lock`, `poetry.lock`) zamrażający dokładne, rozwiązane wersje wszystkich zależności projektu — bezpośrednich i pośrednich. Gwarantuje reprodukowalne buildy: każdy programista i serwer CI instaluje identyczny zestaw pakietów.
+: Plik (np. `uv.lock`, `poetry.lock`) zamrażający dokładne, rozwiązane wersje wszystkich zależności projektu - bezpośrednich i pośrednich. Gwarantuje reprodukowalne buildy: każdy programista i serwer CI instaluje identyczny zestaw pakietów.
 
 **MRO (Method Resolution Order)**
 : Algorytm określający kolejność, w jakiej Python przeszukuje hierarchię klas bazowych w poszukiwaniu metody do wywołania. Jest to kluczowe przy wielodziedziczeniu, gdzie rozwiązuje potencjalne konflikty (jak "problem diamentowy") w sposób deterministyczny.
@@ -62,7 +62,7 @@
 : Dokument opisujący nowe funkcje, ulepszenia lub standardy w Pythonie. Najsłynniejszy to PEP 8 (konwencje stylu kodu).
 
 **PEP 723**
-: Standard pozwalający zadeklarować zależności i wymaganą wersję Pythona dla pojedynczego skryptu wewnątrz samego pliku (tzw. inline script metadata). Umożliwia uruchamianie samodzielnych skryptów z zależnościami bez tworzenia osobnego projektu — np. przez `uv run`.
+: Standard pozwalający zadeklarować zależności i wymaganą wersję Pythona dla pojedynczego skryptu wewnątrz samego pliku (tzw. inline script metadata). Umożliwia uruchamianie samodzielnych skryptów z zależnościami bez tworzenia osobnego projektu - np. przez `uv run`.
 
 **PVM (Python Virtual Machine)**
 : Program, który jest sercem interpretera Pythona. Jego zadaniem jest wczytanie skompilowanego bytecodu i wykonanie zawartych w nim instrukcji.
@@ -89,7 +89,7 @@
 : Tradycyjny, synchroniczny standard komunikacji między serwerem a aplikacją webową w Pythonie. Używany przez frameworki takie jak Django i Flask.
 
 **pre-commit**
-: Framework uruchamiający zestaw automatycznych kontroli (np. lint, formatowanie, wykrywanie sekretów) jako tzw. git hooki — przed każdym commitem. Zapewnia, że do repozytorium trafia wyłącznie kod spełniający przyjęte standardy.
+: Framework uruchamiający zestaw automatycznych kontroli (np. lint, formatowanie, wykrywanie sekretów) jako tzw. git hooki - przed każdym commitem. Zapewnia, że do repozytorium trafia wyłącznie kod spełniający przyjęte standardy.
 
 **ty**
 : Szybki type checker Pythona tworzony przez firmę Astral i napisany w Rust. Od grudnia 2025 dostępny w fazie beta.
@@ -182,13 +182,13 @@
 : W kontekście GenAI, autonomiczny system, który wykorzystuje LLM do rozumowania, planowania i używania zewnętrznych narzędzi w celu osiągnięcia złożonego celu, wykraczającego poza prostą odpowiedź na pytanie.
 
 **Agentic AI / Agentic Workflow**
-: Systemy, w których LLM nie udziela jednorazowej odpowiedzi, lecz planuje i wykonuje wieloetapowe zadania — używając narzędzi w iteracyjnej pętli rozumowania, samodzielnie oceniając wyniki i korygując kolejne kroki.
+: Systemy, w których LLM nie udziela jednorazowej odpowiedzi, lecz planuje i wykonuje wieloetapowe zadania - używając narzędzi w iteracyjnej pętli rozumowania, samodzielnie oceniając wyniki i korygując kolejne kroki.
 
 **Chain of Thought (Łańcuch myśli)**
 : Technika promptowania, która polega na instruowaniu LLM, aby myślał "krok po kroku" i wypisywał swój proces rozumowania przed podaniem ostatecznej odpowiedzi. Znacząco poprawia to wyniki modelu w zadaniach wymagających złożonej logiki.
 
 **Constrained Generation**
-: Ogólna technika ograniczania outputu LLM regułami formalnymi (np. gramatyką bezkontekstową, CFG), która gwarantuje, że wygenerowany tekst jest składniowo poprawny. Bardziej ogólna niż Structured Outputs — pozwala wymusić dowolny język opisany gramatyką.
+: Ogólna technika ograniczania outputu LLM regułami formalnymi (np. gramatyką bezkontekstową, CFG), która gwarantuje, że wygenerowany tekst jest składniowo poprawny. Bardziej ogólna niż Structured Outputs - pozwala wymusić dowolny język opisany gramatyką.
 
 **Context Window**
 : Maksymalna ilość tekstu (mierzona w tokenach), którą model LLM może przetworzyć jednocześnie w jednym zapytaniu i odpowiedzi. Jest to fundamentalne ograniczenie "pamięci" modelu.
@@ -212,13 +212,13 @@
 : Duży model językowy; głęboka sieć neuronowa (zazwyczaj oparta na architekturze Transformer) wytrenowana na ogromnych zbiorach danych tekstowych w celu rozumienia i generowania języka naturalnego.
 
 **MCP (Model Context Protocol)**
-: Otwarty standard wprowadzony przez Anthropic (listopad 2024), który w ujednolicony sposób łączy modele LLM i agentów z zewnętrznymi narzędziami oraz źródłami danych — bywa nazywany "USB-C dla AI". Został przyjęty m.in. przez OpenAI, Google i Microsoft, a w grudniu 2025 przekazany pod opiekę Linux Foundation.
+: Otwarty standard wprowadzony przez Anthropic (listopad 2024), który w ujednolicony sposób łączy modele LLM i agentów z zewnętrznymi narzędziami oraz źródłami danych - bywa nazywany "USB-C dla AI". Został przyjęty m.in. przez OpenAI, Google i Microsoft, a w grudniu 2025 przekazany pod opiekę Linux Foundation.
 
 **Mixture-of-Experts (MoE)**
 : Architektura sieci neuronowej, w której dla każdego tokena aktywowany jest jedynie podzbiór parametrów (tzw. ekspertów), a nie cała sieć. Pozwala znacząco zwiększyć liczbę parametrów modelu przy umiarkowanym koszcie inferencji; standard dużych modeli (np. model 671B parametrów z 37B aktywnych).
 
 **NL2SQL / Generative BI**
-: Zamiana pytania zadanego w języku naturalnym na zapytanie SQL, jego wykonanie i przedstawienie odpowiedzi. Jedno z praktycznych zastosowań RAG w analityce danych — pozwala nietechnicznym użytkownikom odpytywać bazy danych.
+: Zamiana pytania zadanego w języku naturalnym na zapytanie SQL, jego wykonanie i przedstawienie odpowiedzi. Jedno z praktycznych zastosowań RAG w analityce danych - pozwala nietechnicznym użytkownikom odpytywać bazy danych.
 
 **Orchestration Framework (Framework orkiestracyjny)**
 : Biblioteka (np. LangChain, LangGraph, Haystack) służąca do budowania złożonych aplikacji AI poprzez łączenie wielu wywołań LLM, narzędzi i źródeł danych w spójne przepływy pracy (łańcuchy, grafy). LangGraph osiągnął wersję 1.0 pod koniec 2025 roku i stał się domyślnym runtime'em agentów w ekosystemie LangChain. Widoczny jest trend przechodzenia w stronę dedykowanych Agent SDK.
@@ -230,7 +230,7 @@
 : Wzorzec architektoniczny, w którym odpowiedź LLM jest wzbogacana ("uziemiana") o informacje dynamicznie wyszukane z zewnętrznej, zaufanej bazy wiedzy. Ma to na celu zminimalizowanie halucynacji i umożliwienie modelowi korzystania z aktualnych lub prywatnych danych.
 
 **Reasoning Model / Large Reasoning Model (LRM)**
-: Modele trenowane (m.in. metodami uczenia ze wzmocnieniem) tak, by przed udzieleniem odpowiedzi "myślały" — generowały wewnętrzny łańcuch rozumowania, zużywając dodatkowe zasoby obliczeniowe na etapie inferencji. Przykłady to rodzina OpenAI o-series oraz DeepSeek-R1.
+: Modele trenowane (m.in. metodami uczenia ze wzmocnieniem) tak, by przed udzieleniem odpowiedzi "myślały" - generowały wewnętrzny łańcuch rozumowania, zużywając dodatkowe zasoby obliczeniowe na etapie inferencji. Przykłady to rodzina OpenAI o-series oraz DeepSeek-R1.
 
 **Sovereign AI / On-premise AI**
 : Model wdrożenia, w którym cały pipeline AI (modele, dane, inferencja) działa lokalnie, na infrastrukturze organizacji, a dane nie opuszczają firmy. Szczególnie istotny w sektorach regulowanych (finanse, ochrona zdrowia, administracja publiczna).
@@ -267,7 +267,7 @@
 : Zbiór dwunastu zasad budowy aplikacji cloud-native (m.in. konfiguracja w zmiennych środowiskowych, bezstanowe procesy, jawne zależności), które ułatwiają skalowanie, wdrażanie i utrzymanie systemów.
 
 **ADR (Architecture Decision Record)**
-: Krótki dokument zapisujący pojedynczą decyzję architektoniczną — jej kontekst, podjęty wybór oraz konsekwencje. Tworzy historyczny ślad rozumowania zespołu.
+: Krótki dokument zapisujący pojedynczą decyzję architektoniczną - jej kontekst, podjęty wybór oraz konsekwencje. Tworzy historyczny ślad rozumowania zespołu.
 
 **Anemic Domain Model**
 : Antywzorzec, w którym obiekty domenowe przechowują wyłącznie dane (bez logiki), a cała logika biznesowa jest wypchnięta do osobnych "serwisów". Pozbawia model obiektowy jego głównej zalety.
@@ -276,7 +276,7 @@
 : Antywzorzec opisujący system pozbawiony czytelnej struktury, w którym wszystko zależy od wszystkiego. Utrudnia rozwój, testowanie i utrzymanie kodu.
 
 **Clean Architecture**
-: Wzorzec warstwowy, w którym reguła zależności jest skierowana zawsze do wewnątrz — ku domenie. Warstwy zewnętrzne (UI, infrastruktura) zależą od wewnętrznych, ale nigdy odwrotnie.
+: Wzorzec warstwowy, w którym reguła zależności jest skierowana zawsze do wewnątrz - ku domenie. Warstwy zewnętrzne (UI, infrastruktura) zależą od wewnętrznych, ale nigdy odwrotnie.
 
 **Conway's Law (Prawo Conwaya)**
 : Obserwacja, że struktura projektowanego systemu odzwierciedla strukturę komunikacyjną organizacji, która go zbudowała.
@@ -291,13 +291,13 @@
 : Mechanizm structural typing w Pythonie (PEP 544): zgodność typu z interfejsem jest sprawdzana po jego strukturze (zestawie metod i atrybutów), a nie po jawnym dziedziczeniu. Statyczny odpowiednik duck typingu.
 
 **RBAC (Role-Based Access Control)**
-: Model kontroli dostępu, w którym uprawnienia przypisuje się rolom, a role — użytkownikom. Upraszcza zarządzanie dostępem w większych systemach.
+: Model kontroli dostępu, w którym uprawnienia przypisuje się rolom, a role - użytkownikom. Upraszcza zarządzanie dostępem w większych systemach.
 
 **Rich Domain Model**
 : Model domenowy, w którym obiekty zawierają zarówno dane, jak i logikę biznesową operującą na tych danych. Przeciwieństwo Anemic Domain Model.
 
 **Vertical Slice Architecture**
-: Organizacja kodu w pionowe "plastry" funkcjonalności — każdy feature posiada własne modele, logikę i endpointy API, zamiast dzielić kod według warstw technicznych. Minimalizuje sprzężenie między funkcjami.
+: Organizacja kodu w pionowe "plastry" funkcjonalności - każdy feature posiada własne modele, logikę i endpointy API, zamiast dzielić kod według warstw technicznych. Minimalizuje sprzężenie między funkcjami.
 
 **model C4**
 : Notacja do tworzenia diagramów architektury oprogramowania na czterech poziomach szczegółowości: Context (kontekst systemu), Container (kontenery), Component (komponenty) i Code (kod).

@@ -24,7 +24,7 @@ Aby efektywnie pracować z LLM, warto zrozumieć, co dzieje się "pod maską". P
 Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie jest aktualne na **maj 2026**, ale potraktuj je jako migawkę.
 
 > [!IMPORTANT]
-> Konkretne numery wersji dezaktualizują się w ciągu tygodni. Jako inżynier myśl raczej kategoriami **rodzin modeli** i ich **zdolności** (długość kontekstu, multimodalność, tryb rozumowania, koszt, latencja) niż konkretnych nazw. Architektura Twojej aplikacji powinna pozwalać na wymianę modelu bez przepisywania logiki — patrz wzorzec *Ports & Adapters* w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
+> Konkretne numery wersji dezaktualizują się w ciągu tygodni. Jako inżynier myśl raczej kategoriami **rodzin modeli** i ich **zdolności** (długość kontekstu, multimodalność, tryb rozumowania, koszt, latencja) niż konkretnych nazw. Architektura Twojej aplikacji powinna pozwalać na wymianę modelu bez przepisywania logiki - patrz wzorzec *Ports & Adapters* w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
 
 ### Modele zamknięte (frontier, dostępne przez API)
 
@@ -35,24 +35,24 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 | **Google** | Gemini 3 | **Gemini 3.1 Pro**[^gemini31] | Tryb *Deep Think* (rozszerzone rozumowanie), multimodalność |
 | **xAI** | Grok 4 | **Grok 4** | Integracja z ekosystemem X, dostęp do danych w czasie rzeczywistym |
 
-[^gpt55]: GPT-5.5 — wydany 23 kwietnia 2026 r.; najnowszy model rodziny GPT-5.
-[^opus47]: Claude Opus 4.7 — wydany 16 kwietnia 2026 r.; najmocniejszy model rodziny Claude 4.x.
-[^gemini31]: Gemini 3.1 Pro — model rodziny Gemini 3 z trybem rozszerzonego rozumowania *Deep Think*.
+[^gpt55]: GPT-5.5 - wydany 23 kwietnia 2026 r.; najnowszy model rodziny GPT-5.
+[^opus47]: Claude Opus 4.7 - wydany 16 kwietnia 2026 r.; najmocniejszy model rodziny Claude 4.x.
+[^gemini31]: Gemini 3.1 Pro - model rodziny Gemini 3 z trybem rozszerzonego rozumowania *Deep Think*.
 
 ### Modele open-weight (otwarte wagi, możliwy self-hosting)
 
-Obok modeli zamkniętych dynamicznie rozwija się ekosystem modeli **open-weight** — takich, których wagi są publicznie dostępne i które możesz uruchomić **na własnej infrastrukturze**. To kluczowe dla zastosowań wymagających suwerenności danych, niskiej latencji lub kontroli kosztów.
+Obok modeli zamkniętych dynamicznie rozwija się ekosystem modeli **open-weight** - takich, których wagi są publicznie dostępne i które możesz uruchomić **na własnej infrastrukturze**. To kluczowe dla zastosowań wymagających suwerenności danych, niskiej latencji lub kontroli kosztów.
 
-* **Meta [Llama 4](https://www.llama.com/)** — rodzina (warianty *Scout* i *Maverick*) w architekturze **MoE** z ekstremalnie długim oknem kontekstu.
-* **[DeepSeek](https://www.deepseek.com/) V4** — kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
-* **Alibaba [Qwen](https://qwenlm.github.io/) 3.5** — silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
-* **Google [Gemma 4](https://ai.google.dev/gemma)** — otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
-* **[Mistral](https://mistral.ai/)** — europejski dostawca z portfolio wydajnych modeli open-weight.
+* **Meta [Llama 4](https://www.llama.com/)** - rodzina (warianty *Scout* i *Maverick*) w architekturze **MoE** z ekstremalnie długim oknem kontekstu.
+* **[DeepSeek](https://www.deepseek.com/) V4** - kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
+* **Alibaba [Qwen](https://qwenlm.github.io/) 3.5** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
+* **Google [Gemma 4](https://ai.google.dev/gemma)** - otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
+* **[Mistral](https://mistral.ai/)** - europejski dostawca z portfolio wydajnych modeli open-weight.
 
 > [!NOTE]
-> **Architektura MoE.** Wiele flagowych modeli open-weight w 2026 wykorzystuje architekturę **Mixture-of-Experts (MoE)** — "sparse" — m.in. **Llama 4** czy modele **DeepSeek**. Model składa się z wielu wyspecjalizowanych podsieci ("ekspertów"), ale dla każdego tokenu router aktywuje tylko niewielki ich podzbiór. Dzięki temu model może mieć setki miliardów parametrów *całkowitych*, ale koszt obliczeniowy pojedynczego tokenu odpowiada znacznie mniejszemu modelowi. To kluczowy kompromis: jakość dużego modelu przy koszcie inferencji małego.
+> **Architektura MoE.** Wiele flagowych modeli open-weight w 2026 wykorzystuje architekturę **Mixture-of-Experts (MoE)** - "sparse" - m.in. **Llama 4** czy modele **DeepSeek**. Model składa się z wielu wyspecjalizowanych podsieci ("ekspertów"), ale dla każdego tokenu router aktywuje tylko niewielki ich podzbiór. Dzięki temu model może mieć setki miliardów parametrów *całkowitych*, ale koszt obliczeniowy pojedynczego tokenu odpowiada znacznie mniejszemu modelowi. To kluczowy kompromis: jakość dużego modelu przy koszcie inferencji małego.
 >
-> **To jednak nie reguła bez wyjątków.** MoE nie jest "domyślną" architekturą wszystkich flagowych modeli — wciąż istnieją wydajne i konkurencyjne modele **dense** (wszystkie parametry aktywne dla każdego tokenu), zwłaszcza w mniejszych rozmiarach przeznaczonych do uruchamiania lokalnego. Wybierając model, patrz na jego rzeczywiste parametry i charakterystykę, nie zakładaj architektury z góry.
+> **To jednak nie reguła bez wyjątków.** MoE nie jest "domyślną" architekturą wszystkich flagowych modeli - wciąż istnieją wydajne i konkurencyjne modele **dense** (wszystkie parametry aktywne dla każdego tokenu), zwłaszcza w mniejszych rozmiarach przeznaczonych do uruchamiania lokalnego. Wybierając model, patrz na jego rzeczywiste parametry i charakterystykę, nie zakładaj architektury z góry.
 
 ---
 
@@ -67,17 +67,17 @@ Jako inżynier musisz traktować LLM jak każde inne narzędzie – ze świadomo
 >
 > **Dlaczego tak się dzieje?**
 > - **Sampling podczas generowania**: LLM-y nie wybierają "najlepszego" następnego słowa, lecz **losują** z rozkładu prawdopodobieństwa wszystkich możliwych tokenów
-> - **Parametr `temperature`**: Skaluje rozkład prawdopodobieństwa, z którego losowany jest następny token. Wyższa wartość (np. 0.8) "spłaszcza" rozkład i zwiększa losowość oraz różnorodność odpowiedzi; niższa (np. 0.1) "wyostrza" rozkład — model niemal zawsze wybiera najbardziej prawdopodobny token, więc odpowiedzi są bardziej powtarzalne. **Uwaga na częsty błąd:** niska temperatura *nie* oznacza, że model "trzyma się przytoczonego kontekstu" — to dwa zupełnie różne zjawiska. `temperature` dotyczy *samplingu* (jak losujemy token), a wierność wobec dostarczonego kontekstu (*grounding*) zależy od jakości promptu, RAG i instrukcji — nie od temperatury. Można mieć niedeterministyczny model, który ściśle trzyma się faktów, i deterministyczny, który halucynuje.
+> - **Parametr `temperature`**: Skaluje rozkład prawdopodobieństwa, z którego losowany jest następny token. Wyższa wartość (np. 0.8) "spłaszcza" rozkład i zwiększa losowość oraz różnorodność odpowiedzi; niższa (np. 0.1) "wyostrza" rozkład - model niemal zawsze wybiera najbardziej prawdopodobny token, więc odpowiedzi są bardziej powtarzalne. **Uwaga na częsty błąd:** niska temperatura *nie* oznacza, że model "trzyma się przytoczonego kontekstu" - to dwa zupełnie różne zjawiska. `temperature` dotyczy *samplingu* (jak losujemy token), a wierność wobec dostarczonego kontekstu (*grounding*) zależy od jakości promptu, RAG i instrukcji - nie od temperatury. Można mieć niedeterministyczny model, który ściśle trzyma się faktów, i deterministyczny, który halucynuje.
 > - **Floating-point arithmetic**: Nawet przy identycznych parametrach, mikroskopijne różnice w obliczeniach mogą prowadzić do innych wyników
 >
 > **Praktyczne konsekwencje dla aplikacji:**
-> - **Testowanie**: Nie możesz napisać prostego testu jednostkowego "input X → output Y", bo output może się różnić. **Nie oznacza to jednak, że testy powinny być domyślnie "kierowane" przez inny model językowy** — to częsty antywzorzec u początkujących (kosztowny, wolny i sam w sobie niedeterministyczny). Hierarchia podejść jest następująca:
->   1. **Mocki / stuby dostawcy LLM** — w testach jednostkowych i integracyjnych podmieniasz prawdziwego dostawcę na atrapę zwracającą deterministyczne, zapisane odpowiedzi. Testujesz wtedy *własną logikę* (parsowanie, walidację, obsługę błędów), a nie sam model.
->   2. **Testy kontraktowe** — sprawdzasz, że Twój kod poprawnie współpracuje z *kontraktem* API dostawcy (kształt żądania i odpowiedzi), niezależnie od treści generacji.
->   3. **Walidacja schematu odpowiedzi** — wymuszasz strukturę outputu (Pydantic, *structured outputs*) i testujesz deterministycznie, że odpowiedź da się zwalidować; niepoprawny kształt to twardy błąd.
->   4. **Deterministyczne fixture'y** — zestaw zapisanych par wejście→odpowiedź modelu, na których testujesz przetwarzanie bez odpytywania API.
->   5. **Regresyjne zestawy ewaluacyjne (*eval sets*)** — curated zbiór reprezentatywnych przypadków, uruchamiany przy zmianie modelu lub promptu, by wykryć regresje jakości.
-> - **LLM-as-judge — technika *pomocnicza***: użycie modelu do *oceny jakości* odpowiedzi (np. trafności, spójności) na curated zbiorze ewaluacyjnym jest uzasadnione tam, gdzie nie da się napisać reguły. Ale to narzędzie do **ewaluacji jakości, a nie zamiennik testów jednostkowych i integracyjnych** — traktuj je jako uzupełnienie powyższej hierarchii, nigdy jako jej podstawę.
+> - **Testowanie**: Nie możesz napisać prostego testu jednostkowego "input X → output Y", bo output może się różnić. **Nie oznacza to jednak, że testy powinny być domyślnie "kierowane" przez inny model językowy** - to częsty antywzorzec u początkujących (kosztowny, wolny i sam w sobie niedeterministyczny). Hierarchia podejść jest następująca:
+>   1. **Mocki / stuby dostawcy LLM** - w testach jednostkowych i integracyjnych podmieniasz prawdziwego dostawcę na atrapę zwracającą deterministyczne, zapisane odpowiedzi. Testujesz wtedy *własną logikę* (parsowanie, walidację, obsługę błędów), a nie sam model.
+>   2. **Testy kontraktowe** - sprawdzasz, że Twój kod poprawnie współpracuje z *kontraktem* API dostawcy (kształt żądania i odpowiedzi), niezależnie od treści generacji.
+>   3. **Walidacja schematu odpowiedzi** - wymuszasz strukturę outputu (Pydantic, *structured outputs*) i testujesz deterministycznie, że odpowiedź da się zwalidować; niepoprawny kształt to twardy błąd.
+>   4. **Deterministyczne fixture'y** - zestaw zapisanych par wejście→odpowiedź modelu, na których testujesz przetwarzanie bez odpytywania API.
+>   5. **Regresyjne zestawy ewaluacyjne (*eval sets*)** - curated zbiór reprezentatywnych przypadków, uruchamiany przy zmianie modelu lub promptu, by wykryć regresje jakości.
+> - **LLM-as-judge - technika *pomocnicza***: użycie modelu do *oceny jakości* odpowiedzi (np. trafności, spójności) na curated zbiorze ewaluacyjnym jest uzasadnione tam, gdzie nie da się napisać reguły. Ale to narzędzie do **ewaluacji jakości, a nie zamiennik testów jednostkowych i integracyjnych** - traktuj je jako uzupełnienie powyższej hierarchii, nigdy jako jej podstawę.
 > - **Reprodukowalność**: Debugowanie staje się trudniejsze - błąd może wystąpić raz na 10 prób
 > - **Konsystentność UX**: Użytkownicy mogą być zdezorientowani różnymi odpowiedziami na identyczne pytania
 >
@@ -92,7 +92,7 @@ Jako inżynier musisz traktować LLM jak każde inne narzędzie – ze świadomo
 | :--- | :--- | :--- | :--- |
 | **Analiza Danych Niestrukturalnych** | Doskonałe w rozumieniu i przetwarzaniu języka naturalnego: streszczanie tekstów, analiza sentymentu, kategoryzacja, odpowiadanie na pytania oparte na tekście. | Mogą gubić niuanse i kontekst w bardzo długich lub skomplikowanych dokumentach. | Precyzyjne promptowanie (np. Chain-of-Thought), przetwarzanie dokumentów fragmentami (map-reduce), fine-tuning na danych dziedzinowych. |
 | **Wiedza i Fakty** | Posiadają ogromną, szeroką wiedzę ogólną zakodowaną w swoich parametrach podczas treningu. | **Halucynacje**: generowanie wiarygodnie brzmiących, ale fałszywych informacji. **Wiedza odcięta w czasie**: model nie zna wydarzeń po zakończeniu jego treningu. | **Retrieval-Augmented Generation (RAG)**, aby uziemić odpowiedzi w konkretnych, aktualnych źródłach danych. Integracja z zewnętrznymi API (np. wyszukiwarką). |
-| **Rozumowanie i Obliczenia** | **Modele rozumujące (2026) są tu znacznie lepsze niż modele z 2023** — radzą sobie z wieloetapową logiką i niejednym zadaniem matematycznym. | Model **nie jest kalkulatorem**: do obliczeń wymagających dokładności (arytmetyka, przetwarzanie danych liczbowych) wciąż bywa zawodny i może popełnić cichy błąd. | **Tool Use (Użycie Narzędzi)**: do precyzyjnych obliczeń nie polegaj na "intuicji" modelu — daj mu narzędzia (kalkulator, wykonanie kodu Pythona). Rozumowanie zostaw modelowi, *liczenie* — narzędziu. |
+| **Rozumowanie i Obliczenia** | **Modele rozumujące (2026) są tu znacznie lepsze niż modele z 2023** - radzą sobie z wieloetapową logiką i niejednym zadaniem matematycznym. | Model **nie jest kalkulatorem**: do obliczeń wymagających dokładności (arytmetyka, przetwarzanie danych liczbowych) wciąż bywa zawodny i może popełnić cichy błąd. | **Tool Use (Użycie Narzędzi)**: do precyzyjnych obliczeń nie polegaj na "intuicji" modelu - daj mu narzędzia (kalkulator, wykonanie kodu Pythona). Rozumowanie zostaw modelowi, *liczenie* - narzędziu. |
 | **Strukturyzacja Danych** | Potrafią generować dane w formatach strukturalnych, takich jak JSON czy XML, na podstawie tekstu. | **Niska niezawodność**: często generują niepoprawny składniowo JSON, pomijają pola, mylą typy danych, zwłaszcza przy złożonych schematach. | **Wymuszanie schematu odpowiedzi**: Użycie bibliotek takich jak **Pydantic** lub **BAML** do zdefiniowania ścisłego schematu wyjściowego i walidacji odpowiedzi modelu. |
 
 ---
@@ -139,25 +139,25 @@ flowchart TD
 
 ### Nowoczesne techniki RAG
 
-* **Hybrid search (wyszukiwanie hybrydowe)** — łączy klasyczne wyszukiwanie leksykalne **BM25** (dopasowanie słów kluczowych, świetne dla nazw własnych, kodów, akronimów) z **wyszukiwaniem wektorowym** (podobieństwo semantyczne). Wyniki obu metod scala się zwykle przez **Reciprocal Rank Fusion (RRF)** — algorytm łączący rankingi na podstawie pozycji, a nie surowych wyników. Hybryda jest niemal zawsze lepsza niż każda z metod osobno.
-* **Re-ranking** — wyszukiwanie wektorowe jest szybkie, ale niezbyt precyzyjne. Schemat dwuetapowy: najpierw tani retrieval pobiera szeroką listę (np. **top-50**), następnie **cross-encoder** (model oceniający parę zapytanie–dokument *razem*, dokładniej niż porównanie embeddingów) przesortowuje ją i wybiera **3–5 najtrafniejszych** fragmentów, które trafiają do LLM. Mniej, ale lepszego kontekstu = mniej halucynacji i niższy koszt.
-* **Agentic RAG** — retrieval nie jest jednorazowy. Wokół niego buduje się **pętlę rozumowania**: agent analizuje pobrane fragmenty, ocenia, czy wystarczają, w razie potrzeby przeformułowuje zapytanie, dzieli pytanie na pod-pytania i ponawia wyszukiwanie. To RAG, który "myśli", zamiast wykonywać sztywny pipeline.
-* **GraphRAG** — zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **LazyGraphRAG**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
-* **Adaptive RAG** — nie każde pytanie wymaga pełnego pipeline'u. Lekki **klasyfikator routuje zapytanie** wg złożoności: proste pytania trafiają wprost do LLM, średnie — do zwykłego retrievalu, złożone — do agentic RAG lub GraphRAG. Optymalizuje to koszt i latencję.
+* **Hybrid search (wyszukiwanie hybrydowe)** - łączy klasyczne wyszukiwanie leksykalne **BM25** (dopasowanie słów kluczowych, świetne dla nazw własnych, kodów, akronimów) z **wyszukiwaniem wektorowym** (podobieństwo semantyczne). Wyniki obu metod scala się zwykle przez **Reciprocal Rank Fusion (RRF)** - algorytm łączący rankingi na podstawie pozycji, a nie surowych wyników. Hybryda jest niemal zawsze lepsza niż każda z metod osobno.
+* **Re-ranking** - wyszukiwanie wektorowe jest szybkie, ale niezbyt precyzyjne. Schemat dwuetapowy: najpierw tani retrieval pobiera szeroką listę (np. **top-50**), następnie **cross-encoder** (model oceniający parę zapytanie–dokument *razem*, dokładniej niż porównanie embeddingów) przesortowuje ją i wybiera **3–5 najtrafniejszych** fragmentów, które trafiają do LLM. Mniej, ale lepszego kontekstu = mniej halucynacji i niższy koszt.
+* **Agentic RAG** - retrieval nie jest jednorazowy. Wokół niego buduje się **pętlę rozumowania**: agent analizuje pobrane fragmenty, ocenia, czy wystarczają, w razie potrzeby przeformułowuje zapytanie, dzieli pytanie na pod-pytania i ponawia wyszukiwanie. To RAG, który "myśli", zamiast wykonywać sztywny pipeline.
+* **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **LazyGraphRAG**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
+* **Adaptive RAG** - nie każde pytanie wymaga pełnego pipeline'u. Lekki **klasyfikator routuje zapytanie** wg złożoności: proste pytania trafiają wprost do LLM, średnie - do zwykłego retrievalu, złożone - do agentic RAG lub GraphRAG. Optymalizuje to koszt i latencję.
 
 > [!TIP]
 > Nie wdrażaj wszystkich technik naraz. Zacznij od naiwnego RAG, zmierz jakość, a potem dokładaj etapy tam, gdzie widać problemy: gubione słowa kluczowe → hybrid search; nietrafiony kontekst → re-ranking; pytania multi-hop → GraphRAG.
 
-### Modele embeddingów — fundament retrievalu
+### Modele embeddingów - fundament retrievalu
 
-Jakość RAG zaczyna się od jakości **embeddingów** — to model embeddingów decyduje, czy semantycznie podobne teksty wylądują blisko siebie w przestrzeni wektorowej. Wybór modelu embeddingowego ma często większy wpływ na jakość niż wybór LLM-a generującego odpowiedź.
+Jakość RAG zaczyna się od jakości **embeddingów** - to model embeddingów decyduje, czy semantycznie podobne teksty wylądują blisko siebie w przestrzeni wektorowej. Wybór modelu embeddingowego ma często większy wpływ na jakość niż wybór LLM-a generującego odpowiedź.
 
 | Model | Dostawca | Charakterystyka |
 | :--- | :--- | :--- |
 | **Gemini Embedding** | Google | Multimodalny (tekst, obraz), mocne wyniki w benchmarkach |
 | **Voyage 4** (rodzina) | Voyage AI | Częsty wybór poważnych zespołów RAG; warianty wyspecjalizowane (kod, finanse, prawo) |
 | **embed-v4** | Cohere | Bardzo dobre wsparcie wielojęzyczne |
-| **BGE-M3** | BAAI (open-source) | Wielojęzyczny, otwarty — możliwy self-hosting |
+| **BGE-M3** | BAAI (open-source) | Wielojęzyczny, otwarty - możliwy self-hosting |
 | **text-embedding-3-large** | OpenAI | Wciąż szeroko używany, ale w benchmarkach 2026 wypada słabiej niż tańsze alternatywy |
 
 > [!NOTE]
@@ -175,7 +175,7 @@ Poniżej znajdziesz najważniejsze techniki, które warto znać i stosować w pr
 
 - **Zero-shot prompting** – po prostu zadajesz pytanie lub wydajesz polecenie bez dodatkowych przykładów.
 - **Few-shot prompting** – podajesz kilka przykładów poprawnych odpowiedzi, aby model "nauczył się" wzorca.
-- **Chain-of-Thought (CoT)** – prosisz model, by rozwiązywał zadanie krok po kroku. Technika historycznie przełomowa (2022–2024): ujawnienie "toku rozumowania" wyraźnie poprawiało trafność na zadaniach wymagających logiki. **Uwaga na nieaktualną poradę produkcyjną:** w 2026, w erze **modeli rozumujących (*reasoning models*)**, wymuszanie długiego, jawnego "toku myślenia" *w każdej odpowiedzi* nie jest już dobrą praktyką — zwiększa koszt i latencję, a samą odpowiedź zaszumia. Lepiej: (a) **użyć modelu rozumującego**, który prowadzi rozumowanie wewnętrznie, albo (b) poprosić o **zwięzłe uzasadnienie, plan lub wynik z kontrolą kroków** zamiast rozwlekłego monologu. CoT pozostaje ważnym pojęciem edukacyjnym i bywa przydatny przy słabszych/mniejszych modelach — ale w produkcji stosuj go świadomie, nie odruchowo.
+- **Chain-of-Thought (CoT)** – prosisz model, by rozwiązywał zadanie krok po kroku. Technika historycznie przełomowa (2022–2024): ujawnienie "toku rozumowania" wyraźnie poprawiało trafność na zadaniach wymagających logiki. **Uwaga na nieaktualną poradę produkcyjną:** w 2026, w erze **modeli rozumujących (*reasoning models*)**, wymuszanie długiego, jawnego "toku myślenia" *w każdej odpowiedzi* nie jest już dobrą praktyką - zwiększa koszt i latencję, a samą odpowiedź zaszumia. Lepiej: (a) **użyć modelu rozumującego**, który prowadzi rozumowanie wewnętrznie, albo (b) poprosić o **zwięzłe uzasadnienie, plan lub wynik z kontrolą kroków** zamiast rozwlekłego monologu. CoT pozostaje ważnym pojęciem edukacyjnym i bywa przydatny przy słabszych/mniejszych modelach - ale w produkcji stosuj go świadomie, nie odruchowo.
 - **Role prompting** – nadajesz modelowi rolę (np. "Jesteś ekspertem od prawa podatkowego...").
 - **Instruction-based prompting** – bardzo precyzyjne, jasne instrukcje, często z określeniem formatu odpowiedzi.
 - **Reflexion/self-correction** – prosisz model, by sam ocenił i poprawił swoją odpowiedź.
@@ -215,7 +215,7 @@ Bazy wektorowe to wyspecjalizowane systemy bazodanowe do przechowywania i szybki
 **Najważniejsze bazy wektorowe wykorzystywane w 2026 roku:**
 
 - [**pgvector**](https://github.com/pgvector/pgvector) – rozszerzenie do PostgreSQL. ⭐ **Rozsądny domyślny wybór dla większości projektów** (workloady poniżej ~10 mln wektorów): trzymasz wektory obok danych relacyjnych, bez wprowadzania osobnego systemu do utrzymania (patrz szerszy opis niżej).
-- [**Qdrant**](https://qdrant.tech/) – szybka, open-source’owa baza napisana w Rust. ⭐ **Lider open-source pod względem stosunku wydajności do kosztu** — bardzo dobry wybór, gdy potrzebujesz dedykowanej bazy wektorowej i chcesz uniknąć vendor lock-inu.
+- [**Qdrant**](https://qdrant.tech/) – szybka, open-source’owa baza napisana w Rust. ⭐ **Lider open-source pod względem stosunku wydajności do kosztu** - bardzo dobry wybór, gdy potrzebujesz dedykowanej bazy wektorowej i chcesz uniknąć vendor lock-inu.
 - [**Weaviate**](https://weaviate.io/) – open-source’owa baza z bogatym API, **szczególnie mocna w wyszukiwaniu hybrydowym** (wektorowym + tekstowym BM25) oraz integracją z popularnymi narzędziami AI.
 - [**Pinecone**](https://www.pinecone.io/) – w pełni zarządzana, skalowalna baza wektorowa, szeroko stosowana w produkcyjnych systemach GenAI; wybierana, gdy zależy Ci na braku obsługi infrastruktury.
 - [**Milvus**](https://milvus.io/) – bardzo wydajna, open-source’owa baza, skalująca się do miliardów wektorów, z szerokim wsparciem dla różnych przypadków użycia (RAG, wyszukiwanie obrazów, rekomendacje).
@@ -230,10 +230,10 @@ Bazy wektorowe to wyspecjalizowane systemy bazodanowe do przechowywania i szybki
 - [**pgvector**](https://github.com/pgvector/pgvector) – rozszerzenie do PostgreSQL, które pozwala przechowywać i wyszukiwać wektory bezpośrednio w relacyjnej bazie danych. Obsługuje indeksy HNSW, IVF, operatory podobieństwa (cosine, L2, dot), integruje się z klasycznymi zapytaniami SQL i pozwala łączyć wyszukiwanie semantyczne z relacyjnymi filtrami, joinami i transakcjami. Idealne do budowy hybrydowych aplikacji, gdzie dane wektorowe i klasyczne współistnieją. [Więcej: dokumentacja pgvector](https://github.com/pgvector/pgvector)
 
 > [!TIP]
-> **Praktyczna heurystyka wyboru (2026):** zacznij od **pgvector**, jeśli już używasz PostgreSQL i masz poniżej ~10 mln wektorów — unikniesz wprowadzania osobnego systemu. Sięgnij po **Qdrant**, gdy potrzebujesz dedykowanej bazy open-source o najlepszym stosunku wydajności do kosztu. Wybierz **Weaviate**, gdy kluczowy jest hybrid search. **Pinecone** — gdy chcesz w pełni zarządzanej usługi bez obsługi infrastruktury.
+> **Praktyczna heurystyka wyboru (2026):** zacznij od **pgvector**, jeśli już używasz PostgreSQL i masz poniżej ~10 mln wektorów - unikniesz wprowadzania osobnego systemu. Sięgnij po **Qdrant**, gdy potrzebujesz dedykowanej bazy open-source o najlepszym stosunku wydajności do kosztu. Wybierz **Weaviate**, gdy kluczowy jest hybrid search. **Pinecone** - gdy chcesz w pełni zarządzanej usługi bez obsługi infrastruktury.
 
 > [!NOTE]
-> Istnieją też bardzo niszowe rozwiązania, np. serwerlessowy [**SvectorDB**](https://svectordb.com/) — potraktuj je jako **eksperymentalne**: do produkcji wybieraj sprawdzone bazy z powyższej listy.
+> Istnieją też bardzo niszowe rozwiązania, np. serwerlessowy [**SvectorDB**](https://svectordb.com/) - potraktuj je jako **eksperymentalne**: do produkcji wybieraj sprawdzone bazy z powyższej listy.
 
 **Pozostałe uwagi:** Elasticsearch i pgvector są świetne do integracji z istniejącymi systemami, LanceDB do multimodalnych i dużych zbiorów, Pinecone/Weaviate/Milvus do skalowalnych, dedykowanych rozwiązań GenAI.
 
@@ -272,7 +272,7 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 - Często wymagają przemyślanego modelowania danych (nie zawsze "wrzucisz wszystko jak leci").
 
 **Przykłady frameworków bazujących na bazach grafowych:**
-- Microsoft GraphRAG — oraz **LazyGraphRAG**, wariant budujący strukturę grafu dopiero przy zapytaniu (znacznie tańsze indeksowanie)
+- Microsoft GraphRAG - oraz **LazyGraphRAG**, wariant budujący strukturę grafu dopiero przy zapytaniu (znacznie tańsze indeksowanie)
 - LightRAG
 - TrustGraph
 - Graphiti
@@ -311,32 +311,54 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 
 ## 🤖 Agenci i Wzorce Agentowe
 
-Jeśli rok 2023 był rokiem chatbotów, a 2024–2025 — rokiem RAG, to **2026 jest powszechnie nazywany "rokiem agentów"**. Agent AI to coś więcej niż pojedyncze wywołanie LLM: to system, w którym model **działa w pętli**, samodzielnie decydując o kolejnych krokach aż do osiągnięcia celu.
+Jeśli rok 2023 był rokiem chatbotów, a 2024–2025 - rokiem RAG, to **2026 jest powszechnie nazywany "rokiem agentów"**. Agent AI to coś więcej niż pojedyncze wywołanie LLM: to system, w którym model **działa w pętli**, samodzielnie decydując o kolejnych krokach aż do osiągnięcia celu.
 
 Kluczowe wzorce agentowe (*agentic patterns*):
 
-* **Pętla rozumowania (reasoning loop)** — agent nie generuje odpowiedzi za jednym razem. Wykonuje cykl: *pomyśl → zdecyduj o akcji → wykonaj → zaobserwuj wynik → pomyśl ponownie* — aż uzna zadanie za ukończone (znany schemat **ReAct**: *Reasoning + Acting*).
-* **Tool use (użycie narzędzi)** — agent ma dostęp do zestawu **narzędzi** (funkcji): wyszukiwarki, interpretera kodu, zapytań do bazy, wywołań API. LLM sam wybiera, które narzędzie wywołać i z jakimi argumentami. To właśnie *tool use* przełamuje ograniczenia modelu (np. słabą matematykę — patrz tabela mocnych/słabych stron wyżej).
-* **Planowanie wieloetapowe (multi-step planning)** — agent rozbija złożone zadanie na sekwencję pod-zadań, wykonuje je i scala wyniki.
-* **Multi-agent** — zamiast jednego "wszechstronnego" agenta buduje się zespół wyspecjalizowanych agentów (np. *planner*, *researcher*, *coder*, *reviewer*), które współpracują i przekazują sobie zadania.
+* **Pętla rozumowania (reasoning loop)** - agent nie generuje odpowiedzi za jednym razem. Wykonuje cykl: *pomyśl → zdecyduj o akcji → wykonaj → zaobserwuj wynik → pomyśl ponownie* - aż uzna zadanie za ukończone (znany schemat **ReAct**: *Reasoning + Acting*).
+* **Tool use (użycie narzędzi)** - agent ma dostęp do zestawu **narzędzi** (funkcji): wyszukiwarki, interpretera kodu, zapytań do bazy, wywołań API. LLM sam wybiera, które narzędzie wywołać i z jakimi argumentami. To właśnie *tool use* przełamuje ograniczenia modelu (np. słabą matematykę - patrz tabela mocnych/słabych stron wyżej).
+* **Planowanie wieloetapowe (multi-step planning)** - agent rozbija złożone zadanie na sekwencję pod-zadań, wykonuje je i scala wyniki.
+* **Multi-agent** - zamiast jednego "wszechstronnego" agenta buduje się zespół wyspecjalizowanych agentów (np. *planner*, *researcher*, *coder*, *reviewer*), które współpracują i przekazują sobie zadania.
+
+Sednem agenta jest **pętla rozumowania** - model nie odpowiada za jednym razem, lecz krąży między myśleniem a działaniem aż do osiągnięcia celu:
+
+```mermaid
+flowchart LR
+    A["Zadanie użytkownika"] --> B["Model rozumuje"]
+    B --> C{"Potrzebne narzędzie?"}
+    C -->|tak| D["Wywołanie narzędzia"]
+    D --> E["Obserwacja wyniku"]
+    E --> B
+    C -->|nie| F["Odpowiedź końcowa"]
+```
 
 > [!NOTE]
-> Architektura agentowa wprowadza nowe wyzwania inżynierskie: pętle bez warunku stopu, kaskadowy koszt tokenów, trudne debugowanie. Dlatego tak ważne są **observability i tracing** (np. MLflow 3.x — patrz rozdział [5. Machine Learning](./05-machine-learning-guide.md)) oraz przemyślana architektura — patrz [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
+> Architektura agentowa wprowadza nowe wyzwania inżynierskie: pętle bez warunku stopu, kaskadowy koszt tokenów, trudne debugowanie. Dlatego tak ważne są **observability i tracing** (np. MLflow 3.x - patrz rozdział [5. Machine Learning](./05-machine-learning-guide.md)) oraz przemyślana architektura - patrz [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
 
 ---
 
-## 🔌 MCP — Model Context Protocol
+## 🔌 MCP - Model Context Protocol
 
 Wraz z rozwojem agentów pojawił się problem integracyjny: jak połączyć dowolny model z dowolnym narzędziem czy źródłem danych, bez pisania osobnego connectora dla każdej pary? Odpowiedzią jest **MCP (Model Context Protocol)**.
 
-**MCP to otwarty standard** (protokół) łączący LLM-y i agentów z zewnętrznymi narzędziami, danymi i usługami. Często opisuje się go jako **"USB-C dla AI"** — uniwersalne złącze: raz napisany serwer MCP (np. dla Twojej bazy danych, systemu plików, API firmowego) może być użyty przez dowolnego klienta MCP, niezależnie od dostawcy modelu.
+**MCP to otwarty standard** (protokół) łączący LLM-y i agentów z zewnętrznymi narzędziami, danymi i usługami. Często opisuje się go jako **"USB-C dla AI"** - uniwersalne złącze: raz napisany serwer MCP (np. dla Twojej bazy danych, systemu plików, API firmowego) może być użyty przez dowolnego klienta MCP, niezależnie od dostawcy modelu.
 
 Najważniejsze fakty:
 
-* Wprowadzony przez **Anthropic w listopadzie 2024 r.**, szybko stał się standardem branżowym — przyjęty m.in. przez **OpenAI, Google i Microsoft**.
+* Wprowadzony przez **Anthropic w listopadzie 2024 r.**, szybko stał się standardem branżowym - przyjęty m.in. przez **OpenAI, Google i Microsoft**.
 * Dostępne **oficjalne SDK dla wielu języków** (Python, TypeScript, Java, C#, Go i inne).
-* Istnieją już **setki publicznych serwerów MCP** — gotowych integracji do baz danych, narzędzi deweloperskich, usług chmurowych itd.
+* Istnieją już **setki publicznych serwerów MCP** - gotowych integracji do baz danych, narzędzi deweloperskich, usług chmurowych itd.
 * W **grudniu 2025 r.** projekt został przekazany pod opiekę **Linux Foundation**, co cementuje jego status jako neutralnego, otwartego standardu.
+
+Idea MCP to jeden klient i wiele **wymiennych** serwerów - każdy serwer udostępnia narzędzia lub dane, niezależnie od dostawcy modelu:
+
+```mermaid
+flowchart LR
+    H["Host AI - agent, IDE, chatbot"] --> CL["Klient MCP"]
+    CL <-->|protokół MCP| S1["Serwer MCP - system plików"]
+    CL <-->|protokół MCP| S2["Serwer MCP - baza danych"]
+    CL <-->|protokół MCP| S3["Serwer MCP - API firmowe"]
+```
 
 > [!IMPORTANT]
 > Dla inżyniera budującego aplikacje GenAI MCP oznacza zmianę myślenia: zamiast wpinać narzędzia na sztywno w kod jednego frameworka, projektujesz je jako **wymienne serwery MCP**. To naturalnie współgra z wzorcem *Ports & Adapters* z rozdziału [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
@@ -347,14 +369,14 @@ Najważniejsze fakty:
 
 ### SDK dostawców modeli
 
-Najniższy, podstawowy poziom integracji — bezpośrednie biblioteki klienckie do API poszczególnych dostawców.
+Najniższy, podstawowy poziom integracji - bezpośrednie biblioteki klienckie do API poszczególnych dostawców.
 
-* [**OpenAI SDK**](https://github.com/openai/openai-python) — oficjalna biblioteka do API OpenAI. Warto znać kierunek rozwoju: oprócz klasycznego *Chat Completions API*, OpenAI promuje **Responses API** jako przyszłościowy interfejs do budowy agentów (zastępuje wcześniejsze, wycofywane *Assistants API*). Dla bardziej złożonych systemów dostępny jest też dedykowany **OpenAI Agents SDK**.
-* [**Anthropic SDK**](https://github.com/anthropics/anthropic-sdk-python) — oficjalna biblioteka do API modeli Claude. Do budowy agentów Anthropic udostępnia **Claude Agent SDK** (przemianowany z wcześniejszego "Claude Code SDK") — framework do tworzenia agentów korzystających z narzędzi i MCP.
-* [**google-genai SDK**](https://github.com/googleapis/python-genai) — oficjalna, aktualna biblioteka Google do modeli Gemini (zastąpiła starszy pakiet `google-generativeai`).
+* [**OpenAI SDK**](https://github.com/openai/openai-python) - oficjalna biblioteka do API OpenAI. Warto znać kierunek rozwoju: oprócz klasycznego *Chat Completions API*, OpenAI promuje **Responses API** jako przyszłościowy interfejs do budowy agentów (zastępuje wcześniejsze, wycofywane *Assistants API*). Dla bardziej złożonych systemów dostępny jest też dedykowany **OpenAI Agents SDK**.
+* [**Anthropic SDK**](https://github.com/anthropics/anthropic-sdk-python) - oficjalna biblioteka do API modeli Claude. Do budowy agentów Anthropic udostępnia **Claude Agent SDK** (przemianowany z wcześniejszego "Claude Code SDK") - framework do tworzenia agentów korzystających z narzędzi i MCP.
+* [**google-genai SDK**](https://github.com/googleapis/python-genai) - oficjalna, aktualna biblioteka Google do modeli Gemini (zastąpiła starszy pakiet `google-generativeai`).
 
 > [!TIP]
-> Niezależnie od wybranego SDK — **nie wplataj wywołań dostawcy bezpośrednio w logikę domenową**. Opakuj je we własny interfejs (port), żeby zmiana modelu czy dostawcy nie wymagała przepisywania aplikacji. Wzorzec *Ports & Adapters* opisano w [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
+> Niezależnie od wybranego SDK - **nie wplataj wywołań dostawcy bezpośrednio w logikę domenową**. Opakuj je we własny interfejs (port), żeby zmiana modelu czy dostawcy nie wymagała przepisywania aplikacji. Wzorzec *Ports & Adapters* opisano w [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
 
 ### Frameworki orkiestracji i agent SDK
 
@@ -363,55 +385,55 @@ Gdy prosta aplikacja typu "prompt → odpowiedź" przestaje wystarczać, potrzeb
 > [!NOTE]
 > **Trend 2026:** punkt ciężkości przesuwa się z klasycznych, monolitycznych frameworków RAG w stronę lżejszych **agent SDK** (OpenAI Agents SDK, Claude Agent SDK, Google ADK) oraz standardu **MCP**. Logika, którą kiedyś dawał framework, coraz częściej żyje w agencie i wymiennych serwerach MCP.
 
-* **[LangChain](https://www.langchain.com/) / [LangGraph](https://www.langchain.com/langgraph)** — LangChain to kompleksowy, dojrzały framework do budowy łańcuchów (*chains*) wywołań LLM. **LangGraph** ewoluował i pozycjonuje się dziś jako **agent SDK** — pozwala budować agentów jako cykliczne grafy stanów, z kontrolą nad pętlą rozumowania.
-* **[PydanticAI](https://ai.pydantic.dev/)** — dojrzały framework agentowy od zespołu **Pydantic**. Jego siłą jest spójność z ekosystemem Pythona, który już znasz: typowane wejścia/wyjścia, walidacja przez Pydantic, dependency injection, czytelny i testowalny kod. Dobry domyślny wybór, gdy zależy Ci na produkcyjnej jakości i type safety.
-* **[Google ADK](https://google.github.io/adk-docs/)** (Agent Development Kit) — framework Google do budowy agentów, dobrze zintegrowany z modelami Gemini i ekosystemem Google Cloud.
-* **[LlamaIndex](https://www.llamaindex.ai/) / [Haystack](https://haystack.deepset.ai/)** — frameworki wyspecjalizowane w **RAG**. LlamaIndex skupia się na wczytywaniu, indeksowaniu i odpytywaniu danych (m.in. wysokiej jakości parser dokumentów `LlamaParse`); Haystack oferuje kompletne narzędzia do produkcyjnych pipeline'ów RAG.
-* **Inne, w tym wieloagentowe** — [CrewAI](https://www.crewai.com/), [Microsoft AutoGen](https://microsoft.github.io/autogen/).
+* **[LangChain](https://www.langchain.com/) / [LangGraph](https://www.langchain.com/langgraph)** - LangChain to kompleksowy, dojrzały framework do budowy łańcuchów (*chains*) wywołań LLM. **LangGraph** ewoluował i pozycjonuje się dziś jako **agent SDK** - pozwala budować agentów jako cykliczne grafy stanów, z kontrolą nad pętlą rozumowania.
+* **[PydanticAI](https://ai.pydantic.dev/)** - dojrzały framework agentowy od zespołu **Pydantic**. Jego siłą jest spójność z ekosystemem Pythona, który już znasz: typowane wejścia/wyjścia, walidacja przez Pydantic, dependency injection, czytelny i testowalny kod. Dobry domyślny wybór, gdy zależy Ci na produkcyjnej jakości i type safety.
+* **[Google ADK](https://google.github.io/adk-docs/)** (Agent Development Kit) - framework Google do budowy agentów, dobrze zintegrowany z modelami Gemini i ekosystemem Google Cloud.
+* **[LlamaIndex](https://www.llamaindex.ai/) / [Haystack](https://haystack.deepset.ai/)** - frameworki wyspecjalizowane w **RAG**. LlamaIndex skupia się na wczytywaniu, indeksowaniu i odpytywaniu danych (m.in. wysokiej jakości parser dokumentów `LlamaParse`); Haystack oferuje kompletne narzędzia do produkcyjnych pipeline'ów RAG.
+* **Inne, w tym wieloagentowe** - [CrewAI](https://www.crewai.com/), [Microsoft AutoGen](https://microsoft.github.io/autogen/).
 
 ### Narzędzia pomocnicze
 
-* [**Pydantic**](https://docs.pydantic.dev/latest/) — w kontekście GenAI kluczowe narzędzie do definiowania **schematu odpowiedzi** oczekiwanej od LLM. Zamiast prosić o "JSON z imieniem i wiekiem", definiujesz klasę Pydantic i wymuszasz na modelu zwrócenie danych dokładnie w tej strukturze — z automatyczną walidacją typów i wartości. To radykalnie zwiększa niezawodność: niepoprawna odpowiedź jest wychwytywana od razu, a nie kaskadowo psuje dalszą logikę aplikacji.
-* [**Instructor**](https://python.useinstructor.com/) — biblioteka nakładana na SDK dostawców, która opakowuje wywołania LLM tak, by zwracały gotowe, zwalidowane obiekty Pydantic (z automatycznym ponawianiem przy błędzie walidacji). Upraszcza *structured outputs* do kilku linii kodu.
-* [**BAML**](https://docs.boundaryml.com/home) — opisany wyżej w sekcji o prompt engineeringu DSL do generowania ustrukturyzowanych odpowiedzi z LLM.
-* [**LiteLLM**](https://www.litellm.ai/) — uniwersalna warstwa proxy/SDK dająca **jednolity interfejs do ponad stu modeli** różnych dostawców. Praktyczna realizacja zasady "nie wiąż się z jednym dostawcą" — zmiana modelu sprowadza się do zmiany jednego stringa.
-* **Frameworki ewaluacji** — np. [Ragas](https://docs.ragas.io/) (ewaluacja pipeline'ów RAG) czy [DeepEval](https://docs.confident-ai.com/) — pozwalają mierzyć jakość odpowiedzi systemu w sposób powtarzalny, co jest niezbędne wobec niedeterministyczności LLM.
+* [**Pydantic**](https://docs.pydantic.dev/latest/) - w kontekście GenAI kluczowe narzędzie do definiowania **schematu odpowiedzi** oczekiwanej od LLM. Zamiast prosić o "JSON z imieniem i wiekiem", definiujesz klasę Pydantic i wymuszasz na modelu zwrócenie danych dokładnie w tej strukturze - z automatyczną walidacją typów i wartości. To radykalnie zwiększa niezawodność: niepoprawna odpowiedź jest wychwytywana od razu, a nie kaskadowo psuje dalszą logikę aplikacji.
+* [**Instructor**](https://python.useinstructor.com/) - biblioteka nakładana na SDK dostawców, która opakowuje wywołania LLM tak, by zwracały gotowe, zwalidowane obiekty Pydantic (z automatycznym ponawianiem przy błędzie walidacji). Upraszcza *structured outputs* do kilku linii kodu.
+* [**BAML**](https://docs.boundaryml.com/home) - opisany wyżej w sekcji o prompt engineeringu DSL do generowania ustrukturyzowanych odpowiedzi z LLM.
+* [**LiteLLM**](https://www.litellm.ai/) - uniwersalna warstwa proxy/SDK dająca **jednolity interfejs do ponad stu modeli** różnych dostawców. Praktyczna realizacja zasady "nie wiąż się z jednym dostawcą" - zmiana modelu sprowadza się do zmiany jednego stringa.
+* **Frameworki ewaluacji** - np. [Ragas](https://docs.ragas.io/) (ewaluacja pipeline'ów RAG) czy [DeepEval](https://docs.confident-ai.com/) - pozwalają mierzyć jakość odpowiedzi systemu w sposób powtarzalny, co jest niezbędne wobec niedeterministyczności LLM.
 
 ---
 
-## 🛡️ Od prototypu do produkcji — bezpieczeństwo i niezawodność aplikacji LLM
+## 🛡️ Od prototypu do produkcji - bezpieczeństwo i niezawodność aplikacji LLM
 
 Działające demo a działająca produkcja to dwa różne światy. Aplikacja LLM otwiera klasę problemów, których nie ma w zwykłym CRUD-zie: niezaufane dane sterują modelem, model steruje narzędziami, a każde wywołanie kosztuje i może zawieść. Poniżej świadomościowy przegląd zagadnień, które musisz mieć na radarze, zanim wpuścisz aplikację do produkcji.
 
 > [!WARNING]
-> **Prompt injection** to dziś najpoważniejsze zagrożenie aplikacji LLM. Atakujący umieszcza złośliwe instrukcje w danych wejściowych — w pytaniu użytkownika, ale też (groźniejszy wariant, *indirect prompt injection*) w **dokumencie pobranym przez RAG**, na stronie WWW czy w treści maila. Model nie odróżnia "instrukcji" od "danych" — potraktuje wstrzyknięty tekst ("zignoruj poprzednie polecenia i...") jako polecenie. **Zasada: nigdy nie ufaj treści pobranej z zewnątrz.** Oddzielaj instrukcje systemowe od danych użytkownika (wyraźne delimitery, osobne role wiadomości), a wynik modelu traktuj jako niezaufany, dopóki go nie zwalidujesz.
+> **Prompt injection** to dziś najpoważniejsze zagrożenie aplikacji LLM. Atakujący umieszcza złośliwe instrukcje w danych wejściowych - w pytaniu użytkownika, ale też (groźniejszy wariant, *indirect prompt injection*) w **dokumencie pobranym przez RAG**, na stronie WWW czy w treści maila. Model nie odróżnia "instrukcji" od "danych" - potraktuje wstrzyknięty tekst ("zignoruj poprzednie polecenia i...") jako polecenie. **Zasada: nigdy nie ufaj treści pobranej z zewnątrz.** Oddzielaj instrukcje systemowe od danych użytkownika (wyraźne delimitery, osobne role wiadomości), a wynik modelu traktuj jako niezaufany, dopóki go nie zwalidujesz.
 
 | Zagadnienie | Na czym polega ryzyko | Co z tym zrobić |
 | :--- | :--- | :--- |
 | **Prompt injection** | Złośliwe instrukcje w danych wejściowych lub w dokumentach RAG przejmują kontrolę nad modelem. | Oddzielaj instrukcje systemowe od danych użytkownika; nie ufaj treści zewnętrznej; waliduj output; ogranicz, co model może zrobić z wynikiem. |
-| **Uprawnienia narzędzi** | Agent z dostępem do narzędzi (baza, e-mail, system plików, API) może wykonać groźną, nieodwracalną akcję — sam lub zmanipulowany przez injection. | **Zasada najmniejszych uprawnień**: udostępniaj tylko niezbędne narzędzia, najwęższy zakres. Dla akcji nieodwracalnych (usunięcie danych, wysyłka, płatność) wymagaj **human-in-the-loop** — potwierdzenia człowieka. |
-| **Wyciek danych wrażliwych** | Dane osobowe (PII), sekrety, dane regulowane trafiają do chmurowego modelu lub do logów. | **Redaguj PII** przed wysłaniem do modelu chmurowego; **nie loguj sekretów** ani pełnych promptów z danymi wrażliwymi. Dla danych regulowanych rozważ **suwerenne AI** — patrz case study QueryVault niżej. |
+| **Uprawnienia narzędzi** | Agent z dostępem do narzędzi (baza, e-mail, system plików, API) może wykonać groźną, nieodwracalną akcję - sam lub zmanipulowany przez injection. | **Zasada najmniejszych uprawnień**: udostępniaj tylko niezbędne narzędzia, najwęższy zakres. Dla akcji nieodwracalnych (usunięcie danych, wysyłka, płatność) wymagaj **human-in-the-loop** - potwierdzenia człowieka. |
+| **Wyciek danych wrażliwych** | Dane osobowe (PII), sekrety, dane regulowane trafiają do chmurowego modelu lub do logów. | **Redaguj PII** przed wysłaniem do modelu chmurowego; **nie loguj sekretów** ani pełnych promptów z danymi wrażliwymi. Dla danych regulowanych rozważ **suwerenne AI** - patrz case study QueryVault niżej. |
 | **Koszty i limity** | Tokeny kosztują; pętla agentowa lub złośliwy ruch potrafią wygenerować rachunek lawinowo. | Ustawiaj `max_tokens`; monitoruj zużycie tokenów i koszt; **cache'uj** powtarzalne odpowiedzi; nakładaj limity per użytkownik/sesję. |
 | **Rate limity i odporność** | API dostawców mają rate limity i miewają przejściowe awarie (błędy `429`, `5xx`, timeouty). | Stosuj **retry z exponential backoff**, obsługuj `429`/`5xx`, ustawiaj rozsądne **timeouty**; projektuj na to, że wywołanie *może* się nie udać. |
-| **Streaming** | Generacja długiej odpowiedzi trwa — użytkownik patrzy na zamrożony ekran. | **Strumieniuj odpowiedź** (token po tokenie). Nie zmniejsza to całkowitej latencji, ale radykalnie poprawia *odczuwalną* responsywność UI. |
+| **Streaming** | Generacja długiej odpowiedzi trwa - użytkownik patrzy na zamrożony ekran. | **Strumieniuj odpowiedź** (token po tokenie). Nie zmniejsza to całkowitej latencji, ale radykalnie poprawia *odczuwalną* responsywność UI. |
 | **Ewaluacja regresyjna** | Zmiana modelu, wersji modelu lub promptu może po cichu pogorszyć jakość. | Utrzymuj **zestaw ewaluacyjny (*eval set*)** reprezentatywnych przypadków i uruchamiaj go przy każdej zmianie modelu/promptu, by wykryć regresję, zanim zobaczy ją użytkownik. |
 
 > [!IMPORTANT]
-> Te zagadnienia nie są opcjonalnym "hardeningiem na później". Prompt injection i nadmiarowe uprawnienia narzędzi to realne wektory ataku, a brak limitów kosztów i obsługi rate limitów potrafi położyć aplikację w pierwszym dniu produkcji. Wbuduj je w architekturę od początku — wymienny *port* do dostawcy LLM (patrz [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md)) ułatwia spięcie w jednym miejscu retry, limitów, redakcji PII i logowania.
+> Te zagadnienia nie są opcjonalnym "hardeningiem na później". Prompt injection i nadmiarowe uprawnienia narzędzi to realne wektory ataku, a brak limitów kosztów i obsługi rate limitów potrafi położyć aplikację w pierwszym dniu produkcji. Wbuduj je w architekturę od początku - wymienny *port* do dostawcy LLM (patrz [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md)) ułatwia spięcie w jednym miejscu retry, limitów, redakcji PII i logowania.
 
 ---
 
-## 🏛️ Case Study: QueryVault — produkcyjny RAG i suwerenny NL2SQL
+## 🏛️ Case Study: QueryVault - produkcyjny RAG i suwerenny NL2SQL
 
 Teoria nabiera sensu na konkretnym przykładzie. **QueryVault**[^queryvault] to projekt FOSS (licencja MIT, wyróżniony nagrodą Dell *"AI on Your Desktop"*), który łączy w jednym systemie niemal wszystkie wzorce omówione w tym rozdziale: RAG, constrained generation, lokalne modele open-weight i bezpieczeństwo produkcyjne.
 
-[^queryvault]: QueryVault — suwerenny silnik NL2SQL / generative BI, projekt open-source na licencji MIT.
+[^queryvault]: QueryVault - suwerenny silnik NL2SQL / generative BI, projekt open-source na licencji MIT.
 
 ### Problem: dlaczego "wyślij schemat do chmurowego LLM" nie wystarczy
 
-QueryVault to **suwerenny (sovereign), on-premise silnik NL2SQL** (*natural language to SQL*) i *generative BI*: użytkownik zadaje pytanie w języku naturalnym ("Ilu klientów z województwa mazowieckiego złożyło zamówienie w zeszłym kwartale?"), a system generuje zapytanie SQL, wykonuje je i zwraca odpowiedź — **w całości lokalnie, dane nigdy nie opuszczają organizacji**.
+QueryVault to **suwerenny (sovereign), on-premise silnik NL2SQL** (*natural language to SQL*) i *generative BI*: użytkownik zadaje pytanie w języku naturalnym ("Ilu klientów z województwa mazowieckiego złożyło zamówienie w zeszłym kwartale?"), a system generuje zapytanie SQL, wykonuje je i zwraca odpowiedź - **w całości lokalnie, dane nigdy nie opuszczają organizacji**.
 
-Motywacja jest czysto inżyniersko-regulacyjna. Sektory takie jak **bankowość czy administracja publiczna nie mogą wysyłać zapytań ani schematów swoich baz do chmurowych LLM** — staje to w sprzeczności z RODO, rozporządzeniem MAR (nadużycia rynkowe) oraz wymogami nadzorczymi (np. KNF). Schemat bazy danych i treść zapytań biznesowych to same w sobie informacje wrażliwe.
+Motywacja jest czysto inżyniersko-regulacyjna. Sektory takie jak **bankowość czy administracja publiczna nie mogą wysyłać zapytań ani schematów swoich baz do chmurowych LLM** - staje to w sprzeczności z RODO, rozporządzeniem MAR (nadużycia rynkowe) oraz wymogami nadzorczymi (np. KNF). Schemat bazy danych i treść zapytań biznesowych to same w sobie informacje wrażliwe.
 
 ### Architektura: czteroetapowy lokalny pipeline
 
@@ -428,24 +450,24 @@ flowchart LR
     style EXEC fill:#fce4ec
 ```
 
-1. **Pytanie w języku naturalnym** — wejście od użytkownika.
-2. **Schema retrieval / RAG** — system nie wrzuca całego schematu bazy do promptu (byłby ogromny i zaszumiony). Zamiast tego fragmenty schematu (definicje tabel, kolumn, relacji) są zaindeksowane w **bazie wektorowej pgvector**, a retrieval pobiera tylko te fragmenty, które są istotne dla danego pytania. To klasyczny RAG zastosowany do metadanych bazy.
-3. **Constrained SQL generation** — generację SQL przez **lokalny LLM** ogranicza **gramatyka bezkontekstowa (CFG, *context-free grammar*)**. Model nie generuje swobodnego tekstu — każdy kolejny token musi być zgodny z gramatyką poprawnego SQL. Gwarantuje to **składniowo poprawny SQL** i pozwala **z góry zablokować niebezpieczne konstrukcje** (np. `DROP`, `DELETE` bez `WHERE`).
-4. **Wykonanie** — zapytanie jest uruchamiane z egzekwowaniem **RBAC** (kontrola dostępu oparta na rolach) i **row-level security** (użytkownik widzi tylko wiersze, do których ma uprawnienia).
+1. **Pytanie w języku naturalnym** - wejście od użytkownika.
+2. **Schema retrieval / RAG** - system nie wrzuca całego schematu bazy do promptu (byłby ogromny i zaszumiony). Zamiast tego fragmenty schematu (definicje tabel, kolumn, relacji) są zaindeksowane w **bazie wektorowej pgvector**, a retrieval pobiera tylko te fragmenty, które są istotne dla danego pytania. To klasyczny RAG zastosowany do metadanych bazy.
+3. **Constrained SQL generation** - generację SQL przez **lokalny LLM** ogranicza **gramatyka bezkontekstowa (CFG, *context-free grammar*)**. Model nie generuje swobodnego tekstu - każdy kolejny token musi być zgodny z gramatyką poprawnego SQL. Gwarantuje to **składniowo poprawny SQL** i pozwala **z góry zablokować niebezpieczne konstrukcje** (np. `DROP`, `DELETE` bez `WHERE`).
+4. **Wykonanie** - zapytanie jest uruchamiane z egzekwowaniem **RBAC** (kontrola dostępu oparta na rolach) i **row-level security** (użytkownik widzi tylko wiersze, do których ma uprawnienia).
 
-### Constrained generation — wymuszanie poprawnego outputu
+### Constrained generation - wymuszanie poprawnego outputu
 
-Etap 3 wprowadza technikę wartą zapamiętania: **constrained generation** (generacja ograniczona). To metoda **wymuszania na LLM outputu zgodnego ze ścisłą strukturą** — gramatyką, schematem JSON, wyrażeniem regularnym — poprzez ograniczanie zbioru dozwolonych tokenów *na każdym kroku dekodowania*.
+Etap 3 wprowadza technikę wartą zapamiętania: **constrained generation** (generacja ograniczona). To metoda **wymuszania na LLM outputu zgodnego ze ścisłą strukturą** - gramatyką, schematem JSON, wyrażeniem regularnym - poprzez ograniczanie zbioru dozwolonych tokenów *na każdym kroku dekodowania*.
 
 To jakościowo silniejsze niż samo "poproszenie modelu o poprawny format" w promptcie:
 
 | Podejście | Gwarancja poprawności | Mechanizm |
 | :--- | :--- | :--- |
-| Prompt "zwróć poprawny SQL" | Brak — model może się pomylić | Instrukcja w promptcie |
+| Prompt "zwróć poprawny SQL" | Brak - model może się pomylić | Instrukcja w promptcie |
 | Walidacja po fakcie (Pydantic) | Wykrycie błędu *po* generacji | Walidacja + ewentualny retry |
 | **Constrained generation (CFG)** | **Strukturalnie niemożliwe wygenerowanie niepoprawnego outputu** | Filtrowanie tokenów na etapie dekodowania |
 
-W QueryVault to fundament bezpieczeństwa: niepoprawny lub niebezpieczny SQL nie jest "wychwytywany" — jest **strukturalnie niemożliwy do wygenerowania**.
+W QueryVault to fundament bezpieczeństwa: niepoprawny lub niebezpieczny SQL nie jest "wychwytywany" - jest **strukturalnie niemożliwy do wygenerowania**.
 
 ### Benchmark: lokalny model bije model chmurowy
 
@@ -458,14 +480,14 @@ Najciekawszy wniosek z projektu dotyczy doboru modelu. W zadaniu **text-to-SQL**
 | Llama 3.1-70B | lokalny, open-weight | 89% |
 | GPT-3.5 Turbo | chmurowy | 71% |
 
-Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wyspecjalizowanym zadaniu **lokalny, mniejszy model (Qwen 2.5-Coder-32B) przewyższa większy model chmurowy**. Nie trzeba poświęcać jakości, by zachować suwerenność danych — a dla sektorów regulowanych jest to często warunek konieczny, nie opcja.
+Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wyspecjalizowanym zadaniu **lokalny, mniejszy model (Qwen 2.5-Coder-32B) przewyższa większy model chmurowy**. Nie trzeba poświęcać jakości, by zachować suwerenność danych - a dla sektorów regulowanych jest to często warunek konieczny, nie opcja.
 
 ### Stos technologiczny
 
-* **Modele lokalne**: [**Bielik**](https://bielik.ai/) (polski LLM — istotne dla pytań i danych w języku polskim) oraz **Qwen 2.5-Coder-32B** (wyspecjalizowany w generowaniu kodu/SQL).
-* **Sprzęt docelowy**: lokalna stacja inferencyjna **NVIDIA GB10 Grace Blackwell** — inferencja modeli 30B+ "na biurku", bez chmury.
+* **Modele lokalne**: [**Bielik**](https://bielik.ai/) (polski LLM - istotne dla pytań i danych w języku polskim) oraz **Qwen 2.5-Coder-32B** (wyspecjalizowany w generowaniu kodu/SQL).
+* **Sprzęt docelowy**: lokalna stacja inferencyjna **NVIDIA GB10 Grace Blackwell** - inferencja modeli 30B+ "na biurku", bez chmury.
 * **Baza wektorowa**: **pgvector** (retrieval fragmentów schematu).
 * **Bezpieczeństwo**: RBAC, row-level security, constrained generation przez CFG, uwierzytelnianie **JWT**, hashowanie haseł **Argon2id**.
 
 > [!TIP]
-> QueryVault jest też dobrym przykładem **odseparowania kodu domenowego od konkretnego SDK LLM**. Możliwość podmiany modelu (Bielik ↔ Qwen ↔ inny) bez przepisywania logiki aplikacji to wprost wzorzec *Ports & Adapters* — szczegółowo opisany w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć użytych w tym studium przypadku (NL2SQL, CFG, RBAC, RAG) znajdziesz w [słowniczku](./08-glossary.md).
+> QueryVault jest też dobrym przykładem **odseparowania kodu domenowego od konkretnego SDK LLM**. Możliwość podmiany modelu (Bielik ↔ Qwen ↔ inny) bez przepisywania logiki aplikacji to wprost wzorzec *Ports & Adapters* - szczegółowo opisany w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć użytych w tym studium przypadku (NL2SQL, CFG, RBAC, RAG) znajdziesz w [słowniczku](./08-glossary.md).
