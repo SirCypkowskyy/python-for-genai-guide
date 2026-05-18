@@ -14,7 +14,7 @@ W najprostszym ujęciu, duży model językowy (LLM) to głęboka sieć neuronowa
 Aby efektywnie pracować z LLM, warto zrozumieć, co dzieje się "pod maską". Poniższe materiały są absolutnie najlepszym punktem startowym.
 
 * **Teoria dla każdego (Intuicja wizualna)**: Jeśli chcesz zrozumieć, jak naprawdę działa deep learning i modele językowe AI, koniecznie zobacz serię [**3Blue1Brown o sieciach neuronowych**](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1\_67000Dx\_ZCJB-3pi). To jedne z najlepszych istniejących materiałów, które w sposób wizualny i przystępny tłumaczą podstawowe idee stojące za nowoczesnymi modelami AI i machine learningiem. Idealne na start, by zbudować intuicję i "poczuć" jak myśli sieć neuronowa oraz (dalej) modele językowe.
-* **Wszystko w jednym wykładzie**: Wykład [***Andrieja Karpathy'ego* *"Intro to Large Language Models"***](https://www.youtube.com/watch?v=kCc8FmEb1nY) to jedno z lepszych wprowadzeń w temat, jakie istnieje. Karpathy, jako jeden z czołowych ekspertów w dziedzinie, w przystępny sposób wyjaśnia architekturę Transformerów, proces treningu i skalowania - wszystko w formie jednego, długiego i interaktywnego wykładu.
+* **Wszystko w jednym wykładzie**: Wykład [***Andrieja Karpathy'ego* *"Intro to Large Language Models"***](https://www.youtube.com/watch?v=zjkBMFhNj_g) to jedno z lepszych wprowadzeń w temat, jakie istnieje. Karpathy, jako jeden z czołowych ekspertów w dziedzinie, w przystępny sposób wyjaśnia architekturę Transformerów, proces treningu i skalowania - wszystko w formie jednego, długiego i interaktywnego wykładu.
 * **Bieżące nowości**: Świat GenAI zmienia się z tygodnia na tydzień. Kanał YouTube [**bycloud**](https://www.youtube.com/@bycloudAI) to doskonałe źródło podsumowań najnowszych prac badawczych i przełomowych modeli, prezentowanych w technicznym, ale zrozumiałym, atrakcyjnym wizualnie formacie.
 
 ---
@@ -36,7 +36,7 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 | **OpenAI** | GPT-5 | **GPT-5.5**[^gpt55] | Flagowa rodzina, silne rozumowanie i tool use |
 | **Anthropic** | Claude 4.x (Opus / Sonnet) | **Claude Opus 4.7**[^opus47] | Mocne w kodowaniu i pracy agentowej, długi kontekst |
 | **Google** | Gemini 3 | **Gemini 3.1 Pro**[^gemini31] | Tryb *Deep Think* (rozszerzone rozumowanie), multimodalność |
-| **xAI** | Grok 4 | **Grok 4** | Integracja z ekosystemem X, dostęp do danych w czasie rzeczywistym |
+| **xAI** | Grok 4 | **Grok 4.3** | Integracja z ekosystemem X, dostęp do danych w czasie rzeczywistym |
 
 [^gpt55]: GPT-5.5 - wydany 23 kwietnia 2026 r.; najnowszy model rodziny GPT-5.
 [^opus47]: Claude Opus 4.7 - wydany 16 kwietnia 2026 r.; najmocniejszy model rodziny Claude 4.x.
@@ -47,9 +47,9 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 Obok modeli zamkniętych dynamicznie rozwija się ekosystem modeli **open-weight** - takich, których wagi są publicznie dostępne i które możesz uruchomić **na własnej infrastrukturze**. To kluczowe dla zastosowań wymagających suwerenności danych, niskiej latencji lub kontroli kosztów.
 
 * **Meta [Llama 4](https://www.llama.com/)** - rodzina (warianty *Scout* i *Maverick*) w architekturze **MoE** z ekstremalnie długim oknem kontekstu.
-* **[DeepSeek](https://www.deepseek.com/) V4** - kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
-* **Alibaba [Qwen](https://qwenlm.github.io/) 3.5** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
-* **Google [Gemma 4](https://ai.google.dev/gemma)** - otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
+* **[DeepSeek](https://www.deepseek.com/) V4** (wersja zapoznawcza) - kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
+* **Alibaba [Qwen](https://qwenlm.github.io/)3** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
+* **Google [Gemma 3](https://ai.google.dev/gemma)** - otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
 * **[Mistral](https://mistral.ai/)** - europejski dostawca z portfolio wydajnych modeli open-weight.
 
 > [!NOTE]
@@ -145,7 +145,7 @@ flowchart TD
 * **Hybrid search (wyszukiwanie hybrydowe)** - łączy klasyczne wyszukiwanie leksykalne **BM25** (dopasowanie słów kluczowych, świetne dla nazw własnych, kodów, akronimów) z **wyszukiwaniem wektorowym** (podobieństwo semantyczne). Wyniki obu metod scala się zwykle przez **Reciprocal Rank Fusion (RRF)** - algorytm łączący rankingi na podstawie pozycji, a nie surowych wyników. Hybryda jest niemal zawsze lepsza niż każda z metod osobno.
 * **Re-ranking** - wyszukiwanie wektorowe jest szybkie, ale niezbyt precyzyjne. Schemat dwuetapowy: najpierw tani retrieval pobiera szeroką listę (np. **top-50**), następnie **cross-encoder** (model oceniający parę zapytanie–dokument *razem*, dokładniej niż porównanie embeddingów) przesortowuje ją i wybiera **3–5 najtrafniejszych** fragmentów, które trafiają do LLM. Mniej, ale lepszego kontekstu = mniej halucynacji i niższy koszt.
 * **Agentic RAG** - retrieval nie jest jednorazowy. Wokół niego buduje się **pętlę rozumowania**: agent analizuje pobrane fragmenty, ocenia, czy wystarczają, w razie potrzeby przeformułowuje zapytanie, dzieli pytanie na pod-pytania i ponawia wyszukiwanie. To RAG, który "myśli", zamiast wykonywać sztywny pipeline.
-* **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **[LazyGraphRAG](https://github.com/microsoft/graphrag/blob/main/README_LazyGraphRAG.md)**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
+* **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **[LazyGraphRAG](https://github.com/microsoft/graphrag)**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
 * **Adaptive RAG** - nie każde pytanie wymaga pełnego pipeline'u. Lekki **klasyfikator routuje zapytanie** wg złożoności: proste pytania trafiają wprost do LLM, średnie - do zwykłego retrievalu, złożone - do agentic RAG lub GraphRAG. Optymalizuje to koszt i latencję.
 
 > [!TIP]
@@ -159,7 +159,7 @@ Jakość RAG zaczyna się od jakości **embeddingów** - to model embeddingów d
 | :--- | :--- | :--- |
 | **Gemini Embedding** | Google | Multimodalny (tekst, obraz), mocne wyniki w benchmarkach |
 | **Voyage 4** (rodzina) | Voyage AI | Częsty wybór poważnych zespołów RAG; warianty wyspecjalizowane (kod, finanse, prawo) |
-| **embed-v4** | Cohere | Bardzo dobre wsparcie wielojęzyczne |
+| **embed-v4.0** | Cohere | Bardzo dobre wsparcie wielojęzyczne |
 | **BGE-M3** | BAAI (open-source) | Wielojęzyczny, otwarty - możliwy self-hosting |
 | **text-embedding-3-large** | OpenAI | Wciąż szeroko używany, ale w benchmarkach 2026 wypada słabiej niż tańsze alternatywy |
 
@@ -260,7 +260,7 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 - zaawansowane systemy RAG (GraphRAG, hybrydowe RAG).
 
 **Najważniejsze bazy grafowe wykorzystywane w 2026 roku:**
-- [**Neo4j**](https://neo4j.com/) – najpopularniejsza baza grafowa na świecie, szeroko stosowana w knowledge graphach, rekomendacjach, fraud detection, z bogatym ekosystemem narzędzi (Cypher, Graph Data Science, integracje z LLM, GraphRAG, LlamaIndex, LangChain, [Google GenAI Toolbox](https://github.com/google/genai-toolbox)).
+- [**Neo4j**](https://neo4j.com/) – najpopularniejsza baza grafowa na świecie, szeroko stosowana w knowledge graphach, rekomendacjach, fraud detection, z bogatym ekosystemem narzędzi (Cypher, Graph Data Science, integracje z LLM, GraphRAG, LlamaIndex, LangChain, [Google GenAI Toolbox](https://github.com/googlecloudplatform/genai-toolbox)).
 - [**Memgraph**](https://memgraph.com/) – wydajna, open-source’owa baza grafowa, kompatybilna z Cypher, wykorzystywana m.in. przez NASA do budowy knowledge graphów i GraphRAG. Mocno wspiera integracje z Pythonem i narzędziami AI.
 - [**NebulaGraph**](https://www.nebula-graph.io/) – rozproszona, skalowalna baza grafowa, zoptymalizowana pod bardzo duże zbiory danych (triliony krawędzi), z własnym językiem zapytań nGQL i wsparciem dla chmury.
 
@@ -280,9 +280,8 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 **Przykłady frameworków bazujących na bazach grafowych:**
 - Microsoft GraphRAG - oraz **LazyGraphRAG**, wariant budujący strukturę grafu dopiero przy zapytaniu (znacznie tańsze indeksowanie)
 - [LightRAG](https://github.com/HKUDS/LightRAG)
-- [TrustGraph](https://github.com/trustgraph/trustgraph)
 - [Graphiti](https://github.com/getzep/graphiti)
-- [Nano GraphRAG](https://github.com/NanmiCoder/NanoGraphRAG)
+- [Nano GraphRAG](https://github.com/upbeat/NanoGraphRAG)
 - [R2R](https://github.com/SciPhi-AI/R2R)
 
 **Porównanie: Bazy Wektorowe vs. Bazy Grafowe**
@@ -498,6 +497,6 @@ Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wys
 > [!TIP]
 > QueryVault jest też dobrym przykładem **odseparowania kodu domenowego od konkretnego SDK LLM**. Możliwość podmiany modelu (Bielik ↔ Qwen ↔ inny) bez przepisywania logiki aplikacji to wprost wzorzec *Ports & Adapters* - szczegółowo opisany w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć użytych w tym studium przypadku (NL2SQL, CFG, RBAC, RAG) znajdziesz w [słowniczku](./08-glossary.md).
 
-[^mcp-linux-foundation]: MCP przekazany pod opiekę Linux Foundation w grudniu 2025 r. Zob. komunikat: [linuxfoundation.org/press](https://www.linuxfoundation.org/press/press-releases).
+[^mcp-linux-foundation]: MCP przekazany pod opiekę Linux Foundation w grudniu 2025 r. Zob. komunikat: [linuxfoundation.org/press](https://www.linuxfoundation.org/press/).
 [^mcp-intro]: Oryginalny wprowadzający post Anthropic o MCP (listopad 2024): [anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol).
 [^reasoning-models]: Modele rozumujące (*reasoning models*) — np. rodzina OpenAI o-series (o3, o4-mini) oraz DeepSeek-R1 — trenowane metodami RL do generowania wewnętrznego łańcucha rozumowania przed odpowiedzią. Zob. też hasło *Reasoning Model* w [słowniczku](./08-glossary.md).

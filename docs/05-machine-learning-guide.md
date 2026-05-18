@@ -128,7 +128,7 @@ print(logits.shape)  # torch.Size([32, 10])
 
 Tu kryje się najczęstsze nieporozumienie. **Keras 3 to NIE jest już `tf.keras`** - czyli moduł "przyklejony" do TensorFlow. Od premiery w listopadzie 2023 **Keras 3 jest frameworkiem multi-backend**: ten sam wysokopoziomowy kod możesz uruchomić na **JAX, PyTorch lub TensorFlow**, przełączając backend jedną zmienną środowiskową.
 
-Keras pozostaje najbardziej przyjaznym, zwięzłym API do budowy i trenowania sieci - świetnym wyborem do szybkiego prototypowania i edukacji. W praktyce **backend JAX zwykle daje najlepszą wydajność** treningu i inferencji na GPU/TPU, więc Keras 3 pozwala łączyć wygodę wysokopoziomowego API z szybkością JAX-a.
+Keras pozostaje najbardziej przyjaznym, zwięzłym API do budowy i trenowania sieci - świetnym wyborem do szybkiego prototypowania i edukacji. W praktyce **backend JAX często daje najlepszą wydajność** na TPU; na GPU wyniki zależą od architektury modelu, więc Keras 3 pozwala łączyć wygodę wysokopoziomowego API z szybkością JAX-a.
 
 ### 🏢 [TensorFlow](https://www.tensorflow.org/) - wciąż obecny, ale nie domyślny
 
@@ -162,7 +162,7 @@ Gradient boosting to technika **zespołowa** (ensemble): buduje sekwencję płyt
 | :--- | :--- | :--- | :--- |
 | [**XGBoost**](https://xgboost.readthedocs.io/) | 3.2 | Sprawdzony, uniwersalny standard | Solidny domyślny wybór, dojrzały ekosystem |
 | [**LightGBM**](https://lightgbm.readthedocs.io/) | 4.6 | Najszybszy trening, niskie zużycie pamięci | Duże zbiory danych, gdy liczy się czas |
-| [**CatBoost**](https://catboost.ai/) | 1.2.x | Natywna, bardzo dobra obsługa cech kategorycznych | Dane z wieloma kolumnami kategorycznymi |
+| [**CatBoost**](https://catboost.ai/) | 1.2.10 | Natywna, bardzo dobra obsługa cech kategorycznych | Dane z wieloma kolumnami kategorycznymi |
 
 [^xgboost-versions]
 
@@ -254,7 +254,7 @@ Pojedynczy podział train/validation bywa "loterią" - wynik zależy od tego, kt
 
 ### Niezbalansowane klasy
 
-Gdy jedna klasa dominuje (oszustwa, rzadkie choroby, awarie), model ma tendencję do ignorowania klasy mniejszościowej. Typowe podejścia: **wagi klas** (`class_weight="balanced"` w wielu modelach scikit-learn - model "karze" mocniej za błędy na rzadkiej klasie) oraz **resampling** (oversampling klasy mniejszościowej, np. [SMOTE](https://imbalanced-learn.org/), lub undersampling większościowej). Zawsze połącz to z odpowiednią metryką - accuracy tu nie wystarczy.
+Gdy jedna klasa dominuje (oszustwa, rzadkie choroby, awarie), model ma tendencję do ignorowania klasy mniejszościowej. Typowe podejścia: **wagi klas** (`class_weight="balanced"` w wielu modelach scikit-learn - model "karze" mocniej za błędy na rzadkiej klasie) oraz **resampling** (syntetyczny oversampling klasy mniejszościowej, np. SMOTE (*Synthetic Minority Over-sampling Technique*), lub undersampling większościowej). Zawsze połącz to z odpowiednią metryką - accuracy tu nie wystarczy.
 
 ### Pipeline - preprocessing i model jako jeden obiekt
 
@@ -322,7 +322,7 @@ Ten cykl pokazuje, dlaczego ML to nie "wytrenuj i zapomnij", lecz ciągły proce
 
 Wytrenowanie modelu w notebooku Jupyter to dopiero początek. **MLOps** (Machine Learning Operations) to zbiór praktyk i narzędzi, które przenoszą model z eksperymentu do niezawodnej produkcji: śledzenie eksperymentów, wersjonowanie modeli i danych, automatyzacja wdrożeń oraz monitoring.
 
-* [**MLflow**](https://mlflow.org/) (wersja **3.10**[^mlflow3], marzec 2026) - najpopularniejsza, otwarta platforma do zarządzania cyklem życia ML: śledzenie eksperymentów (parametry, metryki, artefakty), rejestr modeli i pakowanie wdrożeń. Co istotne, **MLflow 3.x wyszedł daleko poza klasyczny ML** - oferuje dziś **observability dla agentów GenAI**: tracing wywołań LLM, ewaluację jakości odpowiedzi i śledzenie kosztów (*cost tracking*). To czyni go uniwersalnym narzędziem zarówno dla klasycznego ML, jak i aplikacji GenAI.
+* [**MLflow**](https://mlflow.org/) (wersja **3.12**[^mlflow3], maj 2026) - najpopularniejsza, otwarta platforma do zarządzania cyklem życia ML: śledzenie eksperymentów (parametry, metryki, artefakty), rejestr modeli i pakowanie wdrożeń. Co istotne, **MLflow 3.x wyszedł daleko poza klasyczny ML** - oferuje dziś **observability dla agentów GenAI**: tracing wywołań LLM, ewaluację jakości odpowiedzi i śledzenie kosztów (*cost tracking*). To czyni go uniwersalnym narzędziem zarówno dla klasycznego ML, jak i aplikacji GenAI.
 * [**Weights & Biases**](https://wandb.ai/) (W&B) - popularne, dopracowane narzędzie do śledzenia eksperymentów, wizualizacji metryk i współpracy zespołowej; szczególnie lubiane w środowisku deep learningu i badaniach.
 * [**ZenML**](https://www.zenml.io/) i [**Neptune**](https://neptune.ai/) - kolejne warte poznania narzędzia: ZenML to framework do budowy przenośnych pipeline'ów MLOps, Neptune to rozbudowany rejestr i tracker eksperymentów (ceniony przy trenowaniu modeli foundation).
 * [**ONNX Runtime**](https://onnxruntime.ai/) - uniwersalny standard **inferencji**. [ONNX](https://onnx.ai/) (Open Neural Network Exchange) to otwarty format zapisu modeli, niezależny od frameworka: model wytrenowany w PyTorch możesz wyeksportować do ONNX i uruchamiać go przez ONNX Runtime na różnych platformach (CPU, GPU, edge) z wysoką wydajnością. Daje to **przenośność** - odseparowanie środowiska treningu od środowiska produkcyjnego.
@@ -331,6 +331,6 @@ Wytrenowanie modelu w notebooku Jupyter to dopiero początek. **MLOps** (Machine
 > Dla aplikacji GenAI (agenci, RAG) tracing i ewaluacja są równie ważne jak w klasycznym ML - więcej o monitorowaniu i architekturze takich systemów znajdziesz w rozdziale [6. Aplikacje GenAI i RAG](./06-generative-ai-and-rag.md) oraz w [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć (drift, inferencja, ensemble) zebrano w [słowniczku](./08-glossary.md).
 
 [^pytorch-papers]: Szacunek udziału PyTorch w publikacjach ML pochodzi z analizy Papers With Code: [paperswithcode.com](https://paperswithcode.com/). W latach 2024–2026 udział ten stabilizuje się na poziomie 80–85%.
-[^xgboost-versions]: Wersje gradient boosting na maj 2026: XGBoost 3.2, LightGBM 4.6, CatBoost 1.2.x. Zob. odpowiednio [xgboost.readthedocs.io](https://xgboost.readthedocs.io/), [lightgbm.readthedocs.io](https://lightgbm.readthedocs.io/), [catboost.ai](https://catboost.ai/).
-[^mlflow3]: MLflow 3.10 — wydanie z marca 2026, wprowadzające observability dla agentów GenAI. Zob. [mlflow.org/docs/latest/release-notes](https://mlflow.org/docs/latest/release-notes/).
+[^xgboost-versions]: Wersje gradient boosting na maj 2026: XGBoost 3.2, LightGBM 4.6, CatBoost 1.2.10. Zob. odpowiednio [xgboost.readthedocs.io](https://xgboost.readthedocs.io/), [lightgbm.readthedocs.io](https://lightgbm.readthedocs.io/), [catboost.ai](https://catboost.ai/).
+[^mlflow3]: MLflow 3.12 — wydanie z maja 2026, wprowadzające observability dla agentów GenAI. Zob. [pypi.org/project/mlflow/#history](https://pypi.org/project/mlflow/#history).
 [^sklearn-180]: Scikit-learn 1.8.0 — wydanie stabilne wspierające Python 3.11–3.14. Zob. [scikit-learn.org/stable/whats_new](https://scikit-learn.org/stable/whats_new.html).

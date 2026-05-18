@@ -212,3 +212,6 @@ site/
 
 # claude-mem (plugin) — dump kontekstu pamięci, nie część projektu
 AGENTS.md
+
+# Merytoryczne recenzje dokumentacji (pliki robocze)
+reviews/

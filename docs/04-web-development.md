@@ -120,13 +120,13 @@ sequenceDiagram
 ### Komunikacja z Innymi Usługami: [requests](https://requests.readthedocs.io/en/latest/) i [httpx](https://www.python-httpx.org/)
 
   * [**requests**](https://requests.readthedocs.io/en/latest/): To legendarna, niezwykle prosta w użyciu biblioteka do wykonywania **synchronicznych** zapytań HTTP. Przez lata była de facto standardem.
-  * [**httpx**](https://www.python-httpx.org/): To nowoczesny następca [requests](https://requests.readthedocs.io/en/latest/), który oferuje niemal identyczne, przyjazne API, ale dodatkowo wspiera **asynchroniczność (`async`/`await`)** oraz protokół **HTTP/2**. To czyni go domyślnym wyborem dla nowoczesnych aplikacji, zwłaszcza tych budowanych w oparciu o FastAPI.
+  * [**httpx**](https://www.python-httpx.org/): To nowoczesny następca [requests](https://requests.readthedocs.io/en/latest/), który oferuje niemal identyczne, przyjazne API, ale dodatkowo wspiera **asynchroniczność (`async`/`await`)** oraz protokół **HTTP/2** (wymaga `pip install httpx[http2]`; domyślnie httpx obsługuje HTTP/1.1). To czyni go domyślnym wyborem dla nowoczesnych aplikacji, zwłaszcza tych budowanych w oparciu o FastAPI.
 
 ### Serwery Aplikacji: Uruchamianie w Produkcji
 
 Aplikacje webowe w Pythonie potrzebują serwera aplikacji, który tłumaczy zapytania HTTP na format zrozumiały dla frameworka. Istnieją dwa standardy tej komunikacji:
 
-  * **WSGI (Web Server Gateway Interface)**: Tradycyjny, **synchroniczny** standard, używany przez Flask i Django. Najpopularniejszym, produkcyjnym serwerem WSGI jest [**Gunicorn**](https://gunicorn.org/).
+  * **WSGI (Web Server Gateway Interface)**: Tradycyjny, **synchroniczny** standard, używany przez Flask i Django. Najpopularniejszym, produkcyjnym serwerem WSGI jest [**Gunicorn**](https://gunicorn.org/) (działa tylko na systemach Unix: Linux/macOS, nie na Windows).
   * **ASGI (Asynchronous Server Gateway Interface)**: Nowoczesny, **asynchroniczny** standard, który jest sercem FastAPI. Najczęściej używanym serwerem ASGI jest [**Uvicorn**](https://www.uvicorn.org/) - sprawdzony, dobrze udokumentowany, **bezpieczny domyślny wybór**.
 
 W klasycznym układzie produkcyjnym używa się **Gunicorna** do zarządzania procesami roboczymi (workerami) Uvicorna, aby połączyć solidne zarządzanie procesami z wysoką wydajnością operacji I/O.
@@ -135,7 +135,7 @@ W klasycznym układzie produkcyjnym używa się **Gunicorna** do zarządzania pr
 
 W 2026 dojrzałą alternatywą dla pary Gunicorn + Uvicorn jest [**Granian**](https://github.com/emmett-framework/granian) - serwer napisany w **Rust**, obsługujący standardy **ASGI**, **WSGI** oraz natywny **RSGI**. Jego przewagi:
 
-* **Wyższa przepustowość** - w zależności od scenariusza zwykle o ok. 20–50% wyższa niż Uvicorn.
+* **Wyższa przepustowość** - w zależności od scenariusza zwykle wyższa niż Uvicorn.
 * **Natywne zarządzanie procesami i wątkami** - Granian sam zarządza wieloma procesami roboczymi i wątkami, więc **eliminuje potrzebę Gunicorna jako osobnego process managera**. Cały stos uruchomieniowy to jeden komponent zamiast dwóch.
 
 > [!TIP]
@@ -173,4 +173,4 @@ flowchart TB
 
 [^asgi-spec]: Specyfikacja ASGI — zob. [asgi.readthedocs.io](https://asgi.readthedocs.io/).
 [^wsgi-spec]: Specyfikacja WSGI — PEP 3333: [peps.python.org/pep-3333](https://peps.python.org/pep-3333/).
-[^django-async]: Asynchroniczny ORM w Django — dokumentacja: [docs.djangoproject.com/async-queries](https://docs.djangoproject.com/en/stable/topics/async/#async-queries).
+[^django-async]: Asynchroniczny ORM w Django — dokumentacja: [docs.djangoproject.com/async-queries](https://docs.djangoproject.com/en/stable/topics/async/#queries-the-orm).

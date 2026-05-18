@@ -42,6 +42,7 @@ Poniższe materiały są świetnym punktem startowym i są **całkowicie darmowe
 * ***CS50's Introduction to Programming with Python*** (Harvard) - <https://cs50.harvard.edu/python/>
 * ***Python Programming MOOC*** (Uniwersytet Helsiński) - <https://programming.mooc.fi/>
 * **Python Tutor** (wizualizacja wykonania kodu) - <https://pythontutor.com/>
+* **[Boot.dev](https://www.boot.dev/)** - interaktywna ścieżka od Pythona po backend i CS (część darmowa, część płatna)
 
 ---
 

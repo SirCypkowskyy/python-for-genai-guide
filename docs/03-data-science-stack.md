@@ -114,7 +114,7 @@ df = pd.read_csv('sales.csv', dtype_backend="pyarrow")
 
 ## 🔢 [NumPy](https://numpy.org/): Fundament Obliczeń Naukowych
 
-[**NumPy (Numerical Python)**](https://numpy.org/) to biblioteka, na której zbudowana jest praktycznie cała naukowa część ekosystemu Pythona, włączając w to Pandas. Jej rdzeń napisany jest w skompilowanych językach **C i C++** (kod w Fortranie ma dziś znaczenie marginalne - odpowiada za niewielkie fragmenty, a wywołania algebry liniowej i tak delegowane są do zewnętrznych bibliotek). Zapewnia to ogromną wydajność operacji numerycznych, porównywalną z wyspecjalizowanymi bibliotekami do algebry liniowej jak [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms) czy [LAPACK](https://en.wikipedia.org/wiki/LAPACK).
+[**NumPy (Numerical Python)**](https://numpy.org/) to biblioteka, na której zbudowana jest praktycznie cała naukowa część ekosystemu Pythona, włączając w to Pandas. Jej rdzeń napisany jest w skompilowanych językach **C i C++** (kod w Fortranie ma dziś znaczenie drugorzędne - odpowiada za niewielkie fragmenty, a wywołania algebry liniowej i tak delegowane są do zewnętrznych bibliotek). Zapewnia to ogromną wydajność operacji numerycznych, porównywalną z wyspecjalizowanymi bibliotekami do algebry liniowej jak [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms) czy [LAPACK](https://en.wikipedia.org/wiki/LAPACK).
 
   * Głównym obiektem w NumPy jest `ndarray` – potężna, wielowymiarowa tablica przechowująca dane **jednego typu**.
   * Kluczową ideą pracy z NumPy jest **wektoryzacja** – wykonywanie operacji na całych tablicach zamiast na pojedynczych elementach w pętlach, co jest znacznie szybsze.
@@ -277,7 +277,7 @@ flowchart TB
 Dla dewelopera przyzwyczajonego do statycznego typowania, [**Pydantic**](https://docs.pydantic.dev/) jest jak powiew świeżego powietrza. Wprowadza porządek i bezpieczeństwo typów do dynamicznego świata Pythona. Jest to nowoczesna biblioteka służąca do **walidacji danych i zarządzania ustawieniami** przy użyciu standardowych wskazówek typów (`type hints`).
 
 > [!NOTE]
-> Standardem jest dziś **Pydantic v2** (aktualnie linia 2.12.x). W przeciwieństwie do v1 jego rdzeń walidacji (`pydantic-core`) napisany jest w **Rust**, co przekłada się na walidację rzędu kilku razy szybszą niż w v1. Pisząc nowy kod, używasz v2 - i to jego API (m.in. metoda `model_validate` w przykładzie poniżej) pokazujemy w tym przewodniku.
+> Standardem jest dziś **Pydantic v2** (aktualnie linia 2.13.x). W przeciwieństwie do v1 jego rdzeń walidacji (`pydantic-core`) napisany jest w **Rust**, co przekłada się na walidację rzędu kilku razy szybszą niż w v1. Pisząc nowy kod, używasz v2 - i to jego API (m.in. metoda `model_validate` w przykładzie poniżej) pokazujemy w tym przewodniku.
 
 Definiujesz schemat danych jako klasę dziedziczącą po `BaseModel`, a Pydantic automatycznie:
 

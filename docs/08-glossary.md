@@ -14,7 +14,7 @@
 : Nowoczesny, asynchroniczny standard komunikacji między serwerem a aplikacją webową w Pythonie. Jest następcą WSGI i został zaprojektowany do obsługi dużej liczby jednoczesnych połączeń I/O, co jest kluczowe dla aplikacji czasu rzeczywistego, WebSockets i wysokowydajnych API. Używany przez frameworki takie jak FastAPI.
 
 **Astral**
-: Firma stojąca za nowoczesnym, napisanym w Rust toolingiem dla Pythona: [`uv`](https://docs.astral.sh/uv/), [`Ruff`](https://docs.astral.sh/ruff/) i [`ty`](https://github.com/astral-sh/ty). Od marca 2026 jest częścią OpenAI, jednak jej narzędzia pozostają otwartoźródłowe (licencja MIT).
+: Firma stojąca za nowoczesnym, napisanym w Rust toolingiem dla Pythona: [`uv`](https://docs.astral.sh/uv/), [`Ruff`](https://docs.astral.sh/ruff/) i [`ty`](https://github.com/astral-sh/ty). Od marca 2026 dołączyło do OpenAI, jednak jej narzędzia pozostają otwartoźródłowe (licencja MIT).
 
 **Batteries-Included**
 : Filozofia projektowania frameworków (np. Django), która polega na dostarczaniu wbudowanych, zintegrowanych rozwiązań dla większości typowych problemów, takich jak ORM, panel admina, autentykacja czy system szablonów.
@@ -35,7 +35,7 @@
 : Narzędzie automatycznie przepisujące kod źródłowy do jednego, kanonicznego stylu (np. spójne wcięcia, długość linii, cudzysłowy). Eliminuje dyskusje o stylu w code review. W ekosystemie Pythona tę rolę pełnią m.in. [`Ruff`](https://docs.astral.sh/ruff/) oraz [`black`](https://github.com/psf/black).
 
 **GIL (Global Interpreter Lock)**
-: Mechanizm w standardowym buildzie CPythona, który pozwala tylko jednemu wątkowi na wykonywanie bytecodu Pythona w danym momencie w ramach jednego procesu. Upraszcza zarządzanie pamięcią i zapobiega konfliktom, ale ogranicza rzeczywistą równoległość w programach wielowątkowych, które są mocno obciążone obliczeniami CPU. Powyższy opis dotyczy standardowego buildu CPythona z GIL - od Pythona 3.13/3.14 istnieje oficjalnie wspierany build **free-threaded** (no-GIL), w którym to ograniczenie nie obowiązuje (zob. rozdział 01).
+: Mechanizm w standardowym buildzie CPythona, który pozwala tylko jednemu wątkowi na wykonywanie bytecodu Pythona w danym momencie w ramach jednego procesu. Upraszcza zarządzanie pamięcią i zapobiega konfliktom, ale ogranicza rzeczywistą równoległość w programach wielowątkowych, które są mocno obciążone obliczeniami CPU. Powyższy opis dotyczy standardowego buildu CPythona z GIL - od Pythona 3.13/3.14 istnieje eksperymentalny build **free-threaded** (no-GIL), w którym to ograniczenie nie obowiązuje (zob. rozdział 01).
 
 **Generator**
 : Specjalny typ iteratora, zdefiniowany jako funkcja używająca słowa kluczowego `yield`. Generatory produkują wartości "na żądanie", jedna po drugiej, zamiast tworzyć od razu całą kolekcję w pamięci. Jest to niezwykle wydajne pamięciowo przy pracy z dużymi zbiorami danych.
@@ -77,7 +77,7 @@
 : Interaktywne środowisko do eksperymentowania z kodem Python, gdzie można wpisywać polecenia i natychmiast widzieć wyniki.
 
 **[Ruff](https://docs.astral.sh/ruff/)**
-: Ultraszybki linter i formatter Pythona stworzony przez firmę Astral i napisany w Rust. Łączy w jednym narzędziu funkcje, które wcześniej zapewniały `black`, `isort`, `flake8` i `pylint`, działając przy tym o rzędy wielkości szybciej.
+: Ultraszybki linter i formatter Pythona stworzony przez firmę Astral i napisany w Rust. Łączy w jednym narzędziu funkcje, które wcześniej zapewniały `black`, `isort`, `flake8` (i wybrane reguły `pylint`), działając przy tym o rzędy wielkości szybciej.
 
 **Type Checker**
 : Narzędzie sprawdzające spójność typów (na podstawie type hints) przed uruchomieniem programu, wychwytujące błędy, które inaczej ujawniłyby się dopiero w czasie wykonania. Przykłady to [`mypy`](https://mypy.readthedocs.io/), [`pyright`](https://github.com/microsoft/pyright) oraz `ty`.
@@ -95,10 +95,10 @@
 : Framework uruchamiający zestaw automatycznych kontroli (np. lint, formatowanie, wykrywanie sekretów) jako tzw. git hooki - przed każdym commitem. Zapewnia, że do repozytorium trafia wyłącznie kod spełniający przyjęte standardy.
 
 **[ty](https://github.com/astral-sh/ty)**
-: Szybki type checker Pythona tworzony przez firmę Astral i napisany w Rust. Od grudnia 2025 dostępny w fazie beta.
+: Szybki type checker Pythona tworzony przez firmę Astral i napisany w Rust. Od grudnia 2025 dostępny w wczesnej fazie eksperymentalnej (0.0.x).
 
 **[uv](https://docs.astral.sh/uv/)**
-: Ultraszybki, zunifikowany menedżer projektów, pakietów i wersji Pythona stworzony przez firmę Astral i napisany w Rust. Zastępuje w jednym narzędziu funkcje `pip`, `venv`, `pyenv`, `pipx` oraz `poetry`.
+: Ultraszybki, zunifikowany menedżer projektów, pakietów i wersji Pythona stworzony przez firmę Astral i napisany w Rust. Zastępuje w jednym narzędziu funkcje `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine` oraz `virtualenv`.
 
 ---
 

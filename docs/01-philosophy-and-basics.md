@@ -40,7 +40,7 @@ To jedna z największych zmian podnoszących komfort pracy. W Pythonie zapominas
 
 * Główny mechanizm to **zliczanie referencji (reference counting)**. Każdy obiekt w pamięci ma licznik, który śledzi, ile zmiennych (nazw) na niego wskazuje. Gdy licznik spada do zera, obiekt jest usuwany.
 * Dodatkowo **Garbage Collector (GC)** posiada mechanizmy do wykrywania i usuwania cyklicznych odwołań, z którymi sam licznik referencji by sobie nie poradził.
-* Dla dewelopera oznacza to koniec zmartwień o wycieki pamięci (`memory leaks`) czy wiszące wskaźniki (`dangling pointers`), co eliminuje całą klasę trudnych błędów.
+* Dla dewelopera oznacza to koniec ręcznego zarządzania pamięcią (brak `free()`/`delete`) i wiszących wskaźników (`dangling pointers`), co eliminuje całą klasę trudnych błędów.
 * Ceną za tę wygodę jest pewien narzut wydajnościowy i mniejsza kontrola nad układem danych w pamięci.
 
 > [!NOTE]
@@ -152,7 +152,7 @@ Wskazówki typów same w sobie niczego nie sprawdzają - potrzebujesz do tego os
 
 * **[`mypy`](https://mypy.readthedocs.io/)** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
 * **[`pyright`](https://github.com/microsoft/pyright)** - type checker od Microsoftu, osiąga ~98% zgodności z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code (rozszerzenie Pylance).
-* **[`ty`](https://github.com/astral-sh/ty)** - nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne wydanie 1.0 celowane na 2026. Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
+* **[`ty`](https://github.com/astral-sh/ty)** - nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–100x szybszy od `mypy` i Pyright**. Status: **wczesna wersja eksperymentalna** (0.0.x, od grudnia 2025). Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
 
 > [!TIP]
 > Jeśli zaczynasz nowy projekt, warto od razu skonfigurować type checker i traktować jego ostrzeżenia jak błędy kompilacji znane z C++/C#. Więcej o konfiguracji narzędzi znajdziesz w rozdziale [`02-environment-and-tools.md`](./02-environment-and-tools.md).
@@ -180,7 +180,7 @@ Twoja znajomość kontenerów z biblioteki STL (Standard Template Library) oraz 
 
 ### `__init__` i `self`
 
-W Pythonie konstruktor to specjalna metoda `__init__`. Pierwszy argument każdej metody instancji to, z konwencji, `self`. Jest to jawny odpowiednik wskaźnika `this` z C++ czy C#.
+W Pythonie konstruktor to specjalna metoda `__init__` (ściślej: `__init__` jest *inicjalizatorem* - obiekt tworzy `__new__`; różnica ma znaczenie przy dziedziczeniu z typami niezmiennymi jak `int` czy `tuple`). Pierwszy argument każdej metody instancji to, z konwencji, `self`. Jest to jawny odpowiednik wskaźnika `this` z C++ czy C#.
 
 ```python
 class KontoBankowe:
@@ -443,5 +443,5 @@ plt.show()
 > Tematy GenAI, agentów i RAG rozwijamy szczegółowo w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).
 
 [^py314]: Python 3.14.0 został wydany 7 października 2025 r. Zob. [What's New in Python 3.14](https://docs.python.org/3.14/whatsnew/3.14.html).
-[^pep779]: PEP 779 — *Free-threaded CPython in Python 3.14*. Zob. [peps.python.org/pep-0779](https://peps.python.org/pep-0779/).
+[^pep779]: PEP 779 — *Criteria for Supported Status for Free-Threaded Python* (kryteria awansu free-threaded buildu ze statusu eksperymentalnego do wspieranego). Sam free-threading wprowadza PEP 703 (*Making the Global Interpreter Lock Optional in CPython*). Zob. [peps.python.org/pep-0779](https://peps.python.org/pep-0779/).
 [^cpython]: CPython to referencyjna, najczęściej używana implementacja Pythona, napisana w C. Zob. [github.com/python/cpython](https://github.com/python/cpython).

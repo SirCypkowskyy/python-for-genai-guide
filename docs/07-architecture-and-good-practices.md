@@ -308,7 +308,7 @@ Diagram pokazuje istotę wzorca: **wszystkie strzałki zależności wskazują do
 
 Granice architektoniczne mają jedną nieprzyjemną właściwość: **erodują**. Reguła "feature nie importuje innego feature'a" obowiązuje dokładnie do pierwszego pull requesta, w którym ktoś pod presją deadline'u doda "tymczasowy" import - a recenzent go przeoczy. Po pół roku takich PR-ów Twoja Vertical Slice Architecture jest znów Big Ball of Mud, tylko z ładnymi nazwami katalogów.
 
-Rozwiązanie: **granice, które nie są egzekwowane automatycznie, nie istnieją.** Reguły architektoniczne trzeba zapisać jako **testy** i uruchamiać w CI - wtedy naruszenie granicy psuje build, a nie czeka na uważność recenzenta. W ekosystemie Python służy do tego m.in. [`pytest-archon`](https://github.com/jwbargsten/pytest-archon)[^archon] (odpowiednik [ArchUnit](https://archunit.org/) z Javy).
+Rozwiązanie: **granice, które nie są egzekwowane automatycznie, nie istnieją.** Reguły architektoniczne trzeba zapisać jako **testy** i uruchamiać w CI - wtedy naruszenie granicy psuje build, a nie czeka na uważność recenzenta. W ekosystemie Python służy do tego m.in. [`pytest-archon`](https://github.com/jwbargsten/pytest-archon)[^archon] (inspirowane [ArchUnit](https://archunit.org/) z Javy).
 
 ```python
 def test_features_dont_import_from_each_other():
@@ -363,11 +363,11 @@ Zwróć uwagę na sekcję **Konsekwencje** - dobry ADR uczciwie wymienia także 
 
 Na koniec obserwacja, która tłumaczy, dlaczego architektura tak często "nie wychodzi" mimo dobrych intencji. **Prawo Conwaya** głosi:
 
-> Organizacje projektują systemy, które są kopią struktury komunikacyjnej tej organizacji.[^conway]
+> Organizacje projektujące systemy są *ograniczone* do tworzenia projektów, które są kopią struktur komunikacyjnych tych organizacji.[^conway]
 
 Innymi słowy: jeśli masz cztery zespoły, prędzej czy później powstaną cztery komponenty (albo cztery usługi) - niezależnie od tego, co mówi diagram architektury. Jeśli dwa zespoły rzadko ze sobą rozmawiają, granica między ich kodem będzie ostra; jeśli wszyscy siedzą w jednym pokoju i gadają non stop, kod zleje się w monolit. **Struktura systemu odzwierciedla strukturę komunikacji ludzi, którzy go budują.**
 
-Praktyczny wniosek to **Inverse Conway Maneuver** (odwrotny manewr Conwaya): zamiast walczyć z prawem Conwaya, **wykorzystaj je celowo**. Jeśli chcesz architektury z trzema niezależnymi, luźno powiązanymi modułami - uformuj trzy niezależne, luźno powiązane zespoły, każdy odpowiedzialny za jeden moduł. Struktura organizacji *wymusi* wtedy pożądaną strukturę kodu. Architektura nie jest więc wyłącznie decyzją techniczną - jest też **decyzją o tym, jak zorganizować ludzi**.
+Praktyczny wniosek to **Inverse Conway Maneuver** (termin z Technology Radar firmy Thoughtworks, 2014) (odwrotny manewr Conwaya): zamiast walczyć z prawem Conwaya, **wykorzystaj je celowo**. Jeśli chcesz architektury z trzema niezależnymi, luźno powiązanymi modułami - uformuj trzy niezależne, luźno powiązane zespoły, każdy odpowiedzialny za jeden moduł. Struktura organizacji *wymusi* wtedy pożądaną strukturę kodu. Architektura nie jest więc wyłącznie decyzją techniczną - jest też **decyzją o tym, jak zorganizować ludzi**.
 
 > [!NOTE]
 > Konsekwencja dla małego zespołu: w trzyosobowym zespole, gdzie wszyscy o wszystkim wiedzą, prawo Conwaya naturalnie ciągnie w stronę monolitu z miękkimi granicami - i to jest *w porządku* dla tej skali (topologia 2 z tabeli). Próba narzucenia mikrousług trzem osobom siedzącym obok siebie to walka z Conwayem, którą zwykle się przegrywa. Architektura, zespół i skala muszą do siebie pasować.
@@ -375,7 +375,7 @@ Praktyczny wniosek to **Inverse Conway Maneuver** (odwrotny manewr Conwaya): zam
 ## Dalsze materiały
 
 * **Model C4** - notacja do diagramowania architektury na czterech poziomach abstrakcji: **Context** (system w otoczeniu), **Container** (aplikacje, bazy, usługi), **Component** (moduły wewnątrz kontenera) i **Code** (klasy). Pozwala rozmawiać o architekturze na właściwym poziomie szczegółowości dla danego odbiorcy - bez tonięcia w detalu. Świetnie uzupełnia diagramy Mermaid używane w tym przewodniku. Zob. [c4model.com](https://c4model.com/).[^c4]
-* **12-Factor App** - zbiór dwunastu zasad budowy aplikacji cloud-native: m.in. konfiguracja w zmiennych środowiskowych, bezstanowe procesy, jawne deklarowanie zależności, równoważność środowisk dev/prod. To zasady *operacyjne*, ortogonalne do topologii z tego rozdziału - stosują się do każdej z czterech. Zob. [12factor.net](https://12factor.net/).[^twelvefactor]
+* **12-Factor App** - zbiór dwunastu zasad budowy aplikacji SaaS: m.in. konfiguracja w zmiennych środowiskowych, bezstanowe procesy, jawne deklarowanie zależności, równoważność środowisk dev/prod. To zasady *operacyjne*, ortogonalne do topologii z tego rozdziału - stosują się do każdej z czterech. Zob. [12factor.net](https://12factor.net/).[^twelvefactor]
 * **User stories jako źródło granic** - dobrze sformułowane *user stories* ("jako X chcę Y, aby Z") są naturalnym punktem wyjścia do wytyczania granic feature'ów w Vertical Slice Architecture: jedna spójna historia użytkownika to często jeden plaster. Granice domenowe rzadko wymyśla się przy tablicy - wyłaniają się z języka, którym o systemie mówi biznes (to także rdzeń **DDD** i koncepcji *ubiquitous language*).
 * **Pojęcia** - definicje terminów użytych w tym rozdziale (DTO, Dependency Inversion, structural typing, composition root, ADR) znajdziesz w [słowniczku](./08-glossary.md).
 

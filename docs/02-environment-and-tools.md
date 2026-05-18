@@ -66,7 +66,7 @@ flowchart LR
 
 * **Wydajność** - operacje na zależnościach wykonuje **10–100x szybciej niż `pip`**.
 * **Licencja MIT** - w pełni otwarte oprogramowanie.
-* **Brak vendor lock-in** - `uv` trzyma się standardowego pliku `pyproject.toml` ([PEP 621](https://peps.python.org/pep-0621/)). Projekt zarządzany przez `uv` pozostaje w pełni kompatybilny z `pip` i innymi narzędziami zgodnymi ze standardami.
+* **Brak vendor lock-in** - `uv` trzyma się standardowego pliku `pyproject.toml` ([PEP 621](https://peps.python.org/pep-0621/)[^pep621]). Projekt zarządzany przez `uv` pozostaje w pełni kompatybilny z `pip` i innymi narzędziami zgodnymi ze standardami.
 
 ### Instalacja
 
@@ -258,7 +258,7 @@ Trzy różne kategorie narzędzi pilnują jakości kodu Pythona. Łatwo je pomyl
 
 [Ruff](https://docs.astral.sh/ruff/) (Astral, Rust) łączy w jednym narzędziu funkcje lintera i formattera. Jest **pełnoprawnym zamiennikiem `black`** (formatter) oraz **`isort`** (sortowanie importów), pokrywa też **większość reguł `flake8`** i znaczną część reguł `pylint` oraz `bandit`. Warto jednak wiedzieć, że Ruff **nie jest jeszcze w 100% kompletnym zamiennikiem całego `pylint` ani `bandit`** - część ich reguł i wtyczek wciąż nie ma odpowiednika. Mimo to dla zdecydowanej większości projektów sam Ruff w zupełności wystarcza:
 
-* implementuje **ponad 800 reguł** odtworzonych z **50+ wtyczek** klasycznego ekosystemu `flake8`;
+* implementuje **ponad 900 reguł** odtworzonych z **50+ wtyczek** klasycznego ekosystemu `flake8`[^ruff-rules];
 * jest **10–100x szybszy niż `pylint`** - przelicenie ~50 000 linii kodu zajmuje mu około **1 sekundy**;
 * całe codzienne API to **dwie komendy**:
 
@@ -341,13 +341,13 @@ Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type ch
 
 * **[`mypy`](https://mypy.readthedocs.io/)** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
 * **[`pyright`](https://github.com/microsoft/pyright)** - type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
-* **[`ty`](https://github.com/astral-sh/ty)** - type checker od Astral, w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne 1.0 celowane na 2026. Domyka toolchain `uv` + `ruff` + `ty`.
+* **[`ty`](https://github.com/astral-sh/ty)** - type checker od Astral, w Rust, **10–100x szybszy od `mypy` i Pyright**. Status: **wczesna wersja eksperymentalna** (0.0.x, od grudnia 2025). Domyka toolchain `uv` + `ruff` + `ty`.
 
 > [!NOTE]
 > Narzędzia `black`, `flake8` oraz `isort` traktuj dziś jako **legacy** - wciąż działają i są obecne w wielu projektach, ale w nowych projektach ich rolę w całości przejmuje `ruff`.
 
 > [!NOTE]
-> W marcu 2026 **OpenAI przejęło firmę Astral** - twórcę `uv`, `ruff` i `ty`. Narzędzia pozostają otwartoźródłowe (licencja MIT) i oparte na standardach PEP, więc dla użytkownika nic się nie zmienia.
+> W marcu 2026 **Astral dołączyło do OpenAI**[^openai-astral] - twórcę `uv`, `ruff` i `ty`. Narzędzia pozostają otwartoźródłowe (licencja MIT) i oparte na standardach PEP, więc dla użytkownika nic się nie zmienia.
 >
 > Drugorzędnym, ale istotnym powodem, dla którego szybkość toolingu ma dziś znaczenie, jest **era asystentów kodu**. Modele takie jak Claude, Codex czy Copilot potrafią same wywołać linter lub type checker, sparsować jego wynik i na tej podstawie skorygować kod. Przy linterze działającym 30 sekund taka pętla samokorekty jest niepraktyczna; przy `ruff` zwracającym wynik w ~100 ms - staje się naturalna. Więcej o agentowych pętlach pracy z kodem znajdziesz w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).
 
@@ -430,7 +430,7 @@ Pliki `.ipynb` to w istocie dokumenty JSON zawierające również wyniki wykonan
 ## Źródła i przypisy
 
 [^1]: Benchmarki wydajności mają charakter orientacyjny - rzędy wielkości odpowiadają publikowanym pomiarom Astral; konkretne czasy zależą od projektu, sieci i sprzętu.
-[^uv-speed]: Porównanie wydajności uv vs pip vs Poetry — zob. oficjalny benchmark Astral: [docs.astral.sh/uv/benchmark](https://docs.astral.sh/uv/#performance).
+[^uv-speed]: Porównanie wydajności uv vs pip vs Poetry — zob. oficjalny benchmark Astral: [docs.astral.sh/uv/#performance](https://docs.astral.sh/uv/#performance).
 [^ruff-rules]: Pełna lista reguł Ruff: [docs.astral.sh/ruff/rules](https://docs.astral.sh/ruff/rules/).
-[^openai-astral]: Komunikat o przejęciu firmy Astral przez OpenAI (marzec 2026): [astral.sh/blog/openai](https://astral.sh/blog/).
+[^openai-astral]: Komunikat o dołączeniu Astral do OpenAI (marzec 2026): [astral.sh/blog/openai](https://astral.sh/blog/openai).
 [^pep621]: PEP 621 — *Storing project metadata in pyproject.toml*. Zob. [peps.python.org/pep-0621](https://peps.python.org/pep-0621/).
