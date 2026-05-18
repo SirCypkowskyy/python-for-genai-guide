@@ -494,7 +494,7 @@ Działające demo a działająca produkcja to dwa różne światy. Aplikacja LLM
 | :--- | :--- | :--- |
 | **Prompt injection** | Złośliwe instrukcje w danych wejściowych lub w dokumentach RAG przejmują kontrolę nad modelem. | Oddzielaj instrukcje systemowe od danych użytkownika; nie ufaj treści zewnętrznej; waliduj output; ogranicz, co model może zrobić z wynikiem. |
 | **Uprawnienia narzędzi** | Agent z dostępem do narzędzi (baza, e-mail, system plików, API) może wykonać groźną, nieodwracalną akcję - sam lub zmanipulowany przez injection. | **Zasada najmniejszych uprawnień**: udostępniaj tylko niezbędne narzędzia, najwęższy zakres. Dla akcji nieodwracalnych (usunięcie danych, wysyłka, płatność) wymagaj **human-in-the-loop** - potwierdzenia człowieka. |
-| **Wyciek danych wrażliwych** | Dane osobowe (PII), sekrety, dane regulowane trafiają do chmurowego modelu lub do logów. | **Redaguj PII** przed wysłaniem do modelu chmurowego; **nie loguj sekretów** ani pełnych promptów z danymi wrażliwymi. Dla danych regulowanych rozważ **suwerenne AI** - patrz case study QueryVault niżej. |
+| **Wyciek danych wrażliwych** | Dane osobowe (PII), sekrety, dane regulowane trafiają do chmurowego modelu lub do logów. | **Redaguj PII** przed wysłaniem do modelu chmurowego; **nie loguj sekretów** ani pełnych promptów z danymi wrażliwymi. Dla danych regulowanych rozważ **suwerenne AI** (lokalne modele, on-premise inference). |
 | **Koszty i limity** | Tokeny kosztują; pętla agentowa lub złośliwy ruch potrafią wygenerować rachunek lawinowo. | Ustawiaj `max_tokens`; monitoruj zużycie tokenów i koszt; **cache'uj** powtarzalne odpowiedzi; nakładaj limity per użytkownik/sesję. |
 | **Rate limity i odporność** | API dostawców mają rate limity i miewają przejściowe awarie (błędy `429`, `5xx`, timeouty). | Stosuj **retry z exponential backoff**, obsługuj `429`/`5xx`, ustawiaj rozsądne **timeouty**; projektuj na to, że wywołanie *może* się nie udać. |
 | **Streaming** | Generacja długiej odpowiedzi trwa - użytkownik patrzy na zamrożony ekran. | **Strumieniuj odpowiedź** (token po tokenie). Nie zmniejsza to całkowitej latencji, ale radykalnie poprawia *odczuwalną* responsywność UI. |
@@ -502,80 +502,6 @@ Działające demo a działająca produkcja to dwa różne światy. Aplikacja LLM
 
 > [!IMPORTANT]
 > Te zagadnienia nie są opcjonalnym "hardeningiem na później". Prompt injection i nadmiarowe uprawnienia narzędzi to realne wektory ataku, a brak limitów kosztów i obsługi rate limitów potrafi położyć aplikację w pierwszym dniu produkcji. Wbuduj je w architekturę od początku - wymienny *port* do dostawcy LLM (patrz [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md)) ułatwia spięcie w jednym miejscu retry, limitów, redakcji PII i logowania.
-
----
-
-## 🏛️ Case Study: QueryVault - produkcyjny RAG i suwerenny NL2SQL
-
-Teoria nabiera sensu na konkretnym przykładzie. **QueryVault**[^queryvault] to projekt FOSS (licencja MIT, wyróżniony nagrodą Dell *"AI on Your Desktop"*), który łączy w jednym systemie niemal wszystkie wzorce omówione w tym rozdziale: RAG, constrained generation, lokalne modele open-weight i bezpieczeństwo produkcyjne.
-
-[^queryvault]: QueryVault - suwerenny silnik NL2SQL / generative BI, projekt open-source na licencji MIT.
-
-### Problem: dlaczego "wyślij schemat do chmurowego LLM" nie wystarczy
-
-QueryVault to **suwerenny (sovereign), on-premise silnik NL2SQL** (*natural language to SQL*) i *generative BI*: użytkownik zadaje pytanie w języku naturalnym ("Ilu klientów z województwa mazowieckiego złożyło zamówienie w zeszłym kwartale?"), a system generuje zapytanie SQL, wykonuje je i zwraca odpowiedź - **w całości lokalnie, dane nigdy nie opuszczają organizacji**.
-
-Motywacja jest czysto inżyniersko-regulacyjna. Sektory takie jak **bankowość czy administracja publiczna nie mogą wysyłać zapytań ani schematów swoich baz do chmurowych LLM** - staje to w sprzeczności z RODO, rozporządzeniem MAR (nadużycia rynkowe) oraz wymogami nadzorczymi (np. KNF). Schemat bazy danych i treść zapytań biznesowych to same w sobie informacje wrażliwe.
-
-### Architektura: czteroetapowy lokalny pipeline
-
-```mermaid
-flowchart LR
-    NL[1. Pytanie w języku<br/>naturalnym] --> RET[2. Schema retrieval / RAG<br/>fragmenty schematu<br/>z pgvector]
-    RET --> GEN[3. Constrained SQL generation<br/>lokalny LLM + gramatyka CFG]
-    GEN --> EXEC[4. Wykonanie<br/>RBAC + row-level security]
-    EXEC --> ANS[Odpowiedź dla<br/>użytkownika]
-
-    style NL fill:#e3f2fd
-    style RET fill:#e8f5e9
-    style GEN fill:#fff3e0
-    style EXEC fill:#fce4ec
-```
-
-1. **Pytanie w języku naturalnym** - wejście od użytkownika.
-2. **Schema retrieval / RAG** - system nie wrzuca całego schematu bazy do promptu (byłby ogromny i zaszumiony). Zamiast tego fragmenty schematu (definicje tabel, kolumn, relacji) są zaindeksowane w **bazie wektorowej pgvector**, a retrieval pobiera tylko te fragmenty, które są istotne dla danego pytania. To klasyczny RAG zastosowany do metadanych bazy.
-3. **Constrained SQL generation** - generację SQL przez **lokalny LLM** ogranicza **gramatyka bezkontekstowa (CFG, *context-free grammar*)**. Model nie generuje swobodnego tekstu - każdy kolejny token musi być zgodny z gramatyką poprawnego SQL. Gwarantuje to **składniowo poprawny SQL** i pozwala **z góry zablokować niebezpieczne konstrukcje** (np. `DROP`, `DELETE` bez `WHERE`).
-4. **Wykonanie** - zapytanie jest uruchamiane z egzekwowaniem **RBAC** (kontrola dostępu oparta na rolach) i **row-level security** (użytkownik widzi tylko wiersze, do których ma uprawnienia).
-
-### Constrained generation - wymuszanie poprawnego outputu
-
-Etap 3 wprowadza technikę wartą zapamiętania: **constrained generation** (generacja ograniczona). To metoda **wymuszania na LLM outputu zgodnego ze ścisłą strukturą** - gramatyką, schematem JSON, wyrażeniem regularnym - poprzez ograniczanie zbioru dozwolonych tokenów *na każdym kroku dekodowania*.
-
-To jakościowo silniejsze niż samo "poproszenie modelu o poprawny format" w promptcie:
-
-| Podejście | Gwarancja poprawności | Mechanizm |
-| :--- | :--- | :--- |
-| Prompt "zwróć poprawny SQL" | Brak - model może się pomylić | Instrukcja w promptcie |
-| Walidacja po fakcie (Pydantic) | Wykrycie błędu *po* generacji | Walidacja + ewentualny retry |
-| **Constrained generation (CFG)** | **Strukturalnie niemożliwe wygenerowanie niepoprawnego outputu** | Filtrowanie tokenów na etapie dekodowania |
-
-W QueryVault to fundament bezpieczeństwa: niepoprawny lub niebezpieczny SQL nie jest "wychwytywany" - jest **strukturalnie niemożliwy do wygenerowania**.
-
-### Benchmark: lokalny model bije model chmurowy
-
-Najciekawszy wniosek z projektu dotyczy doboru modelu. W zadaniu **text-to-SQL** zmierzono dokładność (accuracy):
-
-| Model | Typ | Dokładność text-to-SQL |
-| :--- | :--- | :--- |
-| **Qwen 2.5-Coder-32B** | lokalny, open-weight | **96%** |
-| GPT-4.5 Turbo | chmurowy | 94% |
-| Llama 3.1-70B | lokalny, open-weight | 89% |
-| GPT-3.5 Turbo | chmurowy | 71% |
-
-Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wyspecjalizowanym zadaniu **lokalny, mniejszy model (Qwen 2.5-Coder-32B) przewyższa większy model chmurowy**. Nie trzeba poświęcać jakości, by zachować suwerenność danych - a dla sektorów regulowanych jest to często warunek konieczny, nie opcja.
-
-### Stos technologiczny
-
-* **Modele lokalne**: [**Bielik**](https://bielik.ai/) (polski LLM - istotne dla pytań i danych w języku polskim) oraz **Qwen 2.5-Coder-32B** (wyspecjalizowany w generowaniu kodu/SQL).
-
-* **Sprzęt docelowy**: lokalna stacja inferencyjna **NVIDIA GB10 Grace Blackwell** - inferencja modeli 30B+ "na biurku", bez chmury.
-
-* **Baza wektorowa**: **pgvector** (retrieval fragmentów schematu).
-
-* **Bezpieczeństwo**: RBAC, row-level security, constrained generation przez CFG, uwierzytelnianie **JWT**, hashowanie haseł **Argon2id**.
-
-> [!TIP]
-> QueryVault jest też dobrym przykładem **odseparowania kodu domenowego od konkretnego SDK LLM**. Możliwość podmiany modelu (Bielik ↔ Qwen ↔ inny) bez przepisywania logiki aplikacji to wprost wzorzec *Ports & Adapters* - szczegółowo opisany w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć użytych w tym studium przypadku (NL2SQL, CFG, RBAC, RAG) znajdziesz w [słowniczku](./08-glossary.md).
 
 [^mcp-linux-foundation]: MCP przekazany pod opiekę Linux Foundation w grudniu 2025 r. Zob. komunikat: [linuxfoundation.org/press](https://www.linuxfoundation.org/press/).
 [^mcp-intro]: Oryginalny wprowadzający post Anthropic o MCP (listopad 2024): [anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol).
