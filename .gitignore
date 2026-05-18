@@ -215,3 +215,7 @@ AGENTS.md
 
 # Merytoryczne recenzje dokumentacji (pliki robocze)
 reviews/
+
+# Towarzysz wizualny burzy mózgów (Superpowers) — pliki robocze sesji
+.superpowers/
+.gstack/

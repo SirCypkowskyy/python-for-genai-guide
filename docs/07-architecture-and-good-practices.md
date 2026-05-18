@@ -341,7 +341,7 @@ Architektura to ciąg decyzji. Decyzja podjęta, ale nieudokumentowana, jest po 
 
 Rozwiązaniem są **ADR (Architecture Decision Records)** - krótkie, wersjonowane dokumenty (zwykle w `docs/adr/` w repozytorium, obok kodu), z których każdy opisuje jedną decyzję: jej kontekst, samą decyzję i jej konsekwencje. ADR jest **niezmienny** - gdy decyzja się zmienia, nie edytujesz starego ADR, tylko piszesz nowy, który "supersedes" poprzedni. Dzięki temu masz nie tylko stan obecny, ale i *historię rozumowania*.
 
-```text
+```md
 # ADR-014: Użycie Protocol zamiast ABC dla portów
 
 ## Status: Zaakceptowany

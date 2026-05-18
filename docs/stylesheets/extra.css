@@ -1,0 +1,714 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+/* =============================================================
+   Python dla Data Science, ML i GenAI - markowy motyw strony.
+
+   Kierunek: "monochrom + dev-tooling". Monochromatyczna baza
+   (biel/czern), jeden funkcjonalny akcent w kolorze rdzy
+   (Rust/Astral) zarezerwowany dla elementow interaktywnych:
+   linkow, focusa, aktywnej nawigacji.
+
+   Spis sekcji:
+     1.  Tokeny - tryb jasny / ciemny
+     2.  Kod - paleta wspolna (zawsze ciemne bloki)
+     3.  Typografia i naglowki
+     4.  Linki
+     5.  Bloki kodu i kod inline
+     6.  Admonitiony
+     7.  Tabele, cytaty, separatory
+     8.  Header
+     9.  Nawigacja boczna i spis tresci
+     10. Stopka
+     11. Hero (strona startowa)
+     12. Siatka kart rozdzialow
+     13. Stany focus + ruch
+   ============================================================= */
+
+/* --- 1. Tokeny ----------------------------------------------- */
+
+[data-md-color-scheme="default"] {
+  --g-paper:       #ffffff;
+  --g-surface:     oklch(0.974 0.004 60);
+  --g-line:        oklch(0.912 0.006 55);
+  --g-line-strong: oklch(0.82 0.009 55);
+  --g-ink:         #0a0a0a;
+  --g-ink-soft:    oklch(0.44 0.012 50);
+  --g-ink-faint:   oklch(0.60 0.010 50);
+  --g-accent:      #d9480f;
+  --g-accent-deep: #b23a0a;
+  --g-on-accent:   #ffffff;
+
+  --g-code-bg:     #0b0b0c;
+  --g-code-edge:   #0b0b0c;
+  --g-hero-bg:     #0a0a0a;
+  --g-hero-edge:   transparent;
+
+  /* mapowanie na zmienne Zensical/Material */
+  --md-default-bg-color:           var(--g-paper);
+  --md-default-fg-color:           var(--g-ink);
+  --md-default-fg-color--light:    var(--g-ink-soft);
+  --md-default-fg-color--lighter:  var(--g-ink-faint);
+  --md-default-fg-color--lightest: var(--g-line);
+  --md-typeset-color:              var(--g-ink);
+  --md-typeset-a-color:            var(--g-accent);
+  --md-accent-fg-color:            var(--g-accent-deep);
+  --md-primary-fg-color:           var(--g-ink);
+  --md-primary-fg-color--light:    var(--g-ink-soft);
+  --md-primary-fg-color--dark:     #000000;
+  --md-primary-bg-color:           var(--g-paper);
+  --md-footer-bg-color:            var(--g-paper);
+  --md-admonition-bg-color:        var(--g-surface);
+  --md-admonition-fg-color:        var(--g-ink);
+}
+
+[data-md-color-scheme="slate"] {
+  --g-paper:       #0d0d0d;
+  --g-surface:     oklch(0.195 0.005 60);
+  --g-line:        oklch(0.30 0.008 60);
+  --g-line-strong: oklch(0.42 0.010 60);
+  --g-ink:         #f2f2f2;
+  --g-ink-soft:    oklch(0.74 0.012 65);
+  --g-ink-faint:   oklch(0.56 0.012 60);
+  --g-accent:      #ff7a2e;
+  --g-accent-deep: #ff9558;
+  --g-on-accent:   #0a0a0a;
+
+  --g-code-bg:     #161618;
+  --g-code-edge:   oklch(0.30 0.008 60);
+  --g-hero-bg:     #060606;
+  --g-hero-edge:   oklch(0.30 0.008 60);
+
+  --md-default-bg-color:           var(--g-paper);
+  --md-default-fg-color:           var(--g-ink);
+  --md-default-fg-color--light:    var(--g-ink-soft);
+  --md-default-fg-color--lighter:  var(--g-ink-faint);
+  --md-default-fg-color--lightest: var(--g-line);
+  --md-typeset-color:              var(--g-ink);
+  --md-typeset-a-color:            var(--g-accent);
+  --md-accent-fg-color:            var(--g-accent-deep);
+  --md-primary-fg-color:           var(--g-ink);
+  --md-primary-bg-color:           var(--g-paper);
+  --md-footer-bg-color:            var(--g-paper);
+  --md-admonition-bg-color:        var(--g-surface);
+  --md-admonition-fg-color:        var(--g-ink);
+}
+
+/* --- 2. Kod: paleta wspolna ---------------------------------- */
+/* Bloki kodu sa ciemne w obu trybach - sygnaturowy detal
+   dev-tooling. Paleta podswietlania celowo niskonasycona;
+   slowa kluczowe w rodzinie akcentu wiaza kod z marka.
+   Konieczny !important — Material/Zensical nadpisuje zmienne
+   --md-code-* per-scheme po załadowaniu extra.css. */
+
+[data-md-color-scheme] {
+  --md-code-fg-color:             #e7e7e7 !important;
+  --md-code-hl-comment-color:     #6b6b72 !important;
+  --md-code-hl-keyword-color:     #ff9558 !important;
+  --md-code-hl-special-color:     #ff9558 !important;
+  --md-code-hl-string-color:      #cdbc9c !important;
+  --md-code-hl-generic-color:     #cdbc9c !important;
+  --md-code-hl-number-color:      #dcdcdc !important;
+  --md-code-hl-function-color:    #ffffff !important;
+  --md-code-hl-constant-color:    #e3e3e3 !important;
+  --md-code-hl-name-color:        #e7e7e7 !important;
+  --md-code-hl-variable-color:    #e7e7e7 !important;
+  --md-code-hl-operator-color:    #9a9aa1 !important;
+  --md-code-hl-punctuation-color: #9a9aa1 !important;
+  --md-code-hl-color:             color-mix(in oklab, #ff7a2e 20%, transparent) !important;
+  --md-code-bg-color:             var(--g-code-bg) !important;
+  --md-code-bg-color--light:      #1a1a1e !important;
+  --md-code-bg-color--lighter:    #2a2a2e !important;
+}
+
+/* --- 3. Typografia i naglowki -------------------------------- */
+
+:root {
+  --g-display: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-family: var(--g-display);
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  color: var(--g-ink);
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+  font-size: clamp(1.85rem, 1.5rem + 1.4vw, 2.45rem);
+  line-height: 1.12;
+  margin-bottom: 0.7em;
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1.2rem + 0.7vw, 1.7rem);
+  line-height: 1.22;
+  margin-top: 2.4em;
+  padding-top: 1.3em;
+  border-top: 1px solid var(--g-line);
+}
+
+.md-typeset h2:first-of-type { border-top: 0; padding-top: 0; margin-top: 1.6em; }
+
+.md-typeset h3 { font-size: 1.18rem; margin-top: 1.9em; }
+
+/* etykieta sekcji - drobny, monospace'owy "kicker" */
+.md-typeset .md-content__inner > h2::before {
+  content: "";
+}
+
+/* --- 4. Linki ------------------------------------------------ */
+
+.md-typeset a {
+  color: var(--g-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklab, var(--g-accent) 40%, transparent);
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+
+.md-typeset a:hover {
+  color: var(--g-accent-deep);
+  text-decoration-color: currentcolor;
+}
+
+.md-typeset a code { color: inherit; }
+
+/* --- 5. Bloki kodu i kod inline ------------------------------ */
+
+.md-typeset pre,
+.md-typeset .highlight,
+.md-typeset .highlight > pre {
+  border-radius: 10px;
+}
+
+.md-typeset pre > code {
+  border: 1px solid var(--g-code-edge);
+  border-radius: 10px;
+}
+
+/* kod inline - delikatny pud zgodny z trybem (nie ciemny) */
+.md-typeset :not(pre) > code {
+  background-color: var(--g-surface);
+  color: var(--g-ink);
+  border: 1px solid var(--g-line);
+  border-radius: 5px;
+  padding: 0.08em 0.36em;
+  font-size: 0.84em;
+}
+
+/* Nawigacja / TOC / sidebar / header — inline code nie powinien dostawać
+   ciemnego tła bloku kodu (--md-code-bg-color). .md-typeset code ma w Material
+   specyficzność (0,1,2), a reguły poniżej (0,2,1) + kolejność w arkuszu
+   ustalają jasny pud (surface) + inherit. Obejmuje oba tryby kolorów. */
+.md-nav .md-typeset code,
+.md-nav :not(pre) > code,
+.md-sidebar :not(pre) > code,
+.md-search-result :not(pre) > code,
+.md-header :not(pre) > code,
+.md-dialog :not(pre) > code,
+.md-post :not(pre) > code {
+  background-color: var(--g-surface) !important;
+  color: inherit !important;
+  border: 1px solid var(--g-line) !important;
+  border-radius: 5px !important;
+  padding: 0.08em 0.36em !important;
+  font-size: 0.84em !important;
+}
+
+/* Inline code poza osadzonym .md-typeset (np. nagłówek, wyniki wyszukiwania). */
+[data-md-color-scheme="default"] .md-nav :not(pre) > code,
+[data-md-color-scheme="default"] .md-sidebar :not(pre) > code,
+[data-md-color-scheme="default"] .md-search-result :not(pre) > code,
+[data-md-color-scheme="default"] .md-header :not(pre) > code,
+[data-md-color-scheme="default"] .md-dialog :not(pre) > code,
+[data-md-color-scheme="default"] .md-post :not(pre) > code {
+  background-color: var(--g-surface);
+  color: inherit;
+  border: 1px solid var(--g-line);
+  border-radius: 5px;
+  padding: 0.08em 0.36em;
+  font-size: 0.84em;
+}
+
+.md-typeset .md-clipboard,
+.md-typeset .md-code__button { color: #b8b8bd; }
+
+.md-typeset .md-code__button {
+  border-radius: 5px;
+}
+
+.md-typeset .md-code__button::after {
+  background-color: currentcolor;
+}
+
+.md-typeset .md-clipboard:hover,
+.md-typeset .md-code__button:hover,
+.md-typeset button.md-clipboard:focus-visible,
+.md-typeset .md-code__button:focus-visible { color: var(--g-accent); }
+
+/* podswietlenie tekstu (mark) i kbd */
+.md-typeset mark {
+  background-color: color-mix(in oklab, var(--g-accent) 20%, transparent);
+  color: inherit;
+  border-radius: 3px;
+}
+.md-typeset kbd {
+  background-color: var(--g-surface);
+  border: 1px solid var(--g-line-strong);
+  border-radius: 5px;
+  box-shadow: none;
+  color: var(--g-ink);
+}
+
+/* --- 6. Mermaid ---------------------------------------------- */
+/* Diagramy Mermaid — nadpisujemy domyślne kolory SVG, by były
+   czytelne w obu trybach. W light mode Mermaid generuje ciemny
+   tekst na ciemnych węzłach — wymuszamy spójną, monochromatyczną
+   paletę z akcentem rdzy. */
+
+[data-md-color-scheme="default"] .mermaid {
+  color: var(--g-ink);
+  --md-mermaid-font-family: var(--g-display), "Inter", sans-serif;
+  --md-mermaid-label-fg-color: var(--g-ink);
+  --md-mermaid-label-bg-color: var(--g-paper);
+  --md-mermaid-node-bg-color: var(--g-surface);
+  --md-mermaid-node-fg-color: var(--g-line-strong);
+  --md-mermaid-edge-color: var(--g-ink-soft);
+}
+
+[data-md-color-scheme="default"] .mermaid .node rect,
+[data-md-color-scheme="default"] .mermaid .node polygon,
+[data-md-color-scheme="default"] .mermaid .node circle {
+  fill: var(--g-surface) !important;
+  stroke: var(--g-line-strong) !important;
+  stroke-width: 1.5px !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .nodeLabel,
+[data-md-color-scheme="default"] .mermaid .nodeLabel *,
+[data-md-color-scheme="default"] .mermaid .edgeLabel,
+[data-md-color-scheme="default"] .mermaid .edgeLabel *,
+[data-md-color-scheme="default"] .mermaid .label,
+[data-md-color-scheme="default"] .mermaid .label *,
+[data-md-color-scheme="default"] .mermaid text,
+[data-md-color-scheme="default"] .mermaid tspan {
+  color: var(--g-ink) !important;
+  fill: var(--g-ink) !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .edgePath .path {
+  stroke: var(--g-ink-soft) !important;
+  stroke-width: 1.5px !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .arrowheadPath {
+  fill: var(--g-ink-soft) !important;
+  stroke: var(--g-ink-soft) !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .cluster rect {
+  fill: color-mix(in oklab, var(--g-ink) 4%, transparent) !important;
+  stroke: var(--g-line) !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .cluster-label {
+  color: var(--g-ink-soft) !important;
+}
+
+/* Tryb ciemny — ciemne węzły, jasny tekst, akcent rdzy */
+[data-md-color-scheme="slate"] .mermaid {
+  color: var(--g-ink);
+  --md-mermaid-font-family: var(--g-display), "Inter", sans-serif;
+  --md-mermaid-label-fg-color: var(--g-ink);
+  --md-mermaid-label-bg-color: var(--g-paper);
+  --md-mermaid-node-bg-color: var(--g-surface);
+  --md-mermaid-node-fg-color: var(--g-line-strong);
+  --md-mermaid-edge-color: var(--g-ink-soft);
+}
+
+[data-md-color-scheme="slate"] .mermaid .node rect,
+[data-md-color-scheme="slate"] .mermaid .node polygon,
+[data-md-color-scheme="slate"] .mermaid .node circle {
+  fill: var(--g-surface) !important;
+  stroke: var(--g-line-strong) !important;
+  stroke-width: 1.5px !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .nodeLabel,
+[data-md-color-scheme="slate"] .mermaid .nodeLabel *,
+[data-md-color-scheme="slate"] .mermaid .edgeLabel,
+[data-md-color-scheme="slate"] .mermaid .edgeLabel *,
+[data-md-color-scheme="slate"] .mermaid .label,
+[data-md-color-scheme="slate"] .mermaid .label *,
+[data-md-color-scheme="slate"] .mermaid text,
+[data-md-color-scheme="slate"] .mermaid tspan {
+  color: var(--g-ink) !important;
+  fill: var(--g-ink) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .edgePath .path {
+  stroke: var(--g-ink-soft) !important;
+  stroke-width: 1.5px !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .arrowheadPath {
+  fill: var(--g-ink-soft) !important;
+  stroke: var(--g-ink-soft) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster rect {
+  fill: color-mix(in oklab, var(--g-ink) 6%, transparent) !important;
+  stroke: var(--g-line) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster-label {
+  color: var(--g-ink-soft) !important;
+}
+
+/* --- 7. Admonitiony ------------------------------------------ */
+/* Monochromatyczne karty. Typ rozpoznaje sie po ikonie i etykiecie
+   - akcent zostaje zarezerwowany dla elementow interaktywnych. */
+
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: inherit;
+  background-color: var(--g-surface);
+  border: 1px solid var(--g-line);
+  border-left: 3px solid var(--g-ink);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  background-color: transparent;
+  font-family: var(--g-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+  background-color: var(--g-ink);
+}
+
+/* neutralizacja kolorow zaleznych od typu - selektory per-typ Material
+   maja wyzsza specyficznosc niz regula ogolna powyzej, wiec trzeba je
+   nadpisac wprost (tlo bloku, tlo tytulu, kolor ikony). */
+.md-typeset .admonition.note,
+.md-typeset .admonition.tip,
+.md-typeset .admonition.info,
+.md-typeset .admonition.warning,
+.md-typeset .admonition.danger,
+.md-typeset details.note,
+.md-typeset details.tip,
+.md-typeset details.info,
+.md-typeset details.warning,
+.md-typeset details.danger {
+  background-color: var(--g-surface);
+  border-color: var(--g-line);
+  border-left-color: var(--g-ink);
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .tip > .admonition-title,
+.md-typeset .info > .admonition-title,
+.md-typeset .warning > .admonition-title,
+.md-typeset .danger > .admonition-title,
+.md-typeset .note > summary,
+.md-typeset .tip > summary,
+.md-typeset .info > summary,
+.md-typeset .warning > summary,
+.md-typeset .danger > summary {
+  background-color: transparent;
+  color: var(--g-ink);
+}
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .info > .admonition-title::before,
+.md-typeset .warning > .admonition-title::before,
+.md-typeset .danger > .admonition-title::before,
+.md-typeset .note > summary::before,
+.md-typeset .tip > summary::before,
+.md-typeset .info > summary::before,
+.md-typeset .warning > summary::before,
+.md-typeset .danger > summary::before {
+  background-color: var(--g-ink);
+}
+
+/* warning / danger - mocniejsza krawedz dla hierarchii */
+.md-typeset .admonition.warning,
+.md-typeset .admonition.danger,
+.md-typeset details.warning,
+.md-typeset details.danger {
+  border-left-width: 4px;
+}
+
+/* --- 7. Tabele, cytaty, separatory --------------------------- */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--g-line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--g-surface);
+  font-family: var(--g-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--g-ink);
+}
+
+.md-typeset table:not([class]) td { border-top: 1px solid var(--g-line); }
+
+.md-typeset blockquote {
+  border-left: 3px solid var(--g-line-strong);
+  color: var(--g-ink-soft);
+}
+
+.md-typeset hr {
+  border-bottom: 1px solid var(--g-line);
+}
+
+/* --- 8. Header ----------------------------------------------- */
+
+.md-header {
+  background-color: var(--g-paper);
+  color: var(--g-ink);
+  box-shadow: none;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.md-header--shadow { box-shadow: none; }
+
+.md-header__title {
+  font-family: var(--g-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.md-search__form {
+  background-color: var(--g-surface);
+  border: 1px solid var(--g-line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+.md-search__input { color: var(--g-ink); }
+.md-search__input::placeholder { color: var(--g-ink-faint); }
+
+/* --- 9. Nawigacja boczna i spis tresci ----------------------- */
+
+.md-nav { font-size: 0.7rem; }
+
+.md-nav__title {
+  font-family: var(--g-display);
+  font-weight: 600;
+  color: var(--g-ink);
+}
+
+.md-nav__link {
+  transition: color 0.15s ease;
+}
+
+.md-nav__link:hover,
+.md-nav__link:focus { color: var(--g-accent); }
+
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  color: var(--g-accent);
+  font-weight: 600;
+}
+
+/* spis tresci - aktywny element */
+.md-nav--secondary .md-nav__link--active { color: var(--g-accent); }
+
+/* --- 10. Stopka ---------------------------------------------- */
+
+.md-footer { background-color: var(--g-paper); }
+
+.md-footer-meta {
+  background-color: var(--g-paper);
+  border-top: 1px solid var(--g-line);
+}
+
+.md-footer__inner.md-grid { border-top: 1px solid var(--g-line); }
+
+.md-footer__link { opacity: 1; }
+.md-footer__link:hover { color: var(--g-accent); }
+.md-copyright { color: var(--g-ink-faint); }
+
+/* --- 11. Hero (strona startowa) ------------------------------ */
+/* Ciemny panel na gorze tresci. Tlo zawsze ciemne - tekst jasny
+   niezaleznie od trybu strony. */
+
+.md-typeset .hero {
+  margin: 0 0 3.2rem;
+  padding: clamp(2rem, 1.4rem + 3vw, 3.6rem);
+  background-color: var(--g-hero-bg);
+  border: 1px solid var(--g-hero-edge);
+  border-radius: 18px;
+  color: #fafafa;
+}
+
+.md-typeset .hero > * { margin: 0; }
+.md-typeset .hero > * + * { margin-top: 1.05rem; }
+
+.md-typeset .hero h1 {
+  color: #fafafa;
+  font-size: clamp(2rem, 1.5rem + 2.6vw, 3.1rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  margin: 0;
+  max-width: 17ch;
+}
+
+.hero-kicker {
+  font-family: var(--md-code-font-family), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.01em;
+  color: #8a8a8a;
+}
+.hero-kicker::first-letter { color: var(--g-accent); }
+
+.md-typeset .hero h1 + p {
+  color: #a8a8a8;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  max-width: 52ch;
+}
+
+/* przyciski hero - z linkow markdown, bez attr_list */
+.md-typeset .hero a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--g-display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.7em 1.15em;
+  border-radius: 9px;
+  text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.md-typeset .hero a + a { margin-left: 0.6rem; }
+
+.md-typeset .hero a:first-of-type {
+  background-color: var(--g-accent);
+  color: var(--g-on-accent);
+}
+.md-typeset .hero a:first-of-type:hover {
+  background-color: var(--g-accent-deep);
+  transform: translateY(-2px);
+}
+
+.md-typeset .hero a:last-of-type {
+  color: #fafafa;
+  border: 1px solid #353535;
+}
+.md-typeset .hero a:last-of-type:hover {
+  border-color: #5a5a5a;
+  transform: translateY(-2px);
+}
+
+.hero-status {
+  display: block;
+  font-family: var(--md-code-font-family), monospace;
+  font-size: 0.68rem;
+  line-height: 1.7;
+  color: #5e5e5e;
+  padding-top: 1.4rem;
+  border-top: 1px solid #1d1d1d;
+}
+
+/* --- 12. Siatka kart rozdzialow ------------------------------ */
+
+.md-typeset .grid.cards > ul > li {
+  border: 1px solid var(--g-line);
+  border-radius: 12px;
+  padding: 1.15rem 1.1rem;
+  background-color: var(--g-paper);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--g-ink);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px color-mix(in oklab, var(--g-ink) 12%, transparent);
+}
+
+.md-typeset .grid.cards > ul > li > :first-child { margin-top: 0; }
+
+.ch-num {
+  display: block;
+  font-family: var(--md-code-font-family), monospace;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--g-ink-faint);
+  margin-bottom: 0.55rem;
+  transition: color 0.18s ease;
+}
+.md-typeset .grid.cards > ul > li:hover .ch-num { color: var(--g-accent); }
+
+.md-typeset .grid.cards a {
+  color: var(--g-ink);
+  text-decoration: none;
+}
+.md-typeset .grid.cards > ul > li:hover a { color: var(--g-ink); }
+.md-typeset .grid.cards strong { font-weight: 600; }
+
+/* --- 13. Stany focus + ruch ---------------------------------- */
+
+a:focus-visible,
+button:focus-visible,
+.md-nav__link:focus-visible,
+.md-typeset .hero a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--g-accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@keyframes g-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.md-typeset .hero {
+  animation: g-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.md-typeset .grid.cards > ul > li {
+  animation: g-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.md-typeset .grid.cards > ul > li:nth-child(1) { animation-delay: 0.12s; }
+.md-typeset .grid.cards > ul > li:nth-child(2) { animation-delay: 0.17s; }
+.md-typeset .grid.cards > ul > li:nth-child(3) { animation-delay: 0.22s; }
+.md-typeset .grid.cards > ul > li:nth-child(4) { animation-delay: 0.27s; }
+.md-typeset .grid.cards > ul > li:nth-child(5) { animation-delay: 0.32s; }
+.md-typeset .grid.cards > ul > li:nth-child(6) { animation-delay: 0.37s; }
+.md-typeset .grid.cards > ul > li:nth-child(7) { animation-delay: 0.42s; }
+.md-typeset .grid.cards > ul > li:nth-child(8) { animation-delay: 0.47s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .hero,
+  .md-typeset .grid.cards > ul > li {
+    animation: none;
+  }
+  .md-typeset .hero a:hover,
+  .md-typeset .grid.cards > ul > li:hover {
+    transform: none;
+  }
+}

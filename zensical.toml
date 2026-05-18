@@ -31,6 +31,7 @@ nav = [
   { "7. Architektura aplikacji" = "07-architecture-and-good-practices.md" },
   { "8. Słowniczek pojęć" = "08-glossary.md" },
 ]
+extra_css = ["stylesheets/extra.css"]
 
 [project.theme]
 language = "pl"
@@ -54,18 +55,22 @@ features = [
   "toc.follow",
 ]
 
+[project.theme.font]
+text = "Inter"
+code = "JetBrains Mono"
+
 # Jasny / ciemny motyw z przełącznikiem.
 [[project.theme.palette]]
 scheme = "default"
-primary = "indigo"
-accent = "indigo"
+primary = "custom"
+accent = "custom"
 toggle.icon = "lucide/sun"
 toggle.name = "Przełącz na tryb ciemny"
 
 [[project.theme.palette]]
 scheme = "slate"
-primary = "indigo"
-accent = "indigo"
+primary = "custom"
+accent = "custom"
 toggle.icon = "lucide/moon"
 toggle.name = "Przełącz na tryb jasny"
 
@@ -107,6 +112,7 @@ pygments_lang_class = true
 custom_fences = [
   { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" }
 ]
+
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
 combine_header_slug = true

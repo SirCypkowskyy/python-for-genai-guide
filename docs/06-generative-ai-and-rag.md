@@ -52,7 +52,7 @@ Obok modeli zamkniętych dynamicznie rozwija się ekosystem modeli **open-weight
 
 * **[DeepSeek](https://www.deepseek.com/) V4** (wersja zapoznawcza) - kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
 
-* **Alibaba [Qwen](https://qwenlm.github.io/)3** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
+* **Alibaba [Qwen](https://qwen.ai/)3** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
 
 * **Google [Gemma 3](https://ai.google.dev/gemma)** - otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
 

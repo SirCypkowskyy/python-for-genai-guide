@@ -1,24 +1,57 @@
+<div class="hero" markdown>
+
+<span class="hero-kicker">~/python-for-genai-guide</span>
+
 # Python dla Data Science, ML i GenAI
 
-> [!NOTE]
-> Siema! Ten przewodnik to Twój szybki start w świecie Pythona. Został zaprojektowany tak, abyś mógł/mogła jak najszybciej wykorzystać dotychczasowe doświadczenie programistyczne do produktywnej pracy w ekosystemie Data Science, Machine Learning i Generative AI.
+Szybki start dla doświadczonych programistów C++, C# i Java wchodzących w ekosystem Data Science, Machine Learning i Generative AI - bez zbędnej teorii, z naciskiem na praktyczne różnice i dobre praktyki.
 
-Jeśli masz już doświadczenie w językach takich jak **C++**, **C#** czy **Java**, ten przewodnik pomoże Ci szybko odnaleźć się w nowym środowisku: zrozumieć kluczowe różnice, poznać współczesny tooling i wykorzystać swoje umiejętności w praktyce - bez zbędnej teorii, za to z naciskiem na praktyczne różnice i dobre praktyki.
+[Zacznij od rozdziału 1](01-philosophy-and-basics.md)
+[Repozytorium na GitHubie](https://github.com/SirCypkowskyy/python-for-genai-guide)
 
-## Jak korzystać z przewodnika
+<span class="hero-status">8 rozdziałów &middot; od C++/C#/Java do Pythona &middot; open-source &middot; stan wiedzy: maj 2026</span>
+
+</div>
+
+## Ścieżka nauki
 
 Wiedza została podzielona na osiem tematycznych rozdziałów. Zacznij od pierwszego i przechodź kolejno - każdy rozdział zakłada znajomość poprzednich.
 
-| Rozdział | O czym jest |
-|---|---|
-| **1. [Filozofia i podstawy](01-philosophy-and-basics.md)** | Dlaczego Python działa inaczej: model wykonania, typowanie, OOP, obsługa błędów. |
-| **2. [Środowiska i narzędzia](02-environment-and-tools.md)** | Nowoczesny tooling: `uv`, `ruff`, kontrola typów, Jupyter. |
-| **3. [Stos Data Science](03-data-science-stack.md)** | Pandas, NumPy, Polars, DuckDB, Pydantic, wizualizacja. |
-| **4. [Web Development i API](04-web-development.md)** | FastAPI, Flask, Django, serwery ASGI, model async. |
-| **5. [Machine Learning](05-machine-learning-guide.md)** | scikit-learn, PyTorch, gradient boosting, rygor ML, MLOps. |
-| **6. [GenAI i RAG](06-generative-ai-and-rag.md)** | LLM-y, RAG, agenci, MCP, bezpieczeństwo aplikacji LLM. |
-| **7. [Architektura aplikacji](07-architecture-and-good-practices.md)** | Topologie, podział domenowy, Ports & Adapters, ADR. |
-| **8. [Słowniczek pojęć](08-glossary.md)** | Szybkie wyjaśnienia nieznanych terminów. |
+<div class="grid cards" markdown>
+
+-   <span class="ch-num">01</span> **[Filozofia i podstawy](01-philosophy-and-basics.md)**
+
+    Dlaczego Python działa inaczej: model wykonania, typowanie, OOP, obsługa błędów.
+
+-   <span class="ch-num">02</span> **[Środowiska i narzędzia](02-environment-and-tools.md)**
+
+    Nowoczesny tooling: `uv`, `ruff`, kontrola typów, Jupyter.
+
+-   <span class="ch-num">03</span> **[Stos Data Science](03-data-science-stack.md)**
+
+    Pandas, NumPy, Polars, DuckDB, Pydantic, wizualizacja danych.
+
+-   <span class="ch-num">04</span> **[Web Development i API](04-web-development.md)**
+
+    FastAPI, Flask, Django, serwery ASGI, model async.
+
+-   <span class="ch-num">05</span> **[Machine Learning](05-machine-learning-guide.md)**
+
+    scikit-learn, PyTorch, gradient boosting, rygor ML, MLOps.
+
+-   <span class="ch-num">06</span> **[GenAI i RAG](06-generative-ai-and-rag.md)**
+
+    LLM-y, RAG, agenci, MCP, bezpieczeństwo aplikacji LLM.
+
+-   <span class="ch-num">07</span> **[Architektura aplikacji](07-architecture-and-good-practices.md)**
+
+    Topologie, podział domenowy, Ports & Adapters, ADR.
+
+-   <span class="ch-num">08</span> **[Słowniczek pojęć](08-glossary.md)**
+
+    Szybkie wyjaśnienia nieznanych terminów.
+
+</div>
 
 ## Mapa ekosystemu
 
