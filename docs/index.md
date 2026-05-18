@@ -46,4 +46,4 @@ Poniższe materiały są świetnym punktem startowym i są **całkowicie darmowe
 
 ---
 
-*Stan wiedzy: maj 2026. Przewodnik open-source - [repozytorium na GitHubie](https://github.com/SirCypkowskyy/python-for-genai-guide).*
+*Stan wiedzy: maj 2026. Przewodnik open-source - [repozytorium na GitHubie](https://github.com/SirCypkowskyy/python-for-genai-guide). Autor: [Cyprian Gburek](https://gburek.dev).*
