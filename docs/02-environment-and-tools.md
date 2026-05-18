@@ -25,7 +25,7 @@ Deweloper przychodzący z C#/Java oczekuje jednego, spójnego toolingu: `dotnet`
 
 Każde z tych narzędzi ma własny plik konfiguracyjny i własny cykl wydawniczy. To jedenaście niezależnych miejsc, w których wersje mogą się rozjechać między laptopem juniora, laptopem seniora a CI - i jedenaście rzeczy, które nowa osoba w zespole musi poprawnie skonfigurować, zanim cokolwiek zadziała.
 
-Współczesny ekosystem (stan na maj 2026) redukuje ten stos do **dwóch narzędzi** - `uv` + `ruff` - a wkrótce do **trzech** (po dodaniu `ty`). Wszystkie pochodzą od jednej firmy ([Astral](https://astral.sh/)), wszystkie napisano w Rust, wszystkie czytają jeden plik konfiguracyjny `pyproject.toml` i ze sobą współpracują.
+Współczesny ekosystem (stan na maj 2026) redukuje ten stos do **dwóch narzędzi** - [`uv`](https://docs.astral.sh/uv/) + [`ruff`](https://docs.astral.sh/ruff/) - a wkrótce do **trzech** (po dodaniu [`ty`](https://github.com/astral-sh/ty)). Wszystkie pochodzą od jednej firmy ([Astral](https://astral.sh/)), wszystkie napisano w Rust, wszystkie czytają jeden plik konfiguracyjny `pyproject.toml` i ze sobą współpracują.
 
 > [!TIP]
 > Trzy narzędzia, które ze sobą nie walczą, zastępują jedenaście, które walczyły.
@@ -57,7 +57,7 @@ flowchart LR
 
 ---
 
-## uv - kompleksowe zarządzanie projektem
+## [uv](https://docs.astral.sh/uv/) - kompleksowe zarządzanie projektem
 
 > [!TIP]
 > **`uv` to domyślna rekomendacja dla nowych projektów w Pythonie (stan na maj 2026).** Jedno binarium zastępuje cały dolny rząd klasycznego stosu: `pip`, `virtualenv`, `pyenv`, `pipx`, `poetry`, `pip-tools` oraz `twine`.
