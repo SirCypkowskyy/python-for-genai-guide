@@ -194,7 +194,7 @@ Idea jest prosta: **domena definiuje interfejs (port), którego potrzebuje; infr
 
 ### Protocol zamiast ABC - structural typing (PEP 544)
 
-W Pythonie port można zdefiniować na dwa sposoby: przez `abc.ABC` (klasa abstrakcyjna) albo przez `typing.Protocol` (PEP 544). **Dla portów rekomendujemy `Protocol`.**
+W Pythonie port można zdefiniować na dwa sposoby: przez `abc.ABC` (klasa abstrakcyjna) albo przez `typing.Protocol` (PEP 544[^pep544]). **Dla portów rekomendujemy `Protocol`.**
 
 | Cecha | `abc.ABC` | `typing.Protocol` |
 | :--- | :--- | :--- |
@@ -308,7 +308,7 @@ Diagram pokazuje istotę wzorca: **wszystkie strzałki zależności wskazują do
 
 Granice architektoniczne mają jedną nieprzyjemną właściwość: **erodują**. Reguła "feature nie importuje innego feature'a" obowiązuje dokładnie do pierwszego pull requesta, w którym ktoś pod presją deadline'u doda "tymczasowy" import - a recenzent go przeoczy. Po pół roku takich PR-ów Twoja Vertical Slice Architecture jest znów Big Ball of Mud, tylko z ładnymi nazwami katalogów.
 
-Rozwiązanie: **granice, które nie są egzekwowane automatycznie, nie istnieją.** Reguły architektoniczne trzeba zapisać jako **testy** i uruchamiać w CI - wtedy naruszenie granicy psuje build, a nie czeka na uważność recenzenta. W ekosystemie Python służy do tego m.in. [`pytest-archon`](https://github.com/jwbargsten/pytest-archon)[^archon] (odpowiednik ArchUnit z Javy).
+Rozwiązanie: **granice, które nie są egzekwowane automatycznie, nie istnieją.** Reguły architektoniczne trzeba zapisać jako **testy** i uruchamiać w CI - wtedy naruszenie granicy psuje build, a nie czeka na uważność recenzenta. W ekosystemie Python służy do tego m.in. [`pytest-archon`](https://github.com/jwbargsten/pytest-archon)[^archon] (odpowiednik [ArchUnit](https://archunit.org/) z Javy).
 
 ```python
 def test_features_dont_import_from_each_other():
@@ -356,6 +356,9 @@ Zwróć uwagę na sekcję **Konsekwencje** - dobry ADR uczciwie wymienia także 
 > [!TIP]
 > Zacznij prowadzić ADR-y od pierwszej nietrywialnej decyzji. Nie dokumentuj rzeczy oczywistych ("używamy Pythona"). Dokumentuj wybory, które ktoś rozsądny mógłby zakwestionować: wybór topologii architektonicznej, decyzję `Protocol` vs `ABC`, wybór bazy wektorowej, sposób obsługi niedeterministyczności LLM. Numeruj sekwencyjnie (`ADR-001`, `ADR-002`, ...) i nigdy nie usuwaj starych - co najwyżej oznaczaj jako `Wycofany` lub `Zastąpiony przez ADR-NNN`.
 
+> [!NOTE]
+> **Mikroserwisy vs monolit a rozmiar zespołu.** Prawo Conwaya tłumaczy, dlaczego narzucenie mikroserwisów małemu zespołowi (3–5 osób) kończy się „rozproszonym monolitem" — komunikacja między serwisami kosztuje, a mały zespół i tak komunikuje się swobodnie. Dla takich zespołów modularny monolit (topologia 2 lub 3) jest zwykle lepszym wyborem. Mikroserwisy zaczynają mieć sens, gdy zespołów jest wiele i komunikacja między nimi wymaga formalnych granic.
+
 ## Prawo Conwaya
 
 Na koniec obserwacja, która tłumaczy, dlaczego architektura tak często "nie wychodzi" mimo dobrych intencji. **Prawo Conwaya** głosi:
@@ -383,3 +386,4 @@ Praktyczny wniosek to **Inverse Conway Maneuver** (odwrotny manewr Conwaya): zam
 [^conway]: Melvin E. Conway sformułował tę obserwację w artykule *"How Do Committees Invent?"* (1968). Stała się znana jako "Prawo Conwaya" po spopularyzowaniu przez Fredericka Brooksa w *The Mythical Man-Month*.
 [^c4]: Model C4 został opracowany przez Simona Browna jako lekka, niezależna od narzędzi notacja do wizualizacji architektury oprogramowania.
 [^twelvefactor]: Metodyka 12-Factor App została sformułowana przez zespół Heroku; mimo upływu lat pozostaje punktem odniesienia dla aplikacji uruchamianych w chmurze i kontenerach.
+[^pep544]: PEP 544 — *Protocols: Structural subtyping (static duck typing)*. Zob. [peps.python.org/pep-0544](https://peps.python.org/pep-0544/).

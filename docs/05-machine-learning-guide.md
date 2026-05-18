@@ -75,7 +75,7 @@ print(f"Dokładność modelu: {accuracy:.4f}")
 [Scikit-Learn](https://scikit-learn.org/) zapewnia ujednolicony interfejs dla dziesiątek algorytmów, w tym **regresji** (predykcji wartości ciągłych, np. ceny mieszkania), **klasyfikacji** (przypisywania obserwacji do jednej z klas, czyli zbioru dozwolonych odpowiedzi - np. spam/nie-spam) i **klasteryzacji** (uczenia nienadzorowanego: grupowania obiektów bez wcześniej znanych etykiet). To trzy fundamentalne klasy problemów ML, z którymi spotkasz się najczęściej.
 
 > [!NOTE]
-> Aktualna wersja stabilna to **scikit-learn 1.8.0** (wspiera Python 3.11–3.14). Biblioteka jest dojrzała i rozwijana ewolucyjnie - API, którego nauczysz się dziś, będzie aktualne za kilka lat. Dla większości problemów na danych tabelarycznych warto zacząć od scikit-learn lub gradient boostingu (patrz niżej), a *nie* od deep learningu.
+> Aktualna wersja stabilna to **scikit-learn 1.8.0**[^sklearn-180] (wspiera Python 3.11–3.14). Biblioteka jest dojrzała i rozwijana ewolucyjnie - API, którego nauczysz się dziś, będzie aktualne za kilka lat. Dla większości problemów na danych tabelarycznych warto zacząć od scikit-learn lub gradient boostingu (patrz niżej), a *nie* od deep learningu.
 
 -----
 
@@ -88,7 +88,7 @@ Gdy wchodzisz w świat **deep learningu** (głębokich sieci neuronowych) - tego
 
 ### 🏆 [PyTorch](https://pytorch.org/) - domyślny framework deep learningu
 
-[**PyTorch**](https://pytorch.org/) (rozwijany pierwotnie przez Meta AI, dziś pod egidą [PyTorch Foundation](https://pytorch.org/foundation)) to **dziś standardowy wybór dla deep learningu**. Dominuje w środowisku badawczym (szacuje się, że stoi za ok. **85% publikacji naukowych** z ML), jest najczęściej wybierany do nowych projektów i stanowi fundament niemal całego ekosystemu **GenAI** - biblioteka Hugging Face `transformers`, większość open-source'owych LLM oraz narzędzia treningowe domyślnie zakładają PyTorch.
+[**PyTorch**](https://pytorch.org/) (rozwijany pierwotnie przez Meta AI, dziś pod egidą [PyTorch Foundation](https://pytorch.org/foundation)) to **dziś standardowy wybór dla deep learningu**. Dominuje w środowisku badawczym (szacuje się, że stoi za ok. **85% publikacji naukowych** z ML[^pytorch-papers]), jest najczęściej wybierany do nowych projektów i stanowi fundament niemal całego ekosystemu **GenAI** - biblioteka Hugging Face `transformers`, większość open-source'owych LLM oraz narzędzia treningowe domyślnie zakładają PyTorch.
 
 Dlaczego wygrał? Kluczowy był **imperatywny, "pythoniczny" styl** (dynamiczny graf obliczeniowy - *define-by-run*): kod sieci neuronowej wykonuje się jak zwykły kod Pythona, krok po kroku, więc możesz go debugować standardowymi narzędziami i `print`-ami. Dla programisty przychodzącego z C++/Java/C# jest to znacznie bardziej naturalne niż budowanie statycznego grafu "z góry".
 
@@ -122,7 +122,7 @@ print(logits.shape)  # torch.Size([32, 10])
 ```
 
 > [!TIP]
-> Ekosystem PyTorch jest ważniejszy niż sam framework. Warto znać: **Hugging Face `transformers`** (gotowe modele i pipeline'y), **PyTorch Lightning** (eliminuje boilerplate pętli treningowej), **`torch.compile`** (kompilacja JIT przyspieszająca trening i inferencję) oraz **`torchvision`/`torchaudio`** (dane i modele domenowe).
+> Ekosystem PyTorch jest ważniejszy niż sam framework. Warto znać: **Hugging Face `transformers`** (gotowe modele i pipeline'y), [PyTorch Lightning](https://lightning.ai/docs/pytorch/stable/) (eliminuje boilerplate pętli treningowej), [`torch.compile`](https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html) (kompilacja JIT przyspieszająca trening i inferencję) oraz [`torchvision`](https://pytorch.org/vision/)/[`torchaudio`](https://pytorch.org/audio/) (dane i modele domenowe).
 
 ### 🎨 [Keras 3](https://keras.io/) - wysokopoziomowe API multi-backend
 
@@ -134,7 +134,7 @@ Keras pozostaje najbardziej przyjaznym, zwięzłym API do budowy i trenowania si
 
 [**TensorFlow**](https://www.tensorflow.org/) (Google) był przez lata frameworkiem numer jeden i dzięki tej przewadze czasowej **nadal ma duży udział w systemach enterprise** - wiele wdrożonych pipeline'ów produkcyjnych powstało w TF i działa do dziś. Jest to jednak w 2026 roku w dużej mierze **technologia "legacy"**: do *nowej* pracy badawczej i nowych projektów rzadko bywa pierwszym wyborem.
 
-TensorFlow zachowuje natomiast realne nisze, w których jest mocny: dojrzałe wsparcie **TPU**, produkcyjny ekosystem **TFX** (TensorFlow Extended) do pipeline'ów ML oraz **deployment na urządzeniach brzegowych** (edge) i mobilnych przez **LiteRT** (dawniej TensorFlow Lite).
+TensorFlow zachowuje natomiast realne nisze, w których jest mocny: dojrzałe wsparcie **TPU**, produkcyjny ekosystem [TFX](https://www.tensorflow.org/tfx) (TensorFlow Extended) do pipeline'ów ML oraz **deployment na urządzeniach brzegowych** (edge) i mobilnych przez [LiteRT](https://ai.google.dev/edge/litert) (dawniej TensorFlow Lite).
 
 ### ⚡ [JAX](https://docs.jax.dev/) - wysokowydajne obliczenia numeryczne
 
@@ -149,6 +149,9 @@ TensorFlow zachowuje natomiast realne nisze, w których jest mocny: dojrzałe ws
 
 -----
 
+> [!NOTE]
+> Dlaczego gradient boosting „regularnie ogrywa" deep learning na danych tabelarycznych? Odpowiedź tkwi w strukturze danych: tabele mają cechy niezależne (kolumny) o niskiej wymiarowości względnej — to środowisko naturalne dla drzew decyzyjnych. Sieci neuronowe błyszczą tam, gdzie dane mają strukturę przestrzenną (obrazy) lub sekwencyjną (tekst, szeregi czasowe) — co wymaga uczenia reprezentacji, a nie klasyfikacji gotowych cech.
+
 ## 🌳 Gradient Boosting - król danych tabelarycznych
 
 Istnieje powszechne, ale błędne przekonanie, że deep learning jest najlepszy do *wszystkiego*. W praktyce **dla danych tabelarycznych** (klasyczne tabele: wiersze-rekordy, kolumny-cechy - to wciąż najczęstszy format danych w biznesie) **najlepsze wyniki regularnie osiąga gradient boosting**. Benchmarki z lat 2025–2026 wielokrotnie potwierdziły, że biblioteki boostingowe **dorównują lub przewyższają** sieci neuronowe na danych tabelarycznych - przy ułamku kosztu treningu i czasu strojenia.
@@ -160,6 +163,8 @@ Gradient boosting to technika **zespołowa** (ensemble): buduje sekwencję płyt
 | [**XGBoost**](https://xgboost.readthedocs.io/) | 3.2 | Sprawdzony, uniwersalny standard | Solidny domyślny wybór, dojrzały ekosystem |
 | [**LightGBM**](https://lightgbm.readthedocs.io/) | 4.6 | Najszybszy trening, niskie zużycie pamięci | Duże zbiory danych, gdy liczy się czas |
 | [**CatBoost**](https://catboost.ai/) | 1.2.x | Natywna, bardzo dobra obsługa cech kategorycznych | Dane z wieloma kolumnami kategorycznymi |
+
+[^xgboost-versions]
 
 > [!TIP]
 > Praktyczna heurystyka wyboru: **LightGBM**, gdy najważniejsza jest szybkość; **CatBoost**, gdy dane mają dużo cech kategorycznych (oszczędzasz na ręcznym kodowaniu); **XGBoost** jako solidny, uniwersalny środek. Wszystkie trzy oferują interfejs zgodny ze scikit-learn (`.fit()` / `.predict()`).
@@ -228,6 +233,9 @@ flowchart LR
 > [!WARNING]
 > Kolejność ma znaczenie: **najpierw split, dopiero potem `fit`** transformacji. Odwrotna kolejność to klasyczny wyciek danych - wynik na teście będzie zawyżony, a model zawiedzie w produkcji.
 
+> [!NOTE]
+> Typowe wartości *k* to 5 lub 10 — stanowią rozsądny kompromis między stabilnością oceny a kosztem obliczeniowym (model trenuje się *k* razy). Przy bardzo małych zbiorach używa się Leave-One-Out (k = n, gdzie n to liczba obserwacji) — ale to najdroższy wariant i bywa obciążony wariancją.
+
 ### Cross-validation (walidacja krzyżowa)
 
 Pojedynczy podział train/validation bywa "loterią" - wynik zależy od tego, które obserwacje akurat trafiły do walidacji. **K-fold cross-validation** rozwiązuje to: dane treningowe dzieli się na *k* równych części ("foldów"); model trenuje się *k* razy, za każdym razem na *k–1* foldach, a oceniane na pozostałym. Średnia z *k* wyników to stabilniejsza ocena. Stosuj cross-validation przy doborze hiperparametrów i porównywaniu modeli, zwłaszcza gdy zbiór danych jest niewielki. Zbiór testowy nadal trzymasz osobno, poza całą procedurą.
@@ -246,7 +254,7 @@ Pojedynczy podział train/validation bywa "loterią" - wynik zależy od tego, kt
 
 ### Niezbalansowane klasy
 
-Gdy jedna klasa dominuje (oszustwa, rzadkie choroby, awarie), model ma tendencję do ignorowania klasy mniejszościowej. Typowe podejścia: **wagi klas** (`class_weight="balanced"` w wielu modelach scikit-learn - model "karze" mocniej za błędy na rzadkiej klasie) oraz **resampling** (oversampling klasy mniejszościowej, np. SMOTE, lub undersampling większościowej). Zawsze połącz to z odpowiednią metryką - accuracy tu nie wystarczy.
+Gdy jedna klasa dominuje (oszustwa, rzadkie choroby, awarie), model ma tendencję do ignorowania klasy mniejszościowej. Typowe podejścia: **wagi klas** (`class_weight="balanced"` w wielu modelach scikit-learn - model "karze" mocniej za błędy na rzadkiej klasie) oraz **resampling** (oversampling klasy mniejszościowej, np. [SMOTE](https://imbalanced-learn.org/), lub undersampling większościowej). Zawsze połącz to z odpowiednią metryką - accuracy tu nie wystarczy.
 
 ### Pipeline - preprocessing i model jako jeden obiekt
 
@@ -307,14 +315,22 @@ Ten cykl pokazuje, dlaczego ML to nie "wytrenuj i zapomnij", lecz ciągły proce
 
 -----
 
+> [!TIP]
+> Od czego zacząć z MLOps? **MLflow** to rozsądny domyślny wybór — jest otwarty, popularny i obejmuje dziś zarówno klasyczny ML, jak i GenAI (tracing, ewaluacja). Dla śledzenia eksperymentów w zespole DL warto też rozważyć [Weights & Biases](https://wandb.ai/).
+
 ## 🚀 MLOps - od notebooka do produkcji
 
 Wytrenowanie modelu w notebooku Jupyter to dopiero początek. **MLOps** (Machine Learning Operations) to zbiór praktyk i narzędzi, które przenoszą model z eksperymentu do niezawodnej produkcji: śledzenie eksperymentów, wersjonowanie modeli i danych, automatyzacja wdrożeń oraz monitoring.
 
-* [**MLflow**](https://mlflow.org/) (wersja **3.10**, marzec 2026) - najpopularniejsza, otwarta platforma do zarządzania cyklem życia ML: śledzenie eksperymentów (parametry, metryki, artefakty), rejestr modeli i pakowanie wdrożeń. Co istotne, **MLflow 3.x wyszedł daleko poza klasyczny ML** - oferuje dziś **observability dla agentów GenAI**: tracing wywołań LLM, ewaluację jakości odpowiedzi i śledzenie kosztów (*cost tracking*). To czyni go uniwersalnym narzędziem zarówno dla klasycznego ML, jak i aplikacji GenAI.
+* [**MLflow**](https://mlflow.org/) (wersja **3.10**[^mlflow3], marzec 2026) - najpopularniejsza, otwarta platforma do zarządzania cyklem życia ML: śledzenie eksperymentów (parametry, metryki, artefakty), rejestr modeli i pakowanie wdrożeń. Co istotne, **MLflow 3.x wyszedł daleko poza klasyczny ML** - oferuje dziś **observability dla agentów GenAI**: tracing wywołań LLM, ewaluację jakości odpowiedzi i śledzenie kosztów (*cost tracking*). To czyni go uniwersalnym narzędziem zarówno dla klasycznego ML, jak i aplikacji GenAI.
 * [**Weights & Biases**](https://wandb.ai/) (W&B) - popularne, dopracowane narzędzie do śledzenia eksperymentów, wizualizacji metryk i współpracy zespołowej; szczególnie lubiane w środowisku deep learningu i badaniach.
 * [**ZenML**](https://www.zenml.io/) i [**Neptune**](https://neptune.ai/) - kolejne warte poznania narzędzia: ZenML to framework do budowy przenośnych pipeline'ów MLOps, Neptune to rozbudowany rejestr i tracker eksperymentów (ceniony przy trenowaniu modeli foundation).
 * [**ONNX Runtime**](https://onnxruntime.ai/) - uniwersalny standard **inferencji**. [ONNX](https://onnx.ai/) (Open Neural Network Exchange) to otwarty format zapisu modeli, niezależny od frameworka: model wytrenowany w PyTorch możesz wyeksportować do ONNX i uruchamiać go przez ONNX Runtime na różnych platformach (CPU, GPU, edge) z wysoką wydajnością. Daje to **przenośność** - odseparowanie środowiska treningu od środowiska produkcyjnego.
 
 > [!NOTE]
 > Dla aplikacji GenAI (agenci, RAG) tracing i ewaluacja są równie ważne jak w klasycznym ML - więcej o monitorowaniu i architekturze takich systemów znajdziesz w rozdziale [6. Aplikacje GenAI i RAG](./06-generative-ai-and-rag.md) oraz w [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć (drift, inferencja, ensemble) zebrano w [słowniczku](./08-glossary.md).
+
+[^pytorch-papers]: Szacunek udziału PyTorch w publikacjach ML pochodzi z analizy Papers With Code: [paperswithcode.com](https://paperswithcode.com/). W latach 2024–2026 udział ten stabilizuje się na poziomie 80–85%.
+[^xgboost-versions]: Wersje gradient boosting na maj 2026: XGBoost 3.2, LightGBM 4.6, CatBoost 1.2.x. Zob. odpowiednio [xgboost.readthedocs.io](https://xgboost.readthedocs.io/), [lightgbm.readthedocs.io](https://lightgbm.readthedocs.io/), [catboost.ai](https://catboost.ai/).
+[^mlflow3]: MLflow 3.10 — wydanie z marca 2026, wprowadzające observability dla agentów GenAI. Zob. [mlflow.org/docs/latest/release-notes](https://mlflow.org/docs/latest/release-notes/).
+[^sklearn-180]: Scikit-learn 1.8.0 — wydanie stabilne wspierające Python 3.11–3.14. Zob. [scikit-learn.org/stable/whats_new](https://scikit-learn.org/stable/whats_new.html).

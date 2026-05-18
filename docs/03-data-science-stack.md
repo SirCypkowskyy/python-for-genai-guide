@@ -85,9 +85,9 @@ Pandas doskonale integruje się z całym ekosystemem Pythona, pozwalając płynn
 
 ### Pandas 3.0 - co się zmieniło
 
-Wydanie **Pandas 3.0.0** (21 stycznia 2026) wprowadza dwie zmiany, które warto rozumieć od samego początku:
+Wydanie **Pandas 3.0.0**[^pandas30] (21 stycznia 2026) wprowadza dwie zmiany, które warto rozumieć od samego początku:
 
-* **Copy-on-Write (CoW) domyślnie włączony.** Do tej pory Pandas bywał nieprzewidywalny: nie zawsze było wiadomo, czy operacja indeksowania zwraca *kopię* danych, czy *widok* na te same dane w pamięci. Skutkiem był słynny `SettingWithCopyWarning` i trudne do wykrycia błędy, gdzie modyfikacja DataFrame uzyskanego z wycinka po cichu zmieniała oryginał. Od wersji 3.0 obowiązuje spójna semantyka: **zapis do obiektu uzyskanego z indeksowania, wycinka lub metody innego DataFrame nigdy nie zmienia oryginału po cichu** - a kopia danych jest tworzona zawsze i dokładnie w momencie zapisu (stąd nazwa *copy-on-write*), więc jest to bezpieczne **i** wydajne. Eliminuje to `SettingWithCopyWarning`.
+* **Copy-on-Write (CoW) domyślnie włączony.**[^cow] Do tej pory Pandas bywał nieprzewidywalny: nie zawsze było wiadomo, czy operacja indeksowania zwraca *kopię* danych, czy *widok* na te same dane w pamięci. Skutkiem był słynny `SettingWithCopyWarning` i trudne do wykrycia błędy, gdzie modyfikacja DataFrame uzyskanego z wycinka po cichu zmieniała oryginał. Od wersji 3.0 obowiązuje spójna semantyka: **zapis do obiektu uzyskanego z indeksowania, wycinka lub metody innego DataFrame nigdy nie zmienia oryginału po cichu** - a kopia danych jest tworzona zawsze i dokładnie w momencie zapisu (stąd nazwa *copy-on-write*), więc jest to bezpieczne **i** wydajne. Eliminuje to `SettingWithCopyWarning`.
     ```python
     subset = df[df["a"] > 0]   # obiekt pochodny z indeksowania
     subset.loc[:, "b"] = 0     # CoW: zapis dotyczy WYŁĄCZNIE subset, df pozostaje nietknięty
@@ -95,7 +95,7 @@ Wydanie **Pandas 3.0.0** (21 stycznia 2026) wprowadza dwie zmiany, które warto 
     > [!WARNING]
     > CoW **nie dotyczy** zwykłego przypisania nazwy zmiennej. `df2 = df` nadal tworzy *alias* - `df2` i `df` to ten sam obiekt, więc `df2.loc[...] = ...` zmieni również `df`. Jeśli potrzebujesz niezależnej kopii, użyj jawnie `df.copy()`.
 
-* **Dedykowany typ `str` zamiast `object`.** Kolumny tekstowe nie są już domyślnie przechowywane jako ogólny `object` (czyli tablica wskaźników na obiekty Pythona), lecz jako dedykowany typ string. Konkretny backend zależy od środowiska: jeśli zainstalowano **PyArrow**, Pandas użyje wydajnego, kolumnowego formatu PyArrow; w przeciwnym razie zadziała wbudowany fallback (typ string oparty o NumPy). Tak czy inaczej daje to mniejsze zużycie pamięci i szybsze operacje na tekstach niż dawne `object` - a zainstalowanie PyArrow dodatkowo te zyski powiększa.
+* **Dedykowany typ `str` zamiast `object`.** Kolumny tekstowe nie są już domyślnie przechowywane jako ogólny `object` (czyli tablica wskaźników na obiekty Pythona), lecz jako dedykowany typ string. Konkretny backend zależy od środowiska: jeśli zainstalowano **[PyArrow](https://arrow.apache.org/docs/python/)**[^pyarrow-backend], Pandas użyje wydajnego, kolumnowego formatu PyArrow; w przeciwnym razie zadziała wbudowany fallback (typ string oparty o NumPy). Tak czy inaczej daje to mniejsze zużycie pamięci i szybsze operacje na tekstach niż dawne `object` - a zainstalowanie PyArrow dodatkowo te zyski powiększa.
 
 Możesz też świadomie zażądać, by **wszystkie** kolumny korzystały z typów PyArrow zamiast NumPy - np. dla wsparcia natywnego `NULL` we wszystkich typach czy lepszej interoperacyjności:
 
@@ -120,7 +120,7 @@ df = pd.read_csv('sales.csv', dtype_backend="pyarrow")
   * Kluczową ideą pracy z NumPy jest **wektoryzacja** – wykonywanie operacji na całych tablicach zamiast na pojedynczych elementach w pętlach, co jest znacznie szybsze.
 
 > [!NOTE]
-> Współczesny ekosystem bazuje już na linii **NumPy 2.x** (aktualnie 2.4.x). W stosunku do serii 1.x wprowadziła ona m.in. nowe, spójniejsze reguły **promocji typów** (NEP 50 - wynikowy typ operacji zależy teraz od typów, a nie od wartości operandów) oraz uporządkowanie i odchudzenie publicznego API. Dla uczącego się oznacza to przede wszystkim jedno: pisząc nowy kod od podstaw, domyślnie pracujesz już na NumPy 2.x i nie musisz uczyć się historycznych zachowań z serii 1.x.
+> Współczesny ekosystem bazuje już na linii **NumPy 2.x**[^numpy2] (aktualnie 2.4.x). W stosunku do serii 1.x wprowadziła ona m.in. nowe, spójniejsze reguły **promocji typów** (NEP 50 - wynikowy typ operacji zależy teraz od typów, a nie od wartości operandów) oraz uporządkowanie i odchudzenie publicznego API. Dla uczącego się oznacza to przede wszystkim jedno: pisząc nowy kod od podstaw, domyślnie pracujesz już na NumPy 2.x i nie musisz uczyć się historycznych zachowań z serii 1.x.
 
 -----
 
@@ -129,7 +129,7 @@ df = pd.read_csv('sales.csv', dtype_backend="pyarrow")
 [**Polars**](https://pola.rs/) to nowoczesna biblioteka do pracy z DataFrame'ami, zaprojektowana z myślą o **wydajności i dużej skali**. W przeciwieństwie do Pandas (rdzeń w C/Cython, koordynacja w Pythonie) Polars jest w całości napisany w **Rust**, co daje mu kilka strukturalnych przewag:
 
 * **Wielowątkowość domyślnie.** Polars wykorzystuje wszystkie rdzenie procesora bez dodatkowej konfiguracji - Pandas operuje zasadniczo jednowątkowo.
-* **Storage kolumnowy** (oparty o Apache Arrow) - efektywny pamięciowo i przyjazny pamięci podręcznej procesora.
+* **Storage kolumnowy** (oparty o [Apache Arrow](https://arrow.apache.org/)) - efektywny pamięciowo i przyjazny pamięci podręcznej procesora.
 * **Lazy evaluation (leniwa ewaluacja).** Zamiast wykonywać każdą operację natychmiast, Polars może zbudować *plan zapytania* (LazyFrame), zoptymalizować go jako całość (np. przesunąć filtry jak najwcześniej, pominąć nieużywane kolumny) i uruchomić dopiero na `.collect()`. To dokładnie ta sama idea, którą znasz z optymalizatora zapytań SQL czy z odroczonego wykonania `IQueryable` w LINQ.
 
 W praktyce przy dużych zbiorach i produkcyjnym ETL Polars bywa wielokrotnie szybszy od Pandas, a często też oszczędniejszy pamięciowo.
@@ -160,6 +160,9 @@ Porównaj to z analogicznym łańcuchem w Pandas z początku rozdziału - logika
 > Polars pozycjonujemy jako **szybszą alternatywę dla Pandas przy dużych danych i produkcyjnym ETL**, a nie jako narzędzie pierwszego wyboru do nauki. Pandas pozostaje *lingua franca* Data Science: większość tutoriali, kursów i przykładów integracji z bibliotekami ML zakłada Pandas. Naucz się najpierw Pandas, a po Polars sięgnij, gdy wydajność stanie się realnym ograniczeniem. Konwersja między nimi jest tania (`df.to_pandas()` / `pl.from_pandas(df)`), bo oba opierają się na formacie Arrow.
 
 -----
+
+> [!TIP]
+> **DuckDB + Polars + Pandas to komplementarny zestaw, nie konkurenci.** Typowy wzorzec produkcyjny: DuckDB wykonuje ciężką agregację i filtrowanie bezpośrednio na plikach na dysku (bez ładowania całości do pamięci), zwraca odchudzony wynik, a dalszą analizę i wizualizację prowadzisz w Pandas lub Polars. Konwersja między nimi jest tania (`df.to_pandas()` / `pl.from_pandas(df)`), bo oba opierają się na formacie Arrow.
 
 ## 🦆 [DuckDB](https://duckdb.org/): SQL Bezpośrednio na Plikach
 
@@ -300,7 +303,7 @@ print(user.age) # -> 30 (już jako int)
 ```
 
 > [!NOTE]
-> Typ `EmailStr` wymaga dodatkowej zależności `email-validator` - sama instalacja `pydantic` jej nie zawiera, a użycie `EmailStr` bez niej rzuci błąd importu. Zainstaluj ją razem z Pydantic za pomocą tzw. *extra*: `uv add "pydantic[email]"` (lub `pip install "pydantic[email]"`).
+> Typ `EmailStr` wymaga dodatkowej zależności [`email-validator`](https://github.com/JoshData/python-email-validator) - sama instalacja `pydantic` jej nie zawiera, a użycie `EmailStr` bez niej rzuci błąd importu. Zainstaluj ją razem z Pydantic za pomocą tzw. *extra*: `uv add "pydantic[email]"` (lub `pip install "pydantic[email]"`).
 
 Pydantic jest absolutnie kluczowym narzędziem przy budowie solidnych API (jest sercem **FastAPI**) oraz niezawodnych pipeline'ów przetwarzania danych.
 
@@ -315,3 +318,8 @@ Surowe liczby rzadko kiedy opowiadają całą historię. Ekosystem Pythona oferu
   * [**Seaborn**](https://seaborn.pydata.org/): To wysokopoziomowe API zbudowane na bazie Matplotlib. Jego celem jest tworzenie estetycznych i informatywnych **wykresów statystycznych** przy użyciu znacznie mniejszej ilości kodu. Jest idealny do szybkiej eksploracji danych.
 
   * [**Plotly**](https://plotly.com/python/): Jeśli potrzebujesz **interaktywnych wizualizacji**, Plotly jest najlepszym wyborem. Pozwala tworzyć wykresy, na których użytkownik może przesuwać widok, powiększać, czy wyświetlać dodatkowe informacje po najechaniu myszką, przez wykorzystanie interfejsu webowego. To czyni go idealnym narzędziem do budowy dashboardów i aplikacji webowych.
+
+[^pandas30]: Pandas 3.0.0 — wydanie z 21 stycznia 2026 r. Zob. [pandas.pydata.org/docs/whatsnew](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html).
+[^cow]: Copy-on-Write w Pandas — szczegółowa dokumentacja: [pandas.pydata.org/docs/user_guide/copy_on_write](https://pandas.pydata.org/docs/user_guide/copy_on_write.html).
+[^pyarrow-backend]: PyArrow backend w Pandas — zob. [pandas.pydata.org/docs/user_guide/pyarrow](https://pandas.pydata.org/docs/user_guide/pyarrow.html).
+[^numpy2]: NumPy 2.x — zmiany i przewodnik migracji: [numpy.org/devdocs/numpy_2_0_migration_guide](https://numpy.org/devdocs/numpy_2_0_migration_guide.html).

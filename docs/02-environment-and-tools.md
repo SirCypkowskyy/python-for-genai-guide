@@ -11,17 +11,17 @@ Deweloper przychodzący z C#/Java oczekuje jednego, spójnego toolingu: `dotnet`
 
 | # | Narzędzie | Odpowiedzialność |
 | :--- | :--- | :--- |
-| 01 | `pip` | instalacja pakietów |
-| 02 | `venv` | środowiska wirtualne |
-| 03 | `pyenv` | zarządzanie wersjami Pythona |
-| 04 | `pipx` | instalacja narzędzi globalnych |
-| 05 | `poetry` | zarządzanie projektem i plik lock |
-| 06 | `black` | formatowanie kodu |
-| 07 | `isort` | sortowanie importów |
-| 08 | `flake8` | podstawowy linting |
-| 09 | `pylint` | głęboka analiza statyczna |
-| 10 | `bandit` | analiza bezpieczeństwa |
-| 11 | `mypy` | kontrola typów |
+| 01 | [`pip`](https://pip.pypa.io/) | instalacja pakietów |
+| 02 | [`venv`](https://docs.python.org/3/library/venv.html) | środowiska wirtualne |
+| 03 | [`pyenv`](https://github.com/pyenv/pyenv) | zarządzanie wersjami Pythona |
+| 04 | [`pipx`](https://pipx.pypa.io/) | instalacja narzędzi globalnych |
+| 05 | [`poetry`](https://python-poetry.org/) | zarządzanie projektem i plik lock |
+| 06 | [`black`](https://github.com/psf/black) | formatowanie kodu |
+| 07 | [`isort`](https://pycqa.github.io/isort/) | sortowanie importów |
+| 08 | [`flake8`](https://flake8.pycqa.org/) | podstawowy linting |
+| 09 | [`pylint`](https://pylint.readthedocs.io/) | głęboka analiza statyczna |
+| 10 | [`bandit`](https://bandit.readthedocs.io/) | analiza bezpieczeństwa |
+| 11 | [`mypy`](https://mypy.readthedocs.io/) | kontrola typów |
 
 Każde z tych narzędzi ma własny plik konfiguracyjny i własny cykl wydawniczy. To jedenaście niezależnych miejsc, w których wersje mogą się rozjechać między laptopem juniora, laptopem seniora a CI - i jedenaście rzeczy, które nowa osoba w zespole musi poprawnie skonfigurować, zanim cokolwiek zadziała.
 
@@ -121,6 +121,9 @@ Pomiar przy zimnym cache, dla projektu `fastapi` + `pydantic` + `pandas` wraz z 
 | Instalacja pakietów | ~1,2 s | ~45 s | ~30 s |
 | Utworzenie lockfile | natychmiast | minuty | brak lockfile |
 
+> [!NOTE]
+> Czasy w tabeli mają charakter orientacyjny — rzędy wielkości odpowiadają publikowanym pomiarom Astral[^uv-speed]. Konkretne wyniki zależą od projektu, sieci i sprzętu.
+
 ### PEP 723 - skrypty z zależnościami inline
 
 To jedna z najbardziej przełomowych funkcji `uv`. [PEP 723](https://peps.python.org/pep-0723/) pozwala zadeklarować zależności **wewnątrz samego pliku skryptu**, w specjalnym komentarzu. Polecenie `uv run hello.py` samo pobierze odpowiednią wersję Pythona, zbuduje tymczasowe środowisko wirtualne i zainstaluje zależności - bez tworzenia projektu i bez `requirements.txt`:
@@ -158,6 +161,9 @@ CMD ["uv", "run", "python", "-m", "app"]
 ```
 
 ---
+
+> [!TIP]
+> Jeśli prowadzisz istniejący projekt oparty o `requirements.txt` + `pip`, migracja na `uv` jest prosta: `uv init` + `uv add --requirements requirements.txt`. Więcej szczegółów w dokumentacji [uv migration guide](https://docs.astral.sh/uv/guides/projects/#migrating-from-requirements-txt).
 
 ## venv i pip - podstawy oraz wiedza legacy
 
@@ -333,9 +339,9 @@ repos:
 
 Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type checker:
 
-* **`mypy`** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
-* **`pyright`** - type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
-* **`ty`** - type checker od Astral, w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne 1.0 celowane na 2026. Domyka toolchain `uv` + `ruff` + `ty`.
+* **[`mypy`](https://mypy.readthedocs.io/)** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+* **[`pyright`](https://github.com/microsoft/pyright)** - type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
+* **[`ty`](https://github.com/astral-sh/ty)** - type checker od Astral, w Rust, **10–60x szybszy od `mypy`**. Status: **beta** (od grudnia 2025), stabilne 1.0 celowane na 2026. Domyka toolchain `uv` + `ruff` + `ty`.
 
 > [!NOTE]
 > Narzędzia `black`, `flake8` oraz `isort` traktuj dziś jako **legacy** - wciąż działają i są obecne w wielu projektach, ale w nowych projektach ich rolę w całości przejmuje `ruff`.
@@ -365,6 +371,9 @@ Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type ch
 [pixi](https://prefix.dev/) (firmy prefix.dev) to nowoczesna alternatywa, która łączy najlepsze z obu światów: korzysta z pakietów `conda-forge` **oraz** z PyPI, oferuje szybkie rozwiązywanie zależności i plik lock. Dobry wybór dla projektów ML wymagających zarówno bibliotek systemowych, jak i czystych pakietów Pythona.
 
 ---
+
+> [!IMPORTANT]
+> Notebooki świetnie nadają się do eksploracji, ale nigdy nie commituj wyników komórek zawierających dane wrażliwe (tokeny, klucze API, dane osobowe). Pliki `.ipynb` to dokumenty JSON — wyniki komórek są w nich zapisane jako plain text.
 
 ## Jupyter Notebooks - interaktywne programowanie
 
@@ -401,10 +410,10 @@ plt.show()
 
 ### Główne środowiska notebookowe
 
-  * **Jupyter Notebook / JupyterLab**: Klasyczne, uruchamiane lokalnie w przeglądarce.
-  * **Google Colab**: Darmowe notebooki w chmurze z dostępem do GPU i TPU od Google.
+  * **[Jupyter Notebook / JupyterLab](https://jupyter.org/)**: Klasyczne, uruchamiane lokalnie w przeglądarce.
+  * **[Google Colab](https://colab.research.google.com/)**: Darmowe notebooki w chmurze z dostępem do GPU i TPU od Google.
   * **VS Code**: Doskonałe, wbudowane wsparcie dla plików `.ipynb`, łączące zalety IDE i notebooka.
-  * **Platformy chmurowe**: Databricks, Kaggle, Deepnote oferują zaawansowane, zespołowe środowiska notebookowe.
+  * **Platformy chmurowe**: [Databricks](https://databricks.com/), [Kaggle](https://www.kaggle.com/), [Deepnote](https://deepnote.com/) oferują zaawansowane, zespołowe środowiska notebookowe.
 
 > [!WARNING]
 > Notebooki mogą prowadzić do problemów z reprodukowalnością kodu, ponieważ kolejność wykonywania komórek ma znaczenie. Dla kodu produkcyjnego, który ma być uruchamiany automatycznie, preferowaną formą są standardowe pliki `.py`.
@@ -413,11 +422,15 @@ plt.show()
 
 Pliki `.ipynb` to w istocie dokumenty JSON zawierające również wyniki wykonania (w tym binarne obrazy wykresów). To sprawia, że `git diff` na notebooku bywa nieczytelny, a repozytorium puchnie. Dwa narzędzia rozwiązują ten problem:
 
-  * **`jupytext`** - synchronizuje notebook z czytelnym dla człowieka plikiem `.py` (lub Markdown), który dobrze nadaje się do code review i wersjonowania.
-  * **`nbstripout`** - hook czyszczący wyniki komórek przed commitem, dzięki czemu do repozytorium trafia wyłącznie kod.
+  * **[`jupytext`](https://jupytext.readthedocs.io/)** - synchronizuje notebook z czytelnym dla człowieka plikiem `.py` (lub Markdown), który dobrze nadaje się do code review i wersjonowania.
+  * **[`nbstripout`](https://github.com/kynan/nbstripout)** - hook czyszczący wyniki komórek przed commitem, dzięki czemu do repozytorium trafia wyłącznie kod.
 
 ---
 
 ## Źródła i przypisy
 
 [^1]: Benchmarki wydajności mają charakter orientacyjny - rzędy wielkości odpowiadają publikowanym pomiarom Astral; konkretne czasy zależą od projektu, sieci i sprzętu.
+[^uv-speed]: Porównanie wydajności uv vs pip vs Poetry — zob. oficjalny benchmark Astral: [docs.astral.sh/uv/benchmark](https://docs.astral.sh/uv/#performance).
+[^ruff-rules]: Pełna lista reguł Ruff: [docs.astral.sh/ruff/rules](https://docs.astral.sh/ruff/rules/).
+[^openai-astral]: Komunikat o przejęciu firmy Astral przez OpenAI (marzec 2026): [astral.sh/blog/openai](https://astral.sh/blog/).
+[^pep621]: PEP 621 — *Storing project metadata in pyproject.toml*. Zob. [peps.python.org/pep-0621](https://peps.python.org/pep-0621/).

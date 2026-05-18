@@ -3,6 +3,9 @@
 > [!NOTE]
 > Ten słowniczek to Twoja podręczna encyklopedia terminów, które napotkasz w ekosystemie Pythona. Został podzielony na kategorie tematyczne, aby ułatwić nawigację. Używaj go, aby szybko sprawdzić nieznane pojęcia i ugruntować swoją wiedzę.
 
+> [!TIP]
+> Hasła pogrubione w innych rozdziałach odsyłają tutaj — kliknij, by sprawdzić definicję. Wiele haseł zawiera linki do oficjalnej dokumentacji, gdzie znajdziesz szczegóły i przykłady.
+
 ---
 
 ## Podstawowe pojęcia Python
@@ -11,7 +14,7 @@
 : Nowoczesny, asynchroniczny standard komunikacji między serwerem a aplikacją webową w Pythonie. Jest następcą WSGI i został zaprojektowany do obsługi dużej liczby jednoczesnych połączeń I/O, co jest kluczowe dla aplikacji czasu rzeczywistego, WebSockets i wysokowydajnych API. Używany przez frameworki takie jak FastAPI.
 
 **Astral**
-: Firma stojąca za nowoczesnym, napisanym w Rust toolingiem dla Pythona: `uv`, `Ruff` i `ty`. Od marca 2026 jest częścią OpenAI, jednak jej narzędzia pozostają otwartoźródłowe (licencja MIT).
+: Firma stojąca za nowoczesnym, napisanym w Rust toolingiem dla Pythona: [`uv`](https://docs.astral.sh/uv/), [`Ruff`](https://docs.astral.sh/ruff/) i [`ty`](https://github.com/astral-sh/ty). Od marca 2026 jest częścią OpenAI, jednak jej narzędzia pozostają otwartoźródłowe (licencja MIT).
 
 **Batteries-Included**
 : Filozofia projektowania frameworków (np. Django), która polega na dostarczaniu wbudowanych, zintegrowanych rozwiązań dla większości typowych problemów, takich jak ORM, panel admina, autentykacja czy system szablonów.
@@ -29,7 +32,7 @@
 : Filozofia programowania, która nie skupia się na jawnym typie obiektu, ale na jego metodach i właściwościach. Jej nazwa pochodzi od powiedzenia: "If it walks like a duck and quacks like a duck, it must be a duck". W praktyce oznacza to, że funkcja będzie próbowała wywołać na obiekcie potrzebne metody, nie sprawdzając, czy jest on instancją konkretnej klasy.
 
 **Formatter**
-: Narzędzie automatycznie przepisujące kod źródłowy do jednego, kanonicznego stylu (np. spójne wcięcia, długość linii, cudzysłowy). Eliminuje dyskusje o stylu w code review. W ekosystemie Pythona tę rolę pełnią m.in. `Ruff` oraz `black`.
+: Narzędzie automatycznie przepisujące kod źródłowy do jednego, kanonicznego stylu (np. spójne wcięcia, długość linii, cudzysłowy). Eliminuje dyskusje o stylu w code review. W ekosystemie Pythona tę rolę pełnią m.in. [`Ruff`](https://docs.astral.sh/ruff/) oraz [`black`](https://github.com/psf/black).
 
 **GIL (Global Interpreter Lock)**
 : Mechanizm w standardowym buildzie CPythona, który pozwala tylko jednemu wątkowi na wykonywanie bytecodu Pythona w danym momencie w ramach jednego procesu. Upraszcza zarządzanie pamięcią i zapobiega konfliktom, ale ogranicza rzeczywistą równoległość w programach wielowątkowych, które są mocno obciążone obliczeniami CPU. Powyższy opis dotyczy standardowego buildu CPythona z GIL - od Pythona 3.13/3.14 istnieje oficjalnie wspierany build **free-threaded** (no-GIL), w którym to ograniczenie nie obowiązuje (zob. rozdział 01).
@@ -44,7 +47,7 @@
 : Program, który wykonuje kod Python linia po linii, bez wcześniejszego etapu kompilacji do kodu maszynowego. W przypadku CPythona, interpreter w rzeczywistości wykonuje bytecode.
 
 **Linter**
-: Narzędzie do statycznej analizy kodu, które bez uruchamiania programu wykrywa potencjalne błędy, niebezpieczne wzorce i odstępstwa od konwencji. W ekosystemie Pythona popularne lintery to `Ruff`, `flake8` i `pylint`.
+: Narzędzie do statycznej analizy kodu, które bez uruchamiania programu wykrywa potencjalne błędy, niebezpieczne wzorce i odstępstwa od konwencji. W ekosystemie Pythona popularne lintery to [`Ruff`](https://docs.astral.sh/ruff/), [`flake8`](https://flake8.pycqa.org/) i [`pylint`](https://pylint.readthedocs.io/).
 
 **List Comprehension**
 : Zwięzły, czytelny i "pythonowy" sposób tworzenia list na podstawie istniejących sekwencji. Jest to często bardziej wydajna i preferowana alternatywa dla pętli `for` z metodą `.append()`. Przykład: `squares = [x**2 for x in range(10)]`.
@@ -73,11 +76,11 @@
 **REPL (Read-Eval-Print Loop)**
 : Interaktywne środowisko do eksperymentowania z kodem Python, gdzie można wpisywać polecenia i natychmiast widzieć wyniki.
 
-**Ruff**
+**[Ruff](https://docs.astral.sh/ruff/)**
 : Ultraszybki linter i formatter Pythona stworzony przez firmę Astral i napisany w Rust. Łączy w jednym narzędziu funkcje, które wcześniej zapewniały `black`, `isort`, `flake8` i `pylint`, działając przy tym o rzędy wielkości szybciej.
 
 **Type Checker**
-: Narzędzie sprawdzające spójność typów (na podstawie type hints) przed uruchomieniem programu, wychwytujące błędy, które inaczej ujawniłyby się dopiero w czasie wykonania. Przykłady to `mypy`, `pyright` oraz `ty`.
+: Narzędzie sprawdzające spójność typów (na podstawie type hints) przed uruchomieniem programu, wychwytujące błędy, które inaczej ujawniłyby się dopiero w czasie wykonania. Przykłady to [`mypy`](https://mypy.readthedocs.io/), [`pyright`](https://github.com/microsoft/pyright) oraz `ty`.
 
 **Type Hint (Wskazówka Typu)**
 : Opcjonalna adnotacja w kodzie Pythona, która określa oczekiwany typ zmiennej, parametru funkcji lub wartości zwracanej. Interpreter Pythona ignoruje te wskazówki w czasie wykonania, ale są one używane przez narzędzia do analizy statycznej (np. `mypy`) i IDE w celu wczesnego wykrywania błędów i poprawy podpowiedzi.
@@ -88,13 +91,13 @@
 **WSGI (Web Server Gateway Interface)**
 : Tradycyjny, synchroniczny standard komunikacji między serwerem a aplikacją webową w Pythonie. Używany przez frameworki takie jak Django i Flask.
 
-**pre-commit**
+**[pre-commit](https://pre-commit.com/)**
 : Framework uruchamiający zestaw automatycznych kontroli (np. lint, formatowanie, wykrywanie sekretów) jako tzw. git hooki - przed każdym commitem. Zapewnia, że do repozytorium trafia wyłącznie kod spełniający przyjęte standardy.
 
-**ty**
+**[ty](https://github.com/astral-sh/ty)**
 : Szybki type checker Pythona tworzony przez firmę Astral i napisany w Rust. Od grudnia 2025 dostępny w fazie beta.
 
-**uv**
+**[uv](https://docs.astral.sh/uv/)**
 : Ultraszybki, zunifikowany menedżer projektów, pakietów i wersji Pythona stworzony przez firmę Astral i napisany w Rust. Zastępuje w jednym narzędziu funkcje `pip`, `venv`, `pyenv`, `pipx` oraz `poetry`.
 
 ---
@@ -211,7 +214,7 @@
 **LLM (Large Language Model)**
 : Duży model językowy; głęboka sieć neuronowa (zazwyczaj oparta na architekturze Transformer) wytrenowana na ogromnych zbiorach danych tekstowych w celu rozumienia i generowania języka naturalnego.
 
-**MCP (Model Context Protocol)**
+**[MCP](https://modelcontextprotocol.io/) (Model Context Protocol)**
 : Otwarty standard wprowadzony przez Anthropic (listopad 2024), który w ujednolicony sposób łączy modele LLM i agentów z zewnętrznymi narzędziami oraz źródłami danych - bywa nazywany "USB-C dla AI". Został przyjęty m.in. przez OpenAI, Google i Microsoft, a w grudniu 2025 przekazany pod opiekę Linux Foundation.
 
 **Mixture-of-Experts (MoE)**
@@ -221,7 +224,7 @@
 : Zamiana pytania zadanego w języku naturalnym na zapytanie SQL, jego wykonanie i przedstawienie odpowiedzi. Jedno z praktycznych zastosowań RAG w analityce danych - pozwala nietechnicznym użytkownikom odpytywać bazy danych.
 
 **Orchestration Framework (Framework orkiestracyjny)**
-: Biblioteka (np. LangChain, LangGraph, Haystack) służąca do budowania złożonych aplikacji AI poprzez łączenie wielu wywołań LLM, narzędzi i źródeł danych w spójne przepływy pracy (łańcuchy, grafy). LangGraph osiągnął wersję 1.0 pod koniec 2025 roku i stał się domyślnym runtime'em agentów w ekosystemie LangChain. Widoczny jest trend przechodzenia w stronę dedykowanych Agent SDK.
+: Biblioteka (np. [LangChain](https://www.langchain.com/), [LangGraph](https://www.langchain.com/langgraph), Haystack) służąca do budowania złożonych aplikacji AI poprzez łączenie wielu wywołań LLM, narzędzi i źródeł danych w spójne przepływy pracy (łańcuchy, grafy). LangGraph osiągnął wersję 1.0 pod koniec 2025 roku i stał się domyślnym runtime'em agentów w ekosystemie LangChain. Widoczny jest trend przechodzenia w stronę dedykowanych Agent SDK.
 
 **Prompt Engineering**
 : Sztuka i nauka projektowania efektywnych zapytań (promptów) do modeli LLM w celu uzyskania pożądanych, precyzyjnych i niezawodnych odpowiedzi.

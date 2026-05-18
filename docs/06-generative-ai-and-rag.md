@@ -26,6 +26,9 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 > [!IMPORTANT]
 > Konkretne numery wersji dezaktualizują się w ciągu tygodni. Jako inżynier myśl raczej kategoriami **rodzin modeli** i ich **zdolności** (długość kontekstu, multimodalność, tryb rozumowania, koszt, latencja) niż konkretnych nazw. Architektura Twojej aplikacji powinna pozwalać na wymianę modelu bez przepisywania logiki - patrz wzorzec *Ports & Adapters* w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
 
+> [!NOTE]
+> Krajobraz modeli zmienia się z tygodnia na tydzień. Aktualne porównania wydajności i kosztów znajdziesz na [LMSYS Chatbot Arena](https://lmarena.ai/) oraz [Artificial Analysis](https://artificialanalysis.ai/). Poniższe zestawienie jest aktualne na maj 2026 — potraktuj je jako migawkę, nie jako stałą prawdę.
+
 ### Modele zamknięte (frontier, dostępne przez API)
 
 | Dostawca | Rodzina | Najnowszy model (maj 2026) | Uwagi |
@@ -142,7 +145,7 @@ flowchart TD
 * **Hybrid search (wyszukiwanie hybrydowe)** - łączy klasyczne wyszukiwanie leksykalne **BM25** (dopasowanie słów kluczowych, świetne dla nazw własnych, kodów, akronimów) z **wyszukiwaniem wektorowym** (podobieństwo semantyczne). Wyniki obu metod scala się zwykle przez **Reciprocal Rank Fusion (RRF)** - algorytm łączący rankingi na podstawie pozycji, a nie surowych wyników. Hybryda jest niemal zawsze lepsza niż każda z metod osobno.
 * **Re-ranking** - wyszukiwanie wektorowe jest szybkie, ale niezbyt precyzyjne. Schemat dwuetapowy: najpierw tani retrieval pobiera szeroką listę (np. **top-50**), następnie **cross-encoder** (model oceniający parę zapytanie–dokument *razem*, dokładniej niż porównanie embeddingów) przesortowuje ją i wybiera **3–5 najtrafniejszych** fragmentów, które trafiają do LLM. Mniej, ale lepszego kontekstu = mniej halucynacji i niższy koszt.
 * **Agentic RAG** - retrieval nie jest jednorazowy. Wokół niego buduje się **pętlę rozumowania**: agent analizuje pobrane fragmenty, ocenia, czy wystarczają, w razie potrzeby przeformułowuje zapytanie, dzieli pytanie na pod-pytania i ponawia wyszukiwanie. To RAG, który "myśli", zamiast wykonywać sztywny pipeline.
-* **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **LazyGraphRAG**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
+* **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **[LazyGraphRAG](https://github.com/microsoft/graphrag/blob/main/README_LazyGraphRAG.md)**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
 * **Adaptive RAG** - nie każde pytanie wymaga pełnego pipeline'u. Lekki **klasyfikator routuje zapytanie** wg złożoności: proste pytania trafiają wprost do LLM, średnie - do zwykłego retrievalu, złożone - do agentic RAG lub GraphRAG. Optymalizuje to koszt i latencję.
 
 > [!TIP]
@@ -175,7 +178,7 @@ Poniżej znajdziesz najważniejsze techniki, które warto znać i stosować w pr
 
 - **Zero-shot prompting** – po prostu zadajesz pytanie lub wydajesz polecenie bez dodatkowych przykładów.
 - **Few-shot prompting** – podajesz kilka przykładów poprawnych odpowiedzi, aby model "nauczył się" wzorca.
-- **Chain-of-Thought (CoT)** – prosisz model, by rozwiązywał zadanie krok po kroku. Technika historycznie przełomowa (2022–2024): ujawnienie "toku rozumowania" wyraźnie poprawiało trafność na zadaniach wymagających logiki. **Uwaga na nieaktualną poradę produkcyjną:** w 2026, w erze **modeli rozumujących (*reasoning models*)**, wymuszanie długiego, jawnego "toku myślenia" *w każdej odpowiedzi* nie jest już dobrą praktyką - zwiększa koszt i latencję, a samą odpowiedź zaszumia. Lepiej: (a) **użyć modelu rozumującego**, który prowadzi rozumowanie wewnętrznie, albo (b) poprosić o **zwięzłe uzasadnienie, plan lub wynik z kontrolą kroków** zamiast rozwlekłego monologu. CoT pozostaje ważnym pojęciem edukacyjnym i bywa przydatny przy słabszych/mniejszych modelach - ale w produkcji stosuj go świadomie, nie odruchowo.
+- **Chain-of-Thought (CoT)** – prosisz model, by rozwiązywał zadanie krok po kroku. Technika historycznie przełomowa (2022–2024): ujawnienie "toku rozumowania" wyraźnie poprawiało trafność na zadaniach wymagających logiki. **Uwaga na nieaktualną poradę produkcyjną:** w 2026, w erze **modeli rozumujących (*reasoning models*)**[^reasoning-models], wymuszanie długiego, jawnego "toku myślenia" *w każdej odpowiedzi* nie jest już dobrą praktyką - zwiększa koszt i latencję, a samą odpowiedź zaszumia. Lepiej: (a) **użyć modelu rozumującego**, który prowadzi rozumowanie wewnętrznie, albo (b) poprosić o **zwięzłe uzasadnienie, plan lub wynik z kontrolą kroków** zamiast rozwlekłego monologu. CoT pozostaje ważnym pojęciem edukacyjnym i bywa przydatny przy słabszych/mniejszych modelach - ale w produkcji stosuj go świadomie, nie odruchowo.
 - **Role prompting** – nadajesz modelowi rolę (np. "Jesteś ekspertem od prawa podatkowego...").
 - **Instruction-based prompting** – bardzo precyzyjne, jasne instrukcje, często z określeniem formatu odpowiedzi.
 - **Reflexion/self-correction** – prosisz model, by sam ocenił i poprawił swoją odpowiedź.
@@ -205,6 +208,9 @@ Typowe błędy:
 - **Pydantic** – kluczowy komponent do walidacji i wymuszania schematów odpowiedzi w Pythonie.
 
 **Więcej o Instructor i praktycznych przykładach znajdziesz tu:** [https://python.useinstructor.com/prompting/](https://python.useinstructor.com/prompting/)
+
+> [!NOTE]
+> **Wybór narzędzia do structured outputs:** [Instructor](https://python.useinstructor.com/) to najprostsza opcja — opakowuje istniejący SDK dostawcy i wymusza schemat Pydantic z automatycznym retry. [BAML](https://docs.boundaryml.com/home) oferuje własny DSL i lepsze DX przy złożonych promptach, ale wymaga dodatkowego kroku budowy. Czysty [Pydantic](https://docs.pydantic.dev/) daje pełną kontrolę, ale sam nie wywołuje LLM — łączy się go z SDK dostawcy ręcznie lub przez Instructor.
 
 ---
 
@@ -254,7 +260,7 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 - zaawansowane systemy RAG (GraphRAG, hybrydowe RAG).
 
 **Najważniejsze bazy grafowe wykorzystywane w 2026 roku:**
-- [**Neo4j**](https://neo4j.com/) – najpopularniejsza baza grafowa na świecie, szeroko stosowana w knowledge graphach, rekomendacjach, fraud detection, z bogatym ekosystemem narzędzi (Cypher, Graph Data Science, integracje z LLM, GraphRAG, LlamaIndex, LangChain, Google GenAI Toolbox).
+- [**Neo4j**](https://neo4j.com/) – najpopularniejsza baza grafowa na świecie, szeroko stosowana w knowledge graphach, rekomendacjach, fraud detection, z bogatym ekosystemem narzędzi (Cypher, Graph Data Science, integracje z LLM, GraphRAG, LlamaIndex, LangChain, [Google GenAI Toolbox](https://github.com/google/genai-toolbox)).
 - [**Memgraph**](https://memgraph.com/) – wydajna, open-source’owa baza grafowa, kompatybilna z Cypher, wykorzystywana m.in. przez NASA do budowy knowledge graphów i GraphRAG. Mocno wspiera integracje z Pythonem i narzędziami AI.
 - [**NebulaGraph**](https://www.nebula-graph.io/) – rozproszona, skalowalna baza grafowa, zoptymalizowana pod bardzo duże zbiory danych (triliony krawędzi), z własnym językiem zapytań nGQL i wsparciem dla chmury.
 
@@ -273,11 +279,11 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 
 **Przykłady frameworków bazujących na bazach grafowych:**
 - Microsoft GraphRAG - oraz **LazyGraphRAG**, wariant budujący strukturę grafu dopiero przy zapytaniu (znacznie tańsze indeksowanie)
-- LightRAG
-- TrustGraph
-- Graphiti
-- Nano GraphRAG
-- R2R
+- [LightRAG](https://github.com/HKUDS/LightRAG)
+- [TrustGraph](https://github.com/trustgraph/trustgraph)
+- [Graphiti](https://github.com/getzep/graphiti)
+- [Nano GraphRAG](https://github.com/NanmiCoder/NanoGraphRAG)
+- [R2R](https://github.com/SciPhi-AI/R2R)
 
 **Porównanie: Bazy Wektorowe vs. Bazy Grafowe**
 
@@ -345,10 +351,10 @@ Wraz z rozwojem agentów pojawił się problem integracyjny: jak połączyć dow
 
 Najważniejsze fakty:
 
-* Wprowadzony przez **Anthropic w listopadzie 2024 r.**, szybko stał się standardem branżowym - przyjęty m.in. przez **OpenAI, Google i Microsoft**.
+* Wprowadzony przez **Anthropic w listopadzie 2024 r.**[^mcp-intro], szybko stał się standardem branżowym - przyjęty m.in. przez **OpenAI, Google i Microsoft**.
 * Dostępne **oficjalne SDK dla wielu języków** (Python, TypeScript, Java, C#, Go i inne).
 * Istnieją już **setki publicznych serwerów MCP** - gotowych integracji do baz danych, narzędzi deweloperskich, usług chmurowych itd.
-* W **grudniu 2025 r.** projekt został przekazany pod opiekę **Linux Foundation**, co cementuje jego status jako neutralnego, otwartego standardu.
+* W **grudniu 2025 r.** projekt został przekazany pod opiekę **Linux Foundation**[^mcp-linux-foundation], co cementuje jego status jako neutralnego, otwartego standardu.
 
 Idea MCP to jeden klient i wiele **wymiennych** serwerów - każdy serwer udostępnia narzędzia lub dane, niezależnie od dostawcy modelu:
 
@@ -371,8 +377,8 @@ flowchart LR
 
 Najniższy, podstawowy poziom integracji - bezpośrednie biblioteki klienckie do API poszczególnych dostawców.
 
-* [**OpenAI SDK**](https://github.com/openai/openai-python) - oficjalna biblioteka do API OpenAI. Warto znać kierunek rozwoju: oprócz klasycznego *Chat Completions API*, OpenAI promuje **Responses API** jako przyszłościowy interfejs do budowy agentów (zastępuje wcześniejsze, wycofywane *Assistants API*). Dla bardziej złożonych systemów dostępny jest też dedykowany **OpenAI Agents SDK**.
-* [**Anthropic SDK**](https://github.com/anthropics/anthropic-sdk-python) - oficjalna biblioteka do API modeli Claude. Do budowy agentów Anthropic udostępnia **Claude Agent SDK** (przemianowany z wcześniejszego "Claude Code SDK") - framework do tworzenia agentów korzystających z narzędzi i MCP.
+* [**OpenAI SDK**](https://github.com/openai/openai-python) - oficjalna biblioteka do API OpenAI. Warto znać kierunek rozwoju: oprócz klasycznego *Chat Completions API*, OpenAI promuje **Responses API** jako przyszłościowy interfejs do budowy agentów (zastępuje wcześniejsze, wycofywane *Assistants API*). Dla bardziej złożonych systemów dostępny jest też dedykowany **[OpenAI Agents SDK](https://github.com/openai/openai-agents-python)**.
+* [**Anthropic SDK**](https://github.com/anthropics/anthropic-sdk-python) - oficjalna biblioteka do API modeli Claude. Do budowy agentów Anthropic udostępnia **[Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)** (przemianowany z wcześniejszego "Claude Code SDK") - framework do tworzenia agentów korzystających z narzędzi i MCP.
 * [**google-genai SDK**](https://github.com/googleapis/python-genai) - oficjalna, aktualna biblioteka Google do modeli Gemini (zastąpiła starszy pakiet `google-generativeai`).
 
 > [!TIP]
@@ -491,3 +497,7 @@ Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wys
 
 > [!TIP]
 > QueryVault jest też dobrym przykładem **odseparowania kodu domenowego od konkretnego SDK LLM**. Możliwość podmiany modelu (Bielik ↔ Qwen ↔ inny) bez przepisywania logiki aplikacji to wprost wzorzec *Ports & Adapters* - szczegółowo opisany w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md). Definicje pojęć użytych w tym studium przypadku (NL2SQL, CFG, RBAC, RAG) znajdziesz w [słowniczku](./08-glossary.md).
+
+[^mcp-linux-foundation]: MCP przekazany pod opiekę Linux Foundation w grudniu 2025 r. Zob. komunikat: [linuxfoundation.org/press](https://www.linuxfoundation.org/press/press-releases).
+[^mcp-intro]: Oryginalny wprowadzający post Anthropic o MCP (listopad 2024): [anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol).
+[^reasoning-models]: Modele rozumujące (*reasoning models*) — np. rodzina OpenAI o-series (o3, o4-mini) oraz DeepSeek-R1 — trenowane metodami RL do generowania wewnętrznego łańcucha rozumowania przed odpowiedzią. Zob. też hasło *Reasoning Model* w [słowniczku](./08-glossary.md).
