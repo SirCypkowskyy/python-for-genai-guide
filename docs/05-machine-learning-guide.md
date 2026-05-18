@@ -150,7 +150,7 @@ TensorFlow zachowuje natomiast realne nisze, w których jest mocny: dojrzałe ws
 -----
 
 > [!NOTE]
-> Dlaczego gradient boosting „regularnie ogrywa" deep learning na danych tabelarycznych? Odpowiedź tkwi w strukturze danych: tabele mają cechy niezależne (kolumny) o niskiej wymiarowości względnej — to środowisko naturalne dla drzew decyzyjnych. Sieci neuronowe błyszczą tam, gdzie dane mają strukturę przestrzenną (obrazy) lub sekwencyjną (tekst, szeregi czasowe) — co wymaga uczenia reprezentacji, a nie klasyfikacji gotowych cech.
+> Dlaczego gradient boosting „regularnie ogrywa" deep learning na danych tabelarycznych? Odpowiedź tkwi w strukturze danych: tabele mają cechy niezależne (kolumny) o niskiej wymiarowości względnej – to środowisko naturalne dla drzew decyzyjnych. Sieci neuronowe błyszczą tam, gdzie dane mają strukturę przestrzenną (obrazy) lub sekwencyjną (tekst, szeregi czasowe) – co wymaga uczenia reprezentacji, a nie klasyfikacji gotowych cech.
 
 ## 🌳 Gradient Boosting - król danych tabelarycznych
 
@@ -203,7 +203,9 @@ Znajomość bibliotek to dopiero połowa sukcesu. Druga połowa to **metodologia
 Model **nie może** być oceniany na tych samych danych, na których się uczył - "zapamiętałby" je i wynik byłby zawyżony. Dlatego dane dzielimy na **trzy** zbiory:
 
 * **Treningowy (*train*)** - model się na nim uczy (`.fit()`).
+
 * **Walidacyjny (*validation*)** - służy do strojenia: doboru hiperparametrów, wyboru modelu, decyzji "która wersja lepsza". Patrzysz na niego wielokrotnie.
+
 * **Testowy (*test*)** - **nietknięty do samego końca**. Używasz go *raz*, na finalnym modelu, by uzyskać uczciwą ocenę jakości na nowych danych. Gdy raz "podejrzysz" wynik na teście i na tej podstawie coś zmienisz - test przestaje być testem.
 
 ### Data leakage - najczęstszy cichy błąd
@@ -211,6 +213,7 @@ Model **nie może** być oceniany na tych samych danych, na których się uczył
 **Wyciek danych (*data leakage*)** to sytuacja, w której do treningu przedostaje się informacja, której model nie będzie miał w produkcji. Efekt: świetne wyniki na walidacji/teście i rozczarowanie po wdrożeniu. To najczęstszy i najtrudniejszy do wykrycia błąd początkujących, bo nic się nie "wywala" - model po prostu kłamie na temat swojej jakości. Typowe źródła:
 
 * **Preprocessing dopasowany przed splitem** - przykład: skalujesz lub imputujesz braki na *całym* zbiorze, a *potem* dzielisz na train/test. Statystyki użyte do skalowania (średnia, odchylenie) "widziały" wtedy dane testowe - to wyciek.
+
 * **Cecha z przyszłości** - kolumna zawiera informację niedostępną w chwili predykcji (np. przewidujesz, czy klient zrezygnuje, a jedną z cech jest `data_rezygnacji`). Model "ściąga" z odpowiedzi.
 
 **Reguła:** wszystkie transformacje uczone na danych (skalowanie, imputacja, kodowanie, selekcja cech) dopasowuj **wyłącznie na zbiorze treningowym** (`.fit()` na train), a następnie tylko *aplikuj* (`.transform()`) na walidacji i teście.
@@ -234,7 +237,7 @@ flowchart LR
 > Kolejność ma znaczenie: **najpierw split, dopiero potem `fit`** transformacji. Odwrotna kolejność to klasyczny wyciek danych - wynik na teście będzie zawyżony, a model zawiedzie w produkcji.
 
 > [!NOTE]
-> Typowe wartości *k* to 5 lub 10 — stanowią rozsądny kompromis między stabilnością oceny a kosztem obliczeniowym (model trenuje się *k* razy). Przy bardzo małych zbiorach używa się Leave-One-Out (k = n, gdzie n to liczba obserwacji) — ale to najdroższy wariant i bywa obciążony wariancją.
+> Typowe wartości *k* to 5 lub 10 – stanowią rozsądny kompromis między stabilnością oceny a kosztem obliczeniowym (model trenuje się *k* razy). Przy bardzo małych zbiorach używa się Leave-One-Out (k = n, gdzie n to liczba obserwacji) – ale to najdroższy wariant i bywa obciążony wariancją.
 
 ### Cross-validation (walidacja krzyżowa)
 
@@ -245,8 +248,11 @@ Pojedynczy podział train/validation bywa "loterią" - wynik zależy od tego, kt
 `accuracy` (odsetek poprawnych predykcji) jest intuicyjna, ale **myląca przy niezbalansowanych klasach**. Jeśli 99% maili to nie-spam, model zawsze odpowiadający "nie-spam" ma 99% accuracy - i jest bezużyteczny. Dlatego warto znać:
 
 * **Precision (precyzja)** - spośród obserwacji oznaczonych jako pozytywne, ile *naprawdę* takie było. Ważna, gdy kosztuje **fałszywy alarm** (np. oznaczenie ważnego maila jako spam).
+
 * **Recall (czułość)** - spośród *wszystkich* obserwacji pozytywnych, ile model wychwycił. Ważna, gdy kosztuje **przeoczenie** (np. niewykrycie choroby, oszustwa).
+
 * **F1** - średnia harmoniczna precision i recall; jedna liczba, gdy zależy Ci na obu naraz.
+
 * **ROC-AUC** - ocenia zdolność modelu do *rozróżniania* klas niezależnie od progu decyzyjnego; dobra do porównywania modeli.
 
 > [!NOTE]
@@ -316,15 +322,18 @@ Ten cykl pokazuje, dlaczego ML to nie "wytrenuj i zapomnij", lecz ciągły proce
 -----
 
 > [!TIP]
-> Od czego zacząć z MLOps? **MLflow** to rozsądny domyślny wybór — jest otwarty, popularny i obejmuje dziś zarówno klasyczny ML, jak i GenAI (tracing, ewaluacja). Dla śledzenia eksperymentów w zespole DL warto też rozważyć [Weights & Biases](https://wandb.ai/).
+> Od czego zacząć z MLOps? **MLflow** to rozsądny domyślny wybór – jest otwarty, popularny i obejmuje dziś zarówno klasyczny ML, jak i GenAI (tracing, ewaluacja). Dla śledzenia eksperymentów w zespole DL warto też rozważyć [Weights & Biases](https://wandb.ai/).
 
 ## 🚀 MLOps - od notebooka do produkcji
 
 Wytrenowanie modelu w notebooku Jupyter to dopiero początek. **MLOps** (Machine Learning Operations) to zbiór praktyk i narzędzi, które przenoszą model z eksperymentu do niezawodnej produkcji: śledzenie eksperymentów, wersjonowanie modeli i danych, automatyzacja wdrożeń oraz monitoring.
 
 * [**MLflow**](https://mlflow.org/) (wersja **3.12**[^mlflow3], maj 2026) - najpopularniejsza, otwarta platforma do zarządzania cyklem życia ML: śledzenie eksperymentów (parametry, metryki, artefakty), rejestr modeli i pakowanie wdrożeń. Co istotne, **MLflow 3.x wyszedł daleko poza klasyczny ML** - oferuje dziś **observability dla agentów GenAI**: tracing wywołań LLM, ewaluację jakości odpowiedzi i śledzenie kosztów (*cost tracking*). To czyni go uniwersalnym narzędziem zarówno dla klasycznego ML, jak i aplikacji GenAI.
+
 * [**Weights & Biases**](https://wandb.ai/) (W&B) - popularne, dopracowane narzędzie do śledzenia eksperymentów, wizualizacji metryk i współpracy zespołowej; szczególnie lubiane w środowisku deep learningu i badaniach.
+
 * [**ZenML**](https://www.zenml.io/) i [**Neptune**](https://neptune.ai/) - kolejne warte poznania narzędzia: ZenML to framework do budowy przenośnych pipeline'ów MLOps, Neptune to rozbudowany rejestr i tracker eksperymentów (ceniony przy trenowaniu modeli foundation).
+
 * [**ONNX Runtime**](https://onnxruntime.ai/) - uniwersalny standard **inferencji**. [ONNX](https://onnx.ai/) (Open Neural Network Exchange) to otwarty format zapisu modeli, niezależny od frameworka: model wytrenowany w PyTorch możesz wyeksportować do ONNX i uruchamiać go przez ONNX Runtime na różnych platformach (CPU, GPU, edge) z wysoką wydajnością. Daje to **przenośność** - odseparowanie środowiska treningu od środowiska produkcyjnego.
 
 > [!NOTE]
@@ -332,5 +341,5 @@ Wytrenowanie modelu w notebooku Jupyter to dopiero początek. **MLOps** (Machine
 
 [^pytorch-papers]: Szacunek udziału PyTorch w publikacjach ML pochodzi z analizy Papers With Code: [paperswithcode.com](https://paperswithcode.com/). W latach 2024–2026 udział ten stabilizuje się na poziomie 80–85%.
 [^xgboost-versions]: Wersje gradient boosting na maj 2026: XGBoost 3.2, LightGBM 4.6, CatBoost 1.2.10. Zob. odpowiednio [xgboost.readthedocs.io](https://xgboost.readthedocs.io/), [lightgbm.readthedocs.io](https://lightgbm.readthedocs.io/), [catboost.ai](https://catboost.ai/).
-[^mlflow3]: MLflow 3.12 — wydanie z maja 2026, wprowadzające observability dla agentów GenAI. Zob. [pypi.org/project/mlflow/#history](https://pypi.org/project/mlflow/#history).
-[^sklearn-180]: Scikit-learn 1.8.0 — wydanie stabilne wspierające Python 3.11–3.14. Zob. [scikit-learn.org/stable/whats_new](https://scikit-learn.org/stable/whats_new.html).
+[^mlflow3]: MLflow 3.12 – wydanie z maja 2026, wprowadzające observability dla agentów GenAI. Zob. [pypi.org/project/mlflow/#history](https://pypi.org/project/mlflow/#history).
+[^sklearn-180]: Scikit-learn 1.8.0 – wydanie stabilne wspierające Python 3.11–3.14. Zob. [scikit-learn.org/stable/whats_new](https://scikit-learn.org/stable/whats_new.html).

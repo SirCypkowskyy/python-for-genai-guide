@@ -14,7 +14,9 @@ W najprostszym ujęciu, duży model językowy (LLM) to głęboka sieć neuronowa
 Aby efektywnie pracować z LLM, warto zrozumieć, co dzieje się "pod maską". Poniższe materiały są absolutnie najlepszym punktem startowym.
 
 * **Teoria dla każdego (Intuicja wizualna)**: Jeśli chcesz zrozumieć, jak naprawdę działa deep learning i modele językowe AI, koniecznie zobacz serię [**3Blue1Brown o sieciach neuronowych**](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1\_67000Dx\_ZCJB-3pi). To jedne z najlepszych istniejących materiałów, które w sposób wizualny i przystępny tłumaczą podstawowe idee stojące za nowoczesnymi modelami AI i machine learningiem. Idealne na start, by zbudować intuicję i "poczuć" jak myśli sieć neuronowa oraz (dalej) modele językowe.
+
 * **Wszystko w jednym wykładzie**: Wykład [***Andrieja Karpathy'ego* *"Intro to Large Language Models"***](https://www.youtube.com/watch?v=zjkBMFhNj_g) to jedno z lepszych wprowadzeń w temat, jakie istnieje. Karpathy, jako jeden z czołowych ekspertów w dziedzinie, w przystępny sposób wyjaśnia architekturę Transformerów, proces treningu i skalowania - wszystko w formie jednego, długiego i interaktywnego wykładu.
+
 * **Bieżące nowości**: Świat GenAI zmienia się z tygodnia na tydzień. Kanał YouTube [**bycloud**](https://www.youtube.com/@bycloudAI) to doskonałe źródło podsumowań najnowszych prac badawczych i przełomowych modeli, prezentowanych w technicznym, ale zrozumiałym, atrakcyjnym wizualnie formacie.
 
 ---
@@ -27,7 +29,7 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 > Konkretne numery wersji dezaktualizują się w ciągu tygodni. Jako inżynier myśl raczej kategoriami **rodzin modeli** i ich **zdolności** (długość kontekstu, multimodalność, tryb rozumowania, koszt, latencja) niż konkretnych nazw. Architektura Twojej aplikacji powinna pozwalać na wymianę modelu bez przepisywania logiki - patrz wzorzec *Ports & Adapters* w rozdziale [7. Architektura i dobre praktyki](./07-architecture-and-good-practices.md).
 
 > [!NOTE]
-> Krajobraz modeli zmienia się z tygodnia na tydzień. Aktualne porównania wydajności i kosztów znajdziesz na [LMSYS Chatbot Arena](https://lmarena.ai/) oraz [Artificial Analysis](https://artificialanalysis.ai/). Poniższe zestawienie jest aktualne na maj 2026 — potraktuj je jako migawkę, nie jako stałą prawdę.
+> Krajobraz modeli zmienia się z tygodnia na tydzień. Aktualne porównania wydajności i kosztów znajdziesz na [LMSYS Chatbot Arena](https://lmarena.ai/) oraz [Artificial Analysis](https://artificialanalysis.ai/). Poniższe zestawienie jest aktualne na maj 2026 – potraktuj je jako migawkę, nie jako stałą prawdę.
 
 ### Modele zamknięte (frontier, dostępne przez API)
 
@@ -47,9 +49,13 @@ Rynek modeli językowych zmienia się ekstremalnie szybko. Poniższe zestawienie
 Obok modeli zamkniętych dynamicznie rozwija się ekosystem modeli **open-weight** - takich, których wagi są publicznie dostępne i które możesz uruchomić **na własnej infrastrukturze**. To kluczowe dla zastosowań wymagających suwerenności danych, niskiej latencji lub kontroli kosztów.
 
 * **Meta [Llama 4](https://www.llama.com/)** - rodzina (warianty *Scout* i *Maverick*) w architekturze **MoE** z ekstremalnie długim oknem kontekstu.
+
 * **[DeepSeek](https://www.deepseek.com/) V4** (wersja zapoznawcza) - kolejna generacja wysoko ocenianych modeli o bardzo dobrym stosunku jakości do kosztu.
+
 * **Alibaba [Qwen](https://qwenlm.github.io/)3** - silna, wielojęzyczna rodzina z dobrymi wariantami wyspecjalizowanymi (m.in. kodowanie).
+
 * **Google [Gemma 3](https://ai.google.dev/gemma)** - otwarta rodzina Google, dobrze dopasowana do uruchamiania lokalnego.
+
 * **[Mistral](https://mistral.ai/)** - europejski dostawca z portfolio wydajnych modeli open-weight.
 
 > [!NOTE]
@@ -143,9 +149,13 @@ flowchart TD
 ### Nowoczesne techniki RAG
 
 * **Hybrid search (wyszukiwanie hybrydowe)** - łączy klasyczne wyszukiwanie leksykalne **BM25** (dopasowanie słów kluczowych, świetne dla nazw własnych, kodów, akronimów) z **wyszukiwaniem wektorowym** (podobieństwo semantyczne). Wyniki obu metod scala się zwykle przez **Reciprocal Rank Fusion (RRF)** - algorytm łączący rankingi na podstawie pozycji, a nie surowych wyników. Hybryda jest niemal zawsze lepsza niż każda z metod osobno.
+
 * **Re-ranking** - wyszukiwanie wektorowe jest szybkie, ale niezbyt precyzyjne. Schemat dwuetapowy: najpierw tani retrieval pobiera szeroką listę (np. **top-50**), następnie **cross-encoder** (model oceniający parę zapytanie–dokument *razem*, dokładniej niż porównanie embeddingów) przesortowuje ją i wybiera **3–5 najtrafniejszych** fragmentów, które trafiają do LLM. Mniej, ale lepszego kontekstu = mniej halucynacji i niższy koszt.
+
 * **Agentic RAG** - retrieval nie jest jednorazowy. Wokół niego buduje się **pętlę rozumowania**: agent analizuje pobrane fragmenty, ocenia, czy wystarczają, w razie potrzeby przeformułowuje zapytanie, dzieli pytanie na pod-pytania i ponawia wyszukiwanie. To RAG, który "myśli", zamiast wykonywać sztywny pipeline.
+
 * **GraphRAG** - zamiast (lub obok) bazy wektorowej wykorzystuje **graf wiedzy**. Sprawdza się przy pytaniach **multi-hop**, wymagających połączenia faktów z wielu dokumentów ("Którzy klienci firmy X są też dostawcami firmy Y?"). Warto znać [**Microsoft GraphRAG**](https://github.com/microsoft/graphrag) oraz jego lżejszy wariant **[LazyGraphRAG](https://github.com/microsoft/graphrag)**, który drastycznie obniża koszt indeksowania, budując strukturę grafu dopiero w momencie zapytania.
+
 * **Adaptive RAG** - nie każde pytanie wymaga pełnego pipeline'u. Lekki **klasyfikator routuje zapytanie** wg złożoności: proste pytania trafiają wprost do LLM, średnie - do zwykłego retrievalu, złożone - do agentic RAG lub GraphRAG. Optymalizuje to koszt i latencję.
 
 > [!TIP]
@@ -177,11 +187,17 @@ Jakość RAG zaczyna się od jakości **embeddingów** - to model embeddingów d
 Poniżej znajdziesz najważniejsze techniki, które warto znać i stosować w praktyce (szczegółowe przykłady i omówienia znajdziesz na [Prompting Guide](https://www.promptingguide.ai/techniques)):
 
 - **Zero-shot prompting** – po prostu zadajesz pytanie lub wydajesz polecenie bez dodatkowych przykładów.
+
 - **Few-shot prompting** – podajesz kilka przykładów poprawnych odpowiedzi, aby model "nauczył się" wzorca.
+
 - **Chain-of-Thought (CoT)** – prosisz model, by rozwiązywał zadanie krok po kroku. Technika historycznie przełomowa (2022–2024): ujawnienie "toku rozumowania" wyraźnie poprawiało trafność na zadaniach wymagających logiki. **Uwaga na nieaktualną poradę produkcyjną:** w 2026, w erze **modeli rozumujących (*reasoning models*)**[^reasoning-models], wymuszanie długiego, jawnego "toku myślenia" *w każdej odpowiedzi* nie jest już dobrą praktyką - zwiększa koszt i latencję, a samą odpowiedź zaszumia. Lepiej: (a) **użyć modelu rozumującego**, który prowadzi rozumowanie wewnętrznie, albo (b) poprosić o **zwięzłe uzasadnienie, plan lub wynik z kontrolą kroków** zamiast rozwlekłego monologu. CoT pozostaje ważnym pojęciem edukacyjnym i bywa przydatny przy słabszych/mniejszych modelach - ale w produkcji stosuj go świadomie, nie odruchowo.
+
 - **Role prompting** – nadajesz modelowi rolę (np. "Jesteś ekspertem od prawa podatkowego...").
+
 - **Instruction-based prompting** – bardzo precyzyjne, jasne instrukcje, często z określeniem formatu odpowiedzi.
+
 - **Reflexion/self-correction** – prosisz model, by sam ocenił i poprawił swoją odpowiedź.
+
 - **Structured output prompting** – wymuszasz konkretny format odpowiedzi (np. JSON, tabela, lista punktów).
 
 Więcej technik i praktycznych przykładów znajdziesz na stronie: [https://www.promptingguide.ai/techniques](https://www.promptingguide.ai/techniques)
@@ -189,28 +205,38 @@ Więcej technik i praktycznych przykładów znajdziesz na stronie: [https://www.
 ### Dobre praktyki i typowe błędy
 
 - Formułuj polecenia jasno, jednoznacznie i bez niedopowiedzeń.
+
 - Unikaj zbyt ogólnych pytań – im bardziej szczegółowy prompt, tym lepsza odpowiedź.
+
 - Testuj różne warianty promptów i porównuj wyniki.
+
 - W przypadku złożonych zadań – dziel je na mniejsze kroki (dekompozycja problemu).
+
 - Wymuszaj format odpowiedzi, jeśli to możliwe (np. "Zwróć wynik jako JSON z polami: ...").
+
 - Używaj przykładów (few-shot), gdy zależy Ci na powtarzalności i spójności.
 
 Typowe błędy:
 - Zbyt ogólne lub nieprecyzyjne polecenia.
+
 - Brak określenia formatu odpowiedzi.
+
 - Zbyt długie prompty (model może "zgubić" kontekst).
+
 - Brak testowania różnych wariantów.
 
 ### Narzędzia wspierające inżynierię promptów
 
 - [**Instructor**](https://python.useinstructor.com/prompting/) – biblioteka do wymuszania struktury odpowiedzi LLM, bardzo podobna do BAML, ale oparta o [Pydantic](https://docs.pydantic.dev/latest/). Pozwala łatwo wymusić, by model zwracał dane w określonym schemacie (np. klasie Pydantic), co znacznie zwiększa niezawodność i bezpieczeństwo aplikacji.
+
 * [**BAML (Basically a Made-up Language)**](https://docs.boundaryml.com/home): BAML to specjalistyczny język dziedzinowy (DSL, ang. *"Domain Specific Language"*) zaprojektowany do generowania **ustrukturyzowanych odpowiedzi z LLM** – z naciskiem na najlepsze doświadczenie deweloperskie. Pozwala budować niezawodnych agentów, chatboty z RAG, ekstrakcję danych z PDF i wiele więcej. BAML w znacznej części eliminuje typowe problemy pracy z promptami (brak type safety, konieczność ręcznego testowania, trudności z walidacją) i pozwala skupić się na logice biznesowej, a nie na walce z formatem odpowiedzi modelu.
+
 - **Pydantic** – kluczowy komponent do walidacji i wymuszania schematów odpowiedzi w Pythonie.
 
 **Więcej o Instructor i praktycznych przykładach znajdziesz tu:** [https://python.useinstructor.com/prompting/](https://python.useinstructor.com/prompting/)
 
 > [!NOTE]
-> **Wybór narzędzia do structured outputs:** [Instructor](https://python.useinstructor.com/) to najprostsza opcja — opakowuje istniejący SDK dostawcy i wymusza schemat Pydantic z automatycznym retry. [BAML](https://docs.boundaryml.com/home) oferuje własny DSL i lepsze DX przy złożonych promptach, ale wymaga dodatkowego kroku budowy. Czysty [Pydantic](https://docs.pydantic.dev/) daje pełną kontrolę, ale sam nie wywołuje LLM — łączy się go z SDK dostawcy ręcznie lub przez Instructor.
+> **Wybór narzędzia do structured outputs:** [Instructor](https://python.useinstructor.com/) to najprostsza opcja – opakowuje istniejący SDK dostawcy i wymusza schemat Pydantic z automatycznym retry. [BAML](https://docs.boundaryml.com/home) oferuje własny DSL i lepsze DX przy złożonych promptach, ale wymaga dodatkowego kroku budowy. Czysty [Pydantic](https://docs.pydantic.dev/) daje pełną kontrolę, ale sam nie wywołuje LLM – łączy się go z SDK dostawcy ręcznie lub przez Instructor.
 
 ---
 
@@ -221,18 +247,28 @@ Bazy wektorowe to wyspecjalizowane systemy bazodanowe do przechowywania i szybki
 **Najważniejsze bazy wektorowe wykorzystywane w 2026 roku:**
 
 - [**pgvector**](https://github.com/pgvector/pgvector) – rozszerzenie do PostgreSQL. ⭐ **Rozsądny domyślny wybór dla większości projektów** (workloady poniżej ~10 mln wektorów): trzymasz wektory obok danych relacyjnych, bez wprowadzania osobnego systemu do utrzymania (patrz szerszy opis niżej).
+
 - [**Qdrant**](https://qdrant.tech/) – szybka, open-source’owa baza napisana w Rust. ⭐ **Lider open-source pod względem stosunku wydajności do kosztu** - bardzo dobry wybór, gdy potrzebujesz dedykowanej bazy wektorowej i chcesz uniknąć vendor lock-inu.
+
 - [**Weaviate**](https://weaviate.io/) – open-source’owa baza z bogatym API, **szczególnie mocna w wyszukiwaniu hybrydowym** (wektorowym + tekstowym BM25) oraz integracją z popularnymi narzędziami AI.
+
 - [**Pinecone**](https://www.pinecone.io/) – w pełni zarządzana, skalowalna baza wektorowa, szeroko stosowana w produkcyjnych systemach GenAI; wybierana, gdy zależy Ci na braku obsługi infrastruktury.
+
 - [**Milvus**](https://milvus.io/) – bardzo wydajna, open-source’owa baza, skalująca się do miliardów wektorów, z szerokim wsparciem dla różnych przypadków użycia (RAG, wyszukiwanie obrazów, rekomendacje).
+
 - [**Chroma**](https://trychroma.com/) – lekka, open-source’owa baza, często wykorzystywana w prototypowaniu i mniejszych projektach.
+
 - [**Redis**](https://redis.io/docs/interact/search-and-query/search/vectors/) – popularna baza NoSQL z modułem do wyszukiwania wektorowego.
+
 - [**FAISS**](https://github.com/facebookresearch/faiss) – biblioteka Facebooka do wyszukiwania podobieństw w dużych zbiorach wektorów, często używana jako silnik pod spodem innych rozwiązań.
+
 - [**Vespa**](https://vespa.ai/) – platforma do wyszukiwania i rekomendacji z natywnym wsparciem dla wektorów.
 
 **Dodatkowo, coraz większą rolę odgrywają:**
 - [**Elasticsearch**](https://www.elastic.co/) – najpopularniejsza na świecie baza do wyszukiwania tekstowego, która od wersji 8.x natywnie wspiera wyszukiwanie wektorowe (HNSW, ANN, hybrydowe zapytania, integracja z Lucene, wsparcie dla GPU, kompresja, skalowalność, bezpieczeństwo, szeroka dokumentacja). Elasticsearch pozwala łączyć klasyczne wyszukiwanie pełnotekstowe z semantycznym, co jest kluczowe w nowoczesnych aplikacjach RAG. [Więcej: blog Elastic](https://www.elastic.co/search-labs/blog/elasticsearch-lucene-vector-database-gains)
+
 - [**LanceDB**](https://lancedb.com/) – nowoczesna, open-source’owa baza zoptymalizowana pod multimodalne AI (tekst, obrazy, audio). Wyróżnia się bardzo wydajnym, kolumnowym formatem danych (Lance), wsparciem dla indeksów IVF+PQ, HNSW, pełnotekstowego wyszukiwania, hybrydowych zapytań, wersjonowania i integracji z Pandas, DuckDB, PyArrow. LanceDB jest lekka, szybka, pozwala na pracę zarówno lokalnie, jak i w chmurze, a jej architektura umożliwia obsługę miliardowych zbiorów na tanim sprzęcie. [Więcej: dokumentacja LanceDB](https://docs.lancedb.com/core/index)
+
 - [**pgvector**](https://github.com/pgvector/pgvector) – rozszerzenie do PostgreSQL, które pozwala przechowywać i wyszukiwać wektory bezpośrednio w relacyjnej bazie danych. Obsługuje indeksy HNSW, IVF, operatory podobieństwa (cosine, L2, dot), integruje się z klasycznymi zapytaniami SQL i pozwala łączyć wyszukiwanie semantyczne z relacyjnymi filtrami, joinami i transakcjami. Idealne do budowy hybrydowych aplikacji, gdzie dane wektorowe i klasyczne współistnieją. [Więcej: dokumentacja pgvector](https://github.com/pgvector/pgvector)
 
 > [!TIP]
@@ -245,7 +281,9 @@ Bazy wektorowe to wyspecjalizowane systemy bazodanowe do przechowywania i szybki
 
 **Źródła i więcej informacji:**
 - [Elasticsearch – blog o wydajności i architekturze wektorowej](https://www.elastic.co/search-labs/blog/elasticsearch-lucene-vector-database-gains)
+
 - [LanceDB – dokumentacja i porównania](https://docs.lancedb.com/core/index)
+
 - [pgvector – porównanie z innymi rozwiązaniami](https://dev.to/gaocegege/pgvector-vs-pgvectors-in-2024-a-comprehensive-comparison-for-vector-search-in-postgresql-3n08)
 
 ---
@@ -254,34 +292,51 @@ Bazy wektorowe to wyspecjalizowane systemy bazodanowe do przechowywania i szybki
 
 Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane jako węzły (obiekty) i krawędzie (relacje). Pozwalają one modelować i analizować złożone powiązania między danymi, co jest nieocenione w zastosowaniach takich jak:
 - budowa **knowledge graphów** (grafów wiedzy),
+
 - eksploracja relacji (np. powiązania osób, firm, produktów),
+
 - rekomendacje,
+
 - wykrywanie oszustw,
+
 - zaawansowane systemy RAG (GraphRAG, hybrydowe RAG).
 
 **Najważniejsze bazy grafowe wykorzystywane w 2026 roku:**
 - [**Neo4j**](https://neo4j.com/) – najpopularniejsza baza grafowa na świecie, szeroko stosowana w knowledge graphach, rekomendacjach, fraud detection, z bogatym ekosystemem narzędzi (Cypher, Graph Data Science, integracje z LLM, GraphRAG, LlamaIndex, LangChain, [Google GenAI Toolbox](https://github.com/googlecloudplatform/genai-toolbox)).
+
 - [**Memgraph**](https://memgraph.com/) – wydajna, open-source’owa baza grafowa, kompatybilna z Cypher, wykorzystywana m.in. przez NASA do budowy knowledge graphów i GraphRAG. Mocno wspiera integracje z Pythonem i narzędziami AI.
+
 - [**NebulaGraph**](https://www.nebula-graph.io/) – rozproszona, skalowalna baza grafowa, zoptymalizowana pod bardzo duże zbiory danych (triliony krawędzi), z własnym językiem zapytań nGQL i wsparciem dla chmury.
 
 **Zalety baz grafowych:**
 - Naturalne modelowanie złożonych relacji i powiązań (np. multi-hop reasoning, śledzenie powiązań, eksploracja sieci).
+
 - Wydajne zapytania oparte o relacje (np. "znajdź wszystkich znajomych znajomych", "wykryj cykle").
+
 - Możliwość łączenia danych strukturalnych, relacyjnych i wektorowych (np. Neo4j Vector Index, GraphRAG, hybrydowe wyszukiwanie).
+
 - Przejrzystość i wyjaśnialność odpowiedzi (łatwo pokazać ścieżkę uzasadniającą wynik).
+
 - Integracja z narzędziami GenAI (LangChain, LlamaIndex, Google GenAI Toolbox, GraphRAG, agentic architectures).
 
 **Wady baz grafowych:**
 - Mniej wydajne w czysto semantycznym wyszukiwaniu na bardzo dużych zbiorach tekstów (tu lepsze są bazy wektorowe).
+
 - Krzywa uczenia się (nowe języki zapytań, np. Cypher, nGQL).
+
 - Wysoki koszt wdrożenia przy bardzo dużej skali (np. Neo4j w wersji enterprise).
+
 - Często wymagają przemyślanego modelowania danych (nie zawsze "wrzucisz wszystko jak leci").
 
 **Przykłady frameworków bazujących na bazach grafowych:**
 - Microsoft GraphRAG - oraz **LazyGraphRAG**, wariant budujący strukturę grafu dopiero przy zapytaniu (znacznie tańsze indeksowanie)
+
 - [LightRAG](https://github.com/HKUDS/LightRAG)
+
 - [Graphiti](https://github.com/getzep/graphiti)
+
 - [Nano GraphRAG](https://github.com/upbeat/NanoGraphRAG)
+
 - [R2R](https://github.com/SciPhi-AI/R2R)
 
 **Porównanie: Bazy Wektorowe vs. Bazy Grafowe**
@@ -299,17 +354,23 @@ Bazy grafowe to wyspecjalizowane systemy bazodanowe, które przechowują dane ja
 
 **Kiedy wybrać bazę grafową?**
 - Gdy kluczowe są relacje, powiązania, ścieżki, multi-hop reasoning.
+
 - Gdy budujesz knowledge graph, system rekomendacji, analizę sieci społecznych, fraud detection.
+
 - Gdy chcesz łączyć dane relacyjne, wektorowe i semantyczne (GraphRAG, hybrydowe RAG).
 
 **Kiedy wybrać bazę wektorową?**
 - Gdy kluczowa jest szybkość i skalowalność wyszukiwania podobieństw semantycznych (np. RAG na dużych zbiorach dokumentów).
+
 - Gdy nie potrzebujesz złożonych relacji między danymi.
 
 **Więcej o GraphRAG i agentic RAG:**
 - [Neo4j GraphRAG – dokumentacja i przykłady](https://neo4j.com/docs/genai/)
+
 - [Memgraph GraphRAG – blog i przykłady NASA](https://memgraph.com/blog/nasa-memgraph-people-knowledge-graph)
+
 - [Porównanie GraphRAG vs. klasyczny RAG (Neo4j)](https://neo4j.com/blog/developer/graphrag-and-agentic-architecture-with-neoconverse/)
+
 - [NebulaGraph RAG – dokumentacja](https://www.nebula-graph.io/)
 
 ---
@@ -321,8 +382,11 @@ Jeśli rok 2023 był rokiem chatbotów, a 2024–2025 - rokiem RAG, to **2026 je
 Kluczowe wzorce agentowe (*agentic patterns*):
 
 * **Pętla rozumowania (reasoning loop)** - agent nie generuje odpowiedzi za jednym razem. Wykonuje cykl: *pomyśl → zdecyduj o akcji → wykonaj → zaobserwuj wynik → pomyśl ponownie* - aż uzna zadanie za ukończone (znany schemat **ReAct**: *Reasoning + Acting*).
+
 * **Tool use (użycie narzędzi)** - agent ma dostęp do zestawu **narzędzi** (funkcji): wyszukiwarki, interpretera kodu, zapytań do bazy, wywołań API. LLM sam wybiera, które narzędzie wywołać i z jakimi argumentami. To właśnie *tool use* przełamuje ograniczenia modelu (np. słabą matematykę - patrz tabela mocnych/słabych stron wyżej).
+
 * **Planowanie wieloetapowe (multi-step planning)** - agent rozbija złożone zadanie na sekwencję pod-zadań, wykonuje je i scala wyniki.
+
 * **Multi-agent** - zamiast jednego "wszechstronnego" agenta buduje się zespół wyspecjalizowanych agentów (np. *planner*, *researcher*, *coder*, *reviewer*), które współpracują i przekazują sobie zadania.
 
 Sednem agenta jest **pętla rozumowania** - model nie odpowiada za jednym razem, lecz krąży między myśleniem a działaniem aż do osiągnięcia celu:
@@ -351,8 +415,11 @@ Wraz z rozwojem agentów pojawił się problem integracyjny: jak połączyć dow
 Najważniejsze fakty:
 
 * Wprowadzony przez **Anthropic w listopadzie 2024 r.**[^mcp-intro], szybko stał się standardem branżowym - przyjęty m.in. przez **OpenAI, Google i Microsoft**.
+
 * Dostępne **oficjalne SDK dla wielu języków** (Python, TypeScript, Java, C#, Go i inne).
+
 * Istnieją już **setki publicznych serwerów MCP** - gotowych integracji do baz danych, narzędzi deweloperskich, usług chmurowych itd.
+
 * W **grudniu 2025 r.** projekt został przekazany pod opiekę **Linux Foundation**[^mcp-linux-foundation], co cementuje jego status jako neutralnego, otwartego standardu.
 
 Idea MCP to jeden klient i wiele **wymiennych** serwerów - każdy serwer udostępnia narzędzia lub dane, niezależnie od dostawcy modelu:
@@ -377,7 +444,9 @@ flowchart LR
 Najniższy, podstawowy poziom integracji - bezpośrednie biblioteki klienckie do API poszczególnych dostawców.
 
 * [**OpenAI SDK**](https://github.com/openai/openai-python) - oficjalna biblioteka do API OpenAI. Warto znać kierunek rozwoju: oprócz klasycznego *Chat Completions API*, OpenAI promuje **Responses API** jako przyszłościowy interfejs do budowy agentów (zastępuje wcześniejsze, wycofywane *Assistants API*). Dla bardziej złożonych systemów dostępny jest też dedykowany **[OpenAI Agents SDK](https://github.com/openai/openai-agents-python)**.
+
 * [**Anthropic SDK**](https://github.com/anthropics/anthropic-sdk-python) - oficjalna biblioteka do API modeli Claude. Do budowy agentów Anthropic udostępnia **[Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)** (przemianowany z wcześniejszego "Claude Code SDK") - framework do tworzenia agentów korzystających z narzędzi i MCP.
+
 * [**google-genai SDK**](https://github.com/googleapis/python-genai) - oficjalna, aktualna biblioteka Google do modeli Gemini (zastąpiła starszy pakiet `google-generativeai`).
 
 > [!TIP]
@@ -391,17 +460,25 @@ Gdy prosta aplikacja typu "prompt → odpowiedź" przestaje wystarczać, potrzeb
 > **Trend 2026:** punkt ciężkości przesuwa się z klasycznych, monolitycznych frameworków RAG w stronę lżejszych **agent SDK** (OpenAI Agents SDK, Claude Agent SDK, Google ADK) oraz standardu **MCP**. Logika, którą kiedyś dawał framework, coraz częściej żyje w agencie i wymiennych serwerach MCP.
 
 * **[LangChain](https://www.langchain.com/) / [LangGraph](https://www.langchain.com/langgraph)** - LangChain to kompleksowy, dojrzały framework do budowy łańcuchów (*chains*) wywołań LLM. **LangGraph** ewoluował i pozycjonuje się dziś jako **agent SDK** - pozwala budować agentów jako cykliczne grafy stanów, z kontrolą nad pętlą rozumowania.
+
 * **[PydanticAI](https://ai.pydantic.dev/)** - dojrzały framework agentowy od zespołu **Pydantic**. Jego siłą jest spójność z ekosystemem Pythona, który już znasz: typowane wejścia/wyjścia, walidacja przez Pydantic, dependency injection, czytelny i testowalny kod. Dobry domyślny wybór, gdy zależy Ci na produkcyjnej jakości i type safety.
+
 * **[Google ADK](https://google.github.io/adk-docs/)** (Agent Development Kit) - framework Google do budowy agentów, dobrze zintegrowany z modelami Gemini i ekosystemem Google Cloud.
+
 * **[LlamaIndex](https://www.llamaindex.ai/) / [Haystack](https://haystack.deepset.ai/)** - frameworki wyspecjalizowane w **RAG**. LlamaIndex skupia się na wczytywaniu, indeksowaniu i odpytywaniu danych (m.in. wysokiej jakości parser dokumentów `LlamaParse`); Haystack oferuje kompletne narzędzia do produkcyjnych pipeline'ów RAG.
+
 * **Inne, w tym wieloagentowe** - [CrewAI](https://www.crewai.com/), [Microsoft AutoGen](https://microsoft.github.io/autogen/).
 
 ### Narzędzia pomocnicze
 
 * [**Pydantic**](https://docs.pydantic.dev/latest/) - w kontekście GenAI kluczowe narzędzie do definiowania **schematu odpowiedzi** oczekiwanej od LLM. Zamiast prosić o "JSON z imieniem i wiekiem", definiujesz klasę Pydantic i wymuszasz na modelu zwrócenie danych dokładnie w tej strukturze - z automatyczną walidacją typów i wartości. To radykalnie zwiększa niezawodność: niepoprawna odpowiedź jest wychwytywana od razu, a nie kaskadowo psuje dalszą logikę aplikacji.
+
 * [**Instructor**](https://python.useinstructor.com/) - biblioteka nakładana na SDK dostawców, która opakowuje wywołania LLM tak, by zwracały gotowe, zwalidowane obiekty Pydantic (z automatycznym ponawianiem przy błędzie walidacji). Upraszcza *structured outputs* do kilku linii kodu.
+
 * [**BAML**](https://docs.boundaryml.com/home) - opisany wyżej w sekcji o prompt engineeringu DSL do generowania ustrukturyzowanych odpowiedzi z LLM.
+
 * [**LiteLLM**](https://www.litellm.ai/) - uniwersalna warstwa proxy/SDK dająca **jednolity interfejs do ponad stu modeli** różnych dostawców. Praktyczna realizacja zasady "nie wiąż się z jednym dostawcą" - zmiana modelu sprowadza się do zmiany jednego stringa.
+
 * **Frameworki ewaluacji** - np. [Ragas](https://docs.ragas.io/) (ewaluacja pipeline'ów RAG) czy [DeepEval](https://docs.confident-ai.com/) - pozwalają mierzyć jakość odpowiedzi systemu w sposób powtarzalny, co jest niezbędne wobec niedeterministyczności LLM.
 
 ---
@@ -490,8 +567,11 @@ Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wys
 ### Stos technologiczny
 
 * **Modele lokalne**: [**Bielik**](https://bielik.ai/) (polski LLM - istotne dla pytań i danych w języku polskim) oraz **Qwen 2.5-Coder-32B** (wyspecjalizowany w generowaniu kodu/SQL).
+
 * **Sprzęt docelowy**: lokalna stacja inferencyjna **NVIDIA GB10 Grace Blackwell** - inferencja modeli 30B+ "na biurku", bez chmury.
+
 * **Baza wektorowa**: **pgvector** (retrieval fragmentów schematu).
+
 * **Bezpieczeństwo**: RBAC, row-level security, constrained generation przez CFG, uwierzytelnianie **JWT**, hashowanie haseł **Argon2id**.
 
 > [!TIP]
@@ -499,4 +579,4 @@ Wniosek jest mocnym argumentem za **suwerennym AI**: w wąsko zdefiniowanym, wys
 
 [^mcp-linux-foundation]: MCP przekazany pod opiekę Linux Foundation w grudniu 2025 r. Zob. komunikat: [linuxfoundation.org/press](https://www.linuxfoundation.org/press/).
 [^mcp-intro]: Oryginalny wprowadzający post Anthropic o MCP (listopad 2024): [anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol).
-[^reasoning-models]: Modele rozumujące (*reasoning models*) — np. rodzina OpenAI o-series (o3, o4-mini) oraz DeepSeek-R1 — trenowane metodami RL do generowania wewnętrznego łańcucha rozumowania przed odpowiedzią. Zob. też hasło *Reasoning Model* w [słowniczku](./08-glossary.md).
+[^reasoning-models]: Modele rozumujące (*reasoning models*) – np. rodzina OpenAI o-series (o3, o4-mini) oraz DeepSeek-R1 – trenowane metodami RL do generowania wewnętrznego łańcucha rozumowania przed odpowiedzią. Zob. też hasło *Reasoning Model* w [słowniczku](./08-glossary.md).

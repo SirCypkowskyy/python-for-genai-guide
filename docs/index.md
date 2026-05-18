@@ -25,8 +25,11 @@ Wiedza została podzielona na osiem tematycznych rozdziałów. Zacznij od pierws
 Python to przede wszystkim potężny ekosystem bibliotek. Oto najważniejsze obszary, w których będziesz pracować:
 
 * **Analiza danych** - [Pandas](https://pandas.pydata.org/) ("SQL na sterydach"), [NumPy](https://numpy.org/) (fundament obliczeń numerycznych), [Polars](https://pola.rs/) i [DuckDB](https://duckdb.org/) dla większej skali.
+
 * **Web i API** - [FastAPI](https://fastapi.tiangolo.com/) (nowoczesne, async API), [Flask](https://flask.palletsprojects.com/) (minimalistyczny micro-framework), [Django](https://www.djangoproject.com/) (batteries-included).
+
 * **Machine Learning** - [scikit-learn](https://scikit-learn.org/) (klasyczny ML), [PyTorch](https://pytorch.org/) (dominujący framework deep learningu), gradient boosting (XGBoost, LightGBM, CatBoost).
+
 * **Generative AI** - frameworki orkiestracji ([LangGraph](https://langchain-ai.github.io/langgraph/), [LlamaIndex](https://www.llamaindex.ai/), [PydanticAI](https://ai.pydantic.dev/)), wzorzec **RAG** oraz **MCP (Model Context Protocol)** do łączenia agentów z narzędziami.
 
 > [!TIP]
@@ -37,11 +40,17 @@ Python to przede wszystkim potężny ekosystem bibliotek. Oto najważniejsze obs
 Poniższe materiały są świetnym punktem startowym i są **całkowicie darmowe**:
 
 * **Oficjalna dokumentacja Pythona (PL)** - <https://docs.python.org/pl/3/>
+
 * ***Automate the Boring Stuff with Python*** - <https://automatetheboringstuff.com/>
+
 * ***Python for Everybody*** - <https://www.py4e.com/>
+
 * ***CS50's Introduction to Programming with Python*** (Harvard) - <https://cs50.harvard.edu/python/>
+
 * ***Python Programming MOOC*** (Uniwersytet Helsiński) - <https://programming.mooc.fi/>
+
 * **Python Tutor** (wizualizacja wykonania kodu) - <https://pythontutor.com/>
+
 * **[Boot.dev](https://www.boot.dev/)** - interaktywna ścieżka od Pythona po backend i CS (część darmowa, część płatna)
 
 ---

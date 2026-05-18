@@ -117,6 +117,7 @@ df = pd.read_csv('sales.csv', dtype_backend="pyarrow")
 [**NumPy (Numerical Python)**](https://numpy.org/) to biblioteka, na której zbudowana jest praktycznie cała naukowa część ekosystemu Pythona, włączając w to Pandas. Jej rdzeń napisany jest w skompilowanych językach **C i C++** (kod w Fortranie ma dziś znaczenie drugorzędne - odpowiada za niewielkie fragmenty, a wywołania algebry liniowej i tak delegowane są do zewnętrznych bibliotek). Zapewnia to ogromną wydajność operacji numerycznych, porównywalną z wyspecjalizowanymi bibliotekami do algebry liniowej jak [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms) czy [LAPACK](https://en.wikipedia.org/wiki/LAPACK).
 
   * Głównym obiektem w NumPy jest `ndarray` – potężna, wielowymiarowa tablica przechowująca dane **jednego typu**.
+
   * Kluczową ideą pracy z NumPy jest **wektoryzacja** – wykonywanie operacji na całych tablicach zamiast na pojedynczych elementach w pętlach, co jest znacznie szybsze.
 
 > [!NOTE]
@@ -129,7 +130,9 @@ df = pd.read_csv('sales.csv', dtype_backend="pyarrow")
 [**Polars**](https://pola.rs/) to nowoczesna biblioteka do pracy z DataFrame'ami, zaprojektowana z myślą o **wydajności i dużej skali**. W przeciwieństwie do Pandas (rdzeń w C/Cython, koordynacja w Pythonie) Polars jest w całości napisany w **Rust**, co daje mu kilka strukturalnych przewag:
 
 * **Wielowątkowość domyślnie.** Polars wykorzystuje wszystkie rdzenie procesora bez dodatkowej konfiguracji - Pandas operuje zasadniczo jednowątkowo.
+
 * **Storage kolumnowy** (oparty o [Apache Arrow](https://arrow.apache.org/)) - efektywny pamięciowo i przyjazny pamięci podręcznej procesora.
+
 * **Lazy evaluation (leniwa ewaluacja).** Zamiast wykonywać każdą operację natychmiast, Polars może zbudować *plan zapytania* (LazyFrame), zoptymalizować go jako całość (np. przesunąć filtry jak najwcześniej, pominąć nieużywane kolumny) i uruchomić dopiero na `.collect()`. To dokładnie ta sama idea, którą znasz z optymalizatora zapytań SQL czy z odroczonego wykonania `IQueryable` w LINQ.
 
 W praktyce przy dużych zbiorach i produkcyjnym ETL Polars bywa wielokrotnie szybszy od Pandas, a często też oszczędniejszy pamięciowo.
@@ -201,7 +204,9 @@ Eksploracyjna analiza danych rzadko jest liniowa - to cykl "uruchom fragment, ob
 
 * [**marimo**](https://marimo.io/): nowoczesna, **reaktywna** alternatywa, która adresuje te bolączki:
   * **Notebooki to czyste pliki `.py`** - w pełni przyjazne dla gita i code review, importowalne jak zwykłe moduły.
+
   * **Reaktywne wykonywanie** - gdy zmienisz komórkę, marimo automatycznie przelicza wszystkie komórki, które od niej zależą (model zbliżony do arkusza kalkulacyjnego). Eliminuje to problem ukrytego stanu - środowisko zawsze jest spójne.
+
   * **Deploy jako aplikacja webowa** - ten sam notebook można uruchomić jako interaktywną aplikację, bez przepisywania kodu.
 
 > [!TIP]
@@ -319,7 +324,7 @@ Surowe liczby rzadko kiedy opowiadają całą historię. Ekosystem Pythona oferu
 
   * [**Plotly**](https://plotly.com/python/): Jeśli potrzebujesz **interaktywnych wizualizacji**, Plotly jest najlepszym wyborem. Pozwala tworzyć wykresy, na których użytkownik może przesuwać widok, powiększać, czy wyświetlać dodatkowe informacje po najechaniu myszką, przez wykorzystanie interfejsu webowego. To czyni go idealnym narzędziem do budowy dashboardów i aplikacji webowych.
 
-[^pandas30]: Pandas 3.0.0 — wydanie z 21 stycznia 2026 r. Zob. [pandas.pydata.org/docs/whatsnew](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html).
-[^cow]: Copy-on-Write w Pandas — szczegółowa dokumentacja: [pandas.pydata.org/docs/user_guide/copy_on_write](https://pandas.pydata.org/docs/user_guide/copy_on_write.html).
-[^pyarrow-backend]: PyArrow backend w Pandas — zob. [pandas.pydata.org/docs/user_guide/pyarrow](https://pandas.pydata.org/docs/user_guide/pyarrow.html).
-[^numpy2]: NumPy 2.x — zmiany i przewodnik migracji: [numpy.org/devdocs/numpy_2_0_migration_guide](https://numpy.org/devdocs/numpy_2_0_migration_guide.html).
+[^pandas30]: Pandas 3.0.0 – wydanie z 21 stycznia 2026 r. Zob. [pandas.pydata.org/docs/whatsnew](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html).
+[^cow]: Copy-on-Write w Pandas – szczegółowa dokumentacja: [pandas.pydata.org/docs/user_guide/copy_on_write](https://pandas.pydata.org/docs/user_guide/copy_on_write.html).
+[^pyarrow-backend]: PyArrow backend w Pandas – zob. [pandas.pydata.org/docs/user_guide/pyarrow](https://pandas.pydata.org/docs/user_guide/pyarrow.html).
+[^numpy2]: NumPy 2.x – zmiany i przewodnik migracji: [numpy.org/devdocs/numpy_2_0_migration_guide](https://numpy.org/devdocs/numpy_2_0_migration_guide.html).

@@ -8,8 +8,11 @@
 Architektura aplikacji to **nie diagram UML** wiszący w firmowej Wiki ani folder `docs/` z nieaktualnymi schematami. Architektura to **zbiór świadomych decyzji o granicach**:
 
 * Kto może importować kogo? (kierunek zależności)
+
 * Gdzie żyje logika biznesowa, a gdzie kod infrastrukturalny?
+
 * Które elementy systemu wolno wymieniać niezależnie od pozostałych?
+
 * Jak zlokalizowana jest zmiana funkcjonalna - dotyka jednego miejsca czy dziesięciu?
 
 Kluczowa obserwacja: **jeśli nie podejmiesz tych decyzji świadomie, podejmie je za Ciebie przypadek.** A decyzja domyślna w projekcie bez architektury jest zawsze ta sama - **Big Ball of Mud** (wielka kula błota): kod bez wyraźnej struktury, w którym każdy moduł zależy od każdego innego, logika biznesowa jest rozsmarowana po kontrolerach, helperach i skryptach, a próba zmiany w jednym miejscu rozjeżdża trzy inne.
@@ -273,8 +276,11 @@ def get_llm(provider: str) -> LLMPort:
 Warto zwrócić uwagę na kilka rzeczy:
 
 * **Domena zależy tylko od `LLMPort`** - nigdy od `anthropic`, `openai` czy żadnego konkretnego SDK. Własne typy `LLMMessage`, `LLMConfig`, `LLMResponse` są "lingua franca" domeny; mapowanie na typy SDK dzieje się *wyłącznie* wewnątrz adaptera. Gdy dostawca zmieni API albo zdecydujesz się na innego, dotykasz jednego pliku.
+
 * **Adaptery stackują się jak dekoratory.** `CachedLLMAdapter` przyjmuje w konstruktorze dowolny `LLMPort` i sam jest `LLMPort`-em. Możesz więc składać warstwy: caching opakowujący retry opakowujący właściwy adapter - bez modyfikacji żadnej z warstw. To wzorzec Decorator zrealizowany na poziomie portu.
+
 * **`MockLLMAdapter` daje testowalność.** Testy logiki domenowej nie wykonują wywołań sieciowych, są deterministyczne i szybkie. To rozwiązuje konkretny ból aplikacji GenAI - testowanie kodu, który zależy od niedeterministycznego, płatnego, wolnego API.
+
 * **`get_llm` jest *composition root*** - jedynym miejscem, gdzie zapadają decyzje o konkretnych implementacjach. `@lru_cache` zapewnia, że dla danego providera dostajesz jedną instancję (efekt singletona). Reszta aplikacji dostaje `LLMPort` przez wstrzykiwanie zależności i nie wie, co kryje się pod spodem.
 
 ```mermaid
@@ -323,6 +329,7 @@ def test_domain_doesnt_import_infrastructure():
 Takie testy kodyfikują dokładnie te decyzje, które omawialiśmy wyżej:
 
 * `test_features_dont_import_from_each_other` pilnuje izolacji plastrów z Vertical Slice - `create_order` nie sięga do `cancel_order`. Komunikacja między feature'ami, jeśli jest potrzebna, idzie przez `shared/` albo przez jawny mechanizm (zdarzenia, wspólny port).
+
 * `test_domain_doesnt_import_infrastructure` pilnuje wzorca Ports & Adapters - kod domenowy nie zawiera `import anthropic` ani `import sqlalchemy`. Jeśli ktoś spróbuje skrótu, test to wychwyci.
 
 > [!IMPORTANT]
@@ -357,7 +364,7 @@ Zwróć uwagę na sekcję **Konsekwencje** - dobry ADR uczciwie wymienia także 
 > Zacznij prowadzić ADR-y od pierwszej nietrywialnej decyzji. Nie dokumentuj rzeczy oczywistych ("używamy Pythona"). Dokumentuj wybory, które ktoś rozsądny mógłby zakwestionować: wybór topologii architektonicznej, decyzję `Protocol` vs `ABC`, wybór bazy wektorowej, sposób obsługi niedeterministyczności LLM. Numeruj sekwencyjnie (`ADR-001`, `ADR-002`, ...) i nigdy nie usuwaj starych - co najwyżej oznaczaj jako `Wycofany` lub `Zastąpiony przez ADR-NNN`.
 
 > [!NOTE]
-> **Mikroserwisy vs monolit a rozmiar zespołu.** Prawo Conwaya tłumaczy, dlaczego narzucenie mikroserwisów małemu zespołowi (3–5 osób) kończy się „rozproszonym monolitem" — komunikacja między serwisami kosztuje, a mały zespół i tak komunikuje się swobodnie. Dla takich zespołów modularny monolit (topologia 2 lub 3) jest zwykle lepszym wyborem. Mikroserwisy zaczynają mieć sens, gdy zespołów jest wiele i komunikacja między nimi wymaga formalnych granic.
+> **Mikroserwisy vs monolit a rozmiar zespołu.** Prawo Conwaya tłumaczy, dlaczego narzucenie mikroserwisów małemu zespołowi (3–5 osób) kończy się „rozproszonym monolitem" – komunikacja między serwisami kosztuje, a mały zespół i tak komunikuje się swobodnie. Dla takich zespołów modularny monolit (topologia 2 lub 3) jest zwykle lepszym wyborem. Mikroserwisy zaczynają mieć sens, gdy zespołów jest wiele i komunikacja między nimi wymaga formalnych granic.
 
 ## Prawo Conwaya
 
@@ -375,8 +382,11 @@ Praktyczny wniosek to **Inverse Conway Maneuver** (termin z Technology Radar fir
 ## Dalsze materiały
 
 * **Model C4** - notacja do diagramowania architektury na czterech poziomach abstrakcji: **Context** (system w otoczeniu), **Container** (aplikacje, bazy, usługi), **Component** (moduły wewnątrz kontenera) i **Code** (klasy). Pozwala rozmawiać o architekturze na właściwym poziomie szczegółowości dla danego odbiorcy - bez tonięcia w detalu. Świetnie uzupełnia diagramy Mermaid używane w tym przewodniku. Zob. [c4model.com](https://c4model.com/).[^c4]
+
 * **12-Factor App** - zbiór dwunastu zasad budowy aplikacji SaaS: m.in. konfiguracja w zmiennych środowiskowych, bezstanowe procesy, jawne deklarowanie zależności, równoważność środowisk dev/prod. To zasady *operacyjne*, ortogonalne do topologii z tego rozdziału - stosują się do każdej z czterech. Zob. [12factor.net](https://12factor.net/).[^twelvefactor]
+
 * **User stories jako źródło granic** - dobrze sformułowane *user stories* ("jako X chcę Y, aby Z") są naturalnym punktem wyjścia do wytyczania granic feature'ów w Vertical Slice Architecture: jedna spójna historia użytkownika to często jeden plaster. Granice domenowe rzadko wymyśla się przy tablicy - wyłaniają się z języka, którym o systemie mówi biznes (to także rdzeń **DDD** i koncepcji *ubiquitous language*).
+
 * **Pojęcia** - definicje terminów użytych w tym rozdziale (DTO, Dependency Inversion, structural typing, composition root, ADR) znajdziesz w [słowniczku](./08-glossary.md).
 
 > [!TIP]
@@ -386,4 +396,4 @@ Praktyczny wniosek to **Inverse Conway Maneuver** (termin z Technology Radar fir
 [^conway]: Melvin E. Conway sformułował tę obserwację w artykule *"How Do Committees Invent?"* (1968). Stała się znana jako "Prawo Conwaya" po spopularyzowaniu przez Fredericka Brooksa w *The Mythical Man-Month*.
 [^c4]: Model C4 został opracowany przez Simona Browna jako lekka, niezależna od narzędzi notacja do wizualizacji architektury oprogramowania.
 [^twelvefactor]: Metodyka 12-Factor App została sformułowana przez zespół Heroku; mimo upływu lat pozostaje punktem odniesienia dla aplikacji uruchamianych w chmurze i kontenerach.
-[^pep544]: PEP 544 — *Protocols: Structural subtyping (static duck typing)*. Zob. [peps.python.org/pep-0544](https://peps.python.org/pep-0544/).
+[^pep544]: PEP 544 – *Protocols: Structural subtyping (static duck typing)*. Zob. [peps.python.org/pep-0544](https://peps.python.org/pep-0544/).

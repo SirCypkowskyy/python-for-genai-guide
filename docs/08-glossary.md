@@ -4,7 +4,7 @@
 > Ten słowniczek to Twoja podręczna encyklopedia terminów, które napotkasz w ekosystemie Pythona. Został podzielony na kategorie tematyczne, aby ułatwić nawigację. Używaj go, aby szybko sprawdzić nieznane pojęcia i ugruntować swoją wiedzę.
 
 > [!TIP]
-> Hasła pogrubione w innych rozdziałach odsyłają tutaj — kliknij, by sprawdzić definicję. Wiele haseł zawiera linki do oficjalnej dokumentacji, gdzie znajdziesz szczegóły i przykłady.
+> Hasła pogrubione w innych rozdziałach odsyłają tutaj – kliknij, by sprawdzić definicję. Wiele haseł zawiera linki do oficjalnej dokumentacji, gdzie znajdziesz szczegóły i przykłady.
 
 ---
 

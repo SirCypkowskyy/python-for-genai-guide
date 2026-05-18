@@ -14,8 +14,11 @@ Przejście z C++ czy C# na Pythona to przede wszystkim zmiana sposobu myślenia.
 Określenie Pythona jako języka "interpretowanego" jest uproszczeniem. W rzeczywistości standardowa implementacja ([CPython](https://github.com/python/cpython)[^cpython]) najpierw **kompiluje** kod źródłowy `.py` do formy pośredniej zwanej **bytecode** i zapisuje go w plikach `.pyc`. Ten bytecode jest następnie wykonywany przez **Maszynę Wirtualną Pythona (PVM)**.
 
 * **Proces ten jest analogiczny do kompilacji C# do CIL (Common Intermediate Language) i wykonywania go przez CLR (.NET Runtime)**.
+
 * Pliki `.pyc` są tworzone automatycznie (w katalogu `__pycache__`), aby przyspieszyć ładowanie modułów przy kolejnych uruchomieniach.
+
 * Główna różnica polega na tym, że cały proces jest ukryty i dzieje się w locie, co zapewnia błyskawiczny cykl deweloperski (edytuj -> uruchom) bez widocznego etapu kompilacji. Możemy też "na żywo" uruchamiać kod w interpreterze Python, co jest bardzo przydatne podczas debugowania.
+
 * Konsekwencją jest to, że błędy typów są wykrywane dopiero w momencie wykonania danej linii kodu, a nie na etapie budowania projektu.
 
 ```mermaid
@@ -39,8 +42,11 @@ flowchart LR
 To jedna z największych zmian podnoszących komfort pracy. W Pythonie zapominasz o manualnym zarządzaniu pamięcią – nie ma tu wskaźników, `new`/`delete` ani `malloc`/`free`.
 
 * Główny mechanizm to **zliczanie referencji (reference counting)**. Każdy obiekt w pamięci ma licznik, który śledzi, ile zmiennych (nazw) na niego wskazuje. Gdy licznik spada do zera, obiekt jest usuwany.
+
 * Dodatkowo **Garbage Collector (GC)** posiada mechanizmy do wykrywania i usuwania cyklicznych odwołań, z którymi sam licznik referencji by sobie nie poradził.
+
 * Dla dewelopera oznacza to koniec ręcznego zarządzania pamięcią (brak `free()`/`delete`) i wiszących wskaźników (`dangling pointers`), co eliminuje całą klasę trudnych błędów.
+
 * Ceną za tę wygodę jest pewien narzut wydajnościowy i mniejsza kontrola nad układem danych w pamięci.
 
 > [!NOTE]
@@ -51,7 +57,9 @@ To jedna z największych zmian podnoszących komfort pracy. W Pythonie zapominas
 To zagadnienie zaskakuje deweloperów przychodzących z C++, C# czy Javy, gdzie prawdziwa, równoległa wielowątkowość jest oczywistością.
 
 * Historycznie CPython chroniony był przez **GIL (Global Interpreter Lock)** - globalną blokadę, która pozwalała wykonywać bytecode tylko **jednemu wątkowi naraz**. Nawet na 16-rdzeniowym procesorze kod Pythona w wątkach (`threading`) nie liczył się równolegle.
+
 * W praktyce oznaczało to, że wielowątkowość w Pythonie przyspieszała jedynie zadania ograniczone wejściem/wyjściem (I/O-bound: sieć, dysk), a nie zadania obliczeniowe (CPU-bound). Dla równoległości obliczeń stosowano `multiprocessing` (osobne procesy, osobne interpretery) lub przenoszono ciężkie pętle do bibliotek w C/Rust (NumPy).
+
 * Od **Pythona 3.14**[^py314] build **free-threaded (no-GIL)** jest **oficjalnie wspierany** ([PEP 779](https://peps.python.org/pep-0779/)[^pep779]) - wcześniej, w 3.13, miał status eksperymentalny. W tej konfiguracji wątki mogą wreszcie wykonywać kod Pythona naprawdę równolegle.
 
 > [!WARNING]
@@ -151,7 +159,9 @@ def calculate_price(quantity: int, price: float) -> float:
 Wskazówki typów same w sobie niczego nie sprawdzają - potrzebujesz do tego osobnego **type checkera**. Dostępne narzędzia:
 
 * **[`mypy`](https://mypy.readthedocs.io/)** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+
 * **[`pyright`](https://github.com/microsoft/pyright)** - type checker od Microsoftu, osiąga ~98% zgodności z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code (rozszerzenie Pylance).
+
 * **[`ty`](https://github.com/astral-sh/ty)** - nowy type checker od firmy Astral (twórców `uv` i `ruff`), napisany w Rust, **10–100x szybszy od `mypy` i Pyright**. Status: **wczesna wersja eksperymentalna** (0.0.x, od grudnia 2025). Spina się w jeden, spójny toolchain razem z `uv` i `ruff`.
 
 > [!TIP]
@@ -174,7 +184,7 @@ Twoja znajomość kontenerów z biblioteki STL (Standard Template Library) oraz 
 -----
 
 > [!NOTE]
-> Pythonowe OOP różni się od OOP znanego z C++/C# kilkoma istotnymi cechami: brak interfejsów jako osobnej konstrukcji językowej (ich rolę pełnią `Protocol` lub `abc.ABC`), brak słowa kluczowego `virtual` (wszystkie metody są wirtualne domyślnie), oraz brak przeciążania metod na podstawie sygnatury (method overloading) — w Pythonie ostatnia definicja metody wygrywa.
+> Pythonowe OOP różni się od OOP znanego z C++/C# kilkoma istotnymi cechami: brak interfejsów jako osobnej konstrukcji językowej (ich rolę pełnią `Protocol` lub `abc.ABC`), brak słowa kluczowego `virtual` (wszystkie metody są wirtualne domyślnie), oraz brak przeciążania metod na podstawie sygnatury (method overloading) – w Pythonie ostatnia definicja metody wygrywa.
 
 ## Programowanie Obiektowe
 
@@ -240,6 +250,7 @@ Wywołanie metody na obiekcie `StudentPracujacy` sprawdza klasy w tej właśnie 
 Python nie ma słów kluczowych `public`, `private` czy `protected`. Zamiast tego stosuje konwencje nazewnicze:
 
   * `_atrybut`: Traktowany jako "chroniony". Deweloperzy wiedzą, że nie powinni go używać poza klasą lub jej podklasami.
+
   * `__atrybut`: Traktowany jako "prywatny". Python stosuje tzw. **name mangling**, zmieniając nazwę na `_NazwaKlasy__atrybut`, co utrudnia przypadkowy dostęp.
 
 ```python
@@ -365,8 +376,11 @@ finally:
 Debugowanie to proces znajdowania i naprawiania błędów.
 
   * **Prosta technika**: Używanie `print()` do śledzenia wartości zmiennych w różnych punktach programu.
+
   * **Analiza śladu błędu (traceback)**: Python w razie błędu wyświetla ślad, który należy czytać od dołu do góry, aby zlokalizować linię i typ błędu.
+
   * **Debuggery**: Zaawansowane narzędzia (wbudowane w IDE jak PyCharm, VS Code lub [`pdb`](https://docs.python.org/3/library/pdb.html) w terminalu) pozwalają na zatrzymywanie wykonania programu, inspekcję zmiennych i śledzenie krok po kroku.
+
   * **Funkcja `breakpoint()`**: Wbudowana funkcja (od Pythona 3.7) i nowoczesny sposób wejścia do debuggera. Wystarczy wstawić w kodzie linię `breakpoint()` zamiast dawnego `import pdb; pdb.set_trace()`. Domyślnie uruchamia `pdb`, ale poprzez zmienną środowiskową `PYTHONBREAKPOINT` można podpiąć dowolny inny debugger (lub całkowicie go wyłączyć: `PYTHONBREAKPOINT=0`).
 
 ```python
@@ -378,7 +392,7 @@ def podziel(a: float, b: float) -> float:
 -----
 
 > [!NOTE]
-> Poniższa sekcja to krótki przegląd najważniejszych obszarów ekosystemu Pythona. Każdy z nich doczekał się osobnego, szczegółowego rozdziału: narzędzia i środowiska — [rozdział 2](./02-environment-and-tools.md), stos Data Science — [rozdział 3](./03-data-science-stack.md), web development — [rozdział 4](./04-web-development.md), machine learning — [rozdział 5](./05-machine-learning-guide.md), GenAI i RAG — [rozdział 6](./06-generative-ai-and-rag.md), architektura — [rozdział 7](./07-architecture-and-good-practices.md).
+> Poniższa sekcja to krótki przegląd najważniejszych obszarów ekosystemu Pythona. Każdy z nich doczekał się osobnego, szczegółowego rozdziału: narzędzia i środowiska – [rozdział 2](./02-environment-and-tools.md), stos Data Science – [rozdział 3](./03-data-science-stack.md), web development – [rozdział 4](./04-web-development.md), machine learning – [rozdział 5](./05-machine-learning-guide.md), GenAI i RAG – [rozdział 6](./06-generative-ai-and-rag.md), architektura – [rozdział 7](./07-architecture-and-good-practices.md).
 
 ## Wprowadzenie do Ekosystemu Pythona
 
@@ -403,7 +417,9 @@ print(df[df['PKB (mld USD)'] > 1000]) # Filtrowanie
 ### Wizualizacja Danych z `matplotlib` i `plotly`
 
   * **[Matplotlib](https://matplotlib.org/)**: Standardowa biblioteka do tworzenia statycznych wykresów wysokiej jakości.
+
   * **[Seaborn](https://seaborn.pydata.org/)**: Nadbudowa nad Matplotlibem - udostępnia wysokopoziomowe API do estetycznych wykresów statystycznych (rozkłady, korelacje, mapy ciepła) i dobrze współpracuje z `DataFrame`.
+
   * **[Plotly](https://plotly.com/python/)**: Służy do tworzenia interaktywnych wykresów, idealnych do aplikacji webowych i dashboardów.
 
 ```python
@@ -417,6 +433,7 @@ plt.show()
 ### Tworzenie Aplikacji Webowych z `Flask` i `Django`
 
   * **[Flask](https://flask.palletsprojects.com/)**: Mikro-framework, elastyczny i prosty, idealny do małych projektów i API.
+
   * **[Django](https://www.djangoproject.com/)**: "Baterie w zestawie", kompleksowy framework do budowy dużych, skalowalnych aplikacji webowych.
 
 ### Tworzenie Gier z `pygame`
@@ -426,22 +443,30 @@ plt.show()
 ### Uczenie Maszynowe i Deep Learning
 
   * **[Scikit-learn](https://scikit-learn.org/)**: Podstawowa biblioteka do klasycznego uczenia maszynowego (klasyfikacja, regresja, klasteryzacja). Pierwszy wybór dla danych tabelarycznych.
+
   * **[PyTorch](https://pytorch.org/)**: Dziś **dominujący framework deep learningu** - zarówno w badaniach, jak i w produkcji. Jego dynamiczny graf obliczeniowy i pythonowe API uczyniły go faktycznym standardem.
+
   * **[Keras 3](https://keras.io/)**: Współcześnie **wieloplatformowy (multi-backend)** - ta sama wysokopoziomowa nadbudowa potrafi działać na PyTorch, JAX lub TensorFlow. Dawny opis „Keras + TensorFlow jako nierozłączna para” jest już nieaktualny.
+
   * **[TensorFlow](https://www.tensorflow.org/) / [JAX](https://docs.jax.dev/)**: TensorFlow wciąż obecny, zwłaszcza w istniejących systemach produkcyjnych; JAX ceniony w badaniach za szybkie obliczenia numeryczne i automatyczne różniczkowanie.
 
 ### Generatywne AI (GenAI) i LLM
 
   * **[Hugging Face](https://huggingface.co/)**: Centrum ekosystemu modeli otwartych. Biblioteki [`transformers`](https://huggingface.co/docs/transformers/) (modele) i [`datasets`](https://huggingface.co/docs/datasets/) (zbiory danych) to standard pracy z gotowymi modelami.
+
   * **Klienci API LLM**: Oficjalne SDK dostawców modeli komercyjnych - [`openai`](https://github.com/openai/openai-python), [`anthropic`](https://github.com/anthropics/anthropic-sdk-python), [`google-genai`](https://github.com/googleapis/python-genai).
+
   * **[LangChain 1.0](https://www.langchain.com/) + [LangGraph 1.0](https://www.langchain.com/langgraph)**: Frameworki do budowy aplikacji LLM. LangGraph wnosi koncepcję **trwałych agentów (durable agents)** - agentów o jawnym stanie, zdolnych do wznawiania pracy.
+
   * **[PydanticAI](https://ai.pydantic.dev/)**: Framework agentowy oparty na Pydantic, ze ścisłym typowaniem i walidacją wyjścia modelu.
+
   * **[LlamaIndex](https://www.llamaindex.ai/)**: Wyspecjalizowany w budowie potoków RAG (Retrieval-Augmented Generation) i indeksowaniu danych.
+
   * **[CrewAI](https://www.crewai.com/)**: Framework do orkiestracji wielu współpracujących agentów (multi-agent).
 
 > [!NOTE]
 > Tematy GenAI, agentów i RAG rozwijamy szczegółowo w rozdziale [`06-generative-ai-and-rag.md`](./06-generative-ai-and-rag.md).
 
 [^py314]: Python 3.14.0 został wydany 7 października 2025 r. Zob. [What's New in Python 3.14](https://docs.python.org/3.14/whatsnew/3.14.html).
-[^pep779]: PEP 779 — *Criteria for Supported Status for Free-Threaded Python* (kryteria awansu free-threaded buildu ze statusu eksperymentalnego do wspieranego). Sam free-threading wprowadza PEP 703 (*Making the Global Interpreter Lock Optional in CPython*). Zob. [peps.python.org/pep-0779](https://peps.python.org/pep-0779/).
+[^pep779]: PEP 779 – *Criteria for Supported Status for Free-Threaded Python* (kryteria awansu free-threaded buildu ze statusu eksperymentalnego do wspieranego). Sam free-threading wprowadza PEP 703 (*Making the Global Interpreter Lock Optional in CPython*). Zob. [peps.python.org/pep-0779](https://peps.python.org/pep-0779/).
 [^cpython]: CPython to referencyjna, najczęściej używana implementacja Pythona, napisana w C. Zob. [github.com/python/cpython](https://github.com/python/cpython).

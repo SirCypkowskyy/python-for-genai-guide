@@ -65,7 +65,9 @@ flowchart LR
 `uv` to pojedyncze, samodzielne binarium napisane w języku Rust. Jego cechy:
 
 * **Wydajność** - operacje na zależnościach wykonuje **10–100x szybciej niż `pip`**.
+
 * **Licencja MIT** - w pełni otwarte oprogramowanie.
+
 * **Brak vendor lock-in** - `uv` trzyma się standardowego pliku `pyproject.toml` ([PEP 621](https://peps.python.org/pep-0621/)[^pep621]). Projekt zarządzany przez `uv` pozostaje w pełni kompatybilny z `pip` i innymi narzędziami zgodnymi ze standardami.
 
 ### Instalacja
@@ -122,7 +124,7 @@ Pomiar przy zimnym cache, dla projektu `fastapi` + `pydantic` + `pandas` wraz z 
 | Utworzenie lockfile | natychmiast | minuty | brak lockfile |
 
 > [!NOTE]
-> Czasy w tabeli mają charakter orientacyjny — rzędy wielkości odpowiadają publikowanym pomiarom Astral[^uv-speed]. Konkretne wyniki zależą od projektu, sieci i sprzętu.
+> Czasy w tabeli mają charakter orientacyjny – rzędy wielkości odpowiadają publikowanym pomiarom Astral[^uv-speed]. Konkretne wyniki zależą od projektu, sieci i sprzętu.
 
 ### PEP 723 - skrypty z zależnościami inline
 
@@ -251,7 +253,9 @@ uv add --requirements requirements.txt   # zaimportuj zależności z requirement
 Trzy różne kategorie narzędzi pilnują jakości kodu Pythona. Łatwo je pomylić, więc warto jasno rozdzielić ich role:
 
 * **Linter** (`flake8`, `pylint`, `ruff`) - **czyta kod, ale go nie uruchamia**. Flaguje potencjalne bugi, martwy (nieosiągalny) kod, nieużywane importy i zmienne oraz niebezpieczne wzorce.
+
 * **Formatter** (`black`, `ruff format`) - **przepisuje kod do jednego, kanonicznego stylu**. Eliminuje dyskusje o stylu na code review: nie ma już „twojego" i „mojego" formatowania, jest jedno.
+
 * **Type checker** (`mypy`, `pyright`, `ty`) - **łapie błędy typów przed wdrożeniem**. Działa jak kompilator znany z C++/C#, tyle że opcjonalny - analizuje wskazówki typów (`type hints`) i zgłasza niezgodności.
 
 ### Ruff - jedno narzędzie zamiast pięciu
@@ -259,7 +263,9 @@ Trzy różne kategorie narzędzi pilnują jakości kodu Pythona. Łatwo je pomyl
 [Ruff](https://docs.astral.sh/ruff/) (Astral, Rust) łączy w jednym narzędziu funkcje lintera i formattera. Jest **pełnoprawnym zamiennikiem `black`** (formatter) oraz **`isort`** (sortowanie importów), pokrywa też **większość reguł `flake8`** i znaczną część reguł `pylint` oraz `bandit`. Warto jednak wiedzieć, że Ruff **nie jest jeszcze w 100% kompletnym zamiennikiem całego `pylint` ani `bandit`** - część ich reguł i wtyczek wciąż nie ma odpowiednika. Mimo to dla zdecydowanej większości projektów sam Ruff w zupełności wystarcza:
 
 * implementuje **ponad 900 reguł** odtworzonych z **50+ wtyczek** klasycznego ekosystemu `flake8`[^ruff-rules];
+
 * jest **10–100x szybszy niż `pylint`** - przelicenie ~50 000 linii kodu zajmuje mu około **1 sekundy**;
+
 * całe codzienne API to **dwie komendy**:
 
 ```bash
@@ -340,7 +346,9 @@ repos:
 Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type checker:
 
 * **[`mypy`](https://mypy.readthedocs.io/)** - dojrzały, de facto standard, najszerzej wspierany przez ekosystem.
+
 * **[`pyright`](https://github.com/microsoft/pyright)** - type checker Microsoftu, osiąga najwyższą zgodność z oficjalną specyfikacją systemu typów; napędza wsparcie Pythona w VS Code.
+
 * **[`ty`](https://github.com/astral-sh/ty)** - type checker od Astral, w Rust, **10–100x szybszy od `mypy` i Pyright**. Status: **wczesna wersja eksperymentalna** (0.0.x, od grudnia 2025). Domyka toolchain `uv` + `ruff` + `ty`.
 
 > [!NOTE]
@@ -373,7 +381,7 @@ Wskazówki typów same z siebie niczego nie sprawdzają - potrzebny jest type ch
 ---
 
 > [!IMPORTANT]
-> Notebooki świetnie nadają się do eksploracji, ale nigdy nie commituj wyników komórek zawierających dane wrażliwe (tokeny, klucze API, dane osobowe). Pliki `.ipynb` to dokumenty JSON — wyniki komórek są w nich zapisane jako plain text.
+> Notebooki świetnie nadają się do eksploracji, ale nigdy nie commituj wyników komórek zawierających dane wrażliwe (tokeny, klucze API, dane osobowe). Pliki `.ipynb` to dokumenty JSON – wyniki komórek są w nich zapisane jako plain text.
 
 ## Jupyter Notebooks - interaktywne programowanie
 
@@ -411,8 +419,11 @@ plt.show()
 ### Główne środowiska notebookowe
 
   * **[Jupyter Notebook / JupyterLab](https://jupyter.org/)**: Klasyczne, uruchamiane lokalnie w przeglądarce.
+
   * **[Google Colab](https://colab.research.google.com/)**: Darmowe notebooki w chmurze z dostępem do GPU i TPU od Google.
+
   * **VS Code**: Doskonałe, wbudowane wsparcie dla plików `.ipynb`, łączące zalety IDE i notebooka.
+
   * **Platformy chmurowe**: [Databricks](https://databricks.com/), [Kaggle](https://www.kaggle.com/), [Deepnote](https://deepnote.com/) oferują zaawansowane, zespołowe środowiska notebookowe.
 
 > [!WARNING]
@@ -423,6 +434,7 @@ plt.show()
 Pliki `.ipynb` to w istocie dokumenty JSON zawierające również wyniki wykonania (w tym binarne obrazy wykresów). To sprawia, że `git diff` na notebooku bywa nieczytelny, a repozytorium puchnie. Dwa narzędzia rozwiązują ten problem:
 
   * **[`jupytext`](https://jupytext.readthedocs.io/)** - synchronizuje notebook z czytelnym dla człowieka plikiem `.py` (lub Markdown), który dobrze nadaje się do code review i wersjonowania.
+
   * **[`nbstripout`](https://github.com/kynan/nbstripout)** - hook czyszczący wyniki komórek przed commitem, dzięki czemu do repozytorium trafia wyłącznie kod.
 
 ---
@@ -430,7 +442,7 @@ Pliki `.ipynb` to w istocie dokumenty JSON zawierające również wyniki wykonan
 ## Źródła i przypisy
 
 [^1]: Benchmarki wydajności mają charakter orientacyjny - rzędy wielkości odpowiadają publikowanym pomiarom Astral; konkretne czasy zależą od projektu, sieci i sprzętu.
-[^uv-speed]: Porównanie wydajności uv vs pip vs Poetry — zob. oficjalny benchmark Astral: [docs.astral.sh/uv/#performance](https://docs.astral.sh/uv/#performance).
+[^uv-speed]: Porównanie wydajności uv vs pip vs Poetry – zob. oficjalny benchmark Astral: [docs.astral.sh/uv/#performance](https://docs.astral.sh/uv/#performance).
 [^ruff-rules]: Pełna lista reguł Ruff: [docs.astral.sh/ruff/rules](https://docs.astral.sh/ruff/rules/).
 [^openai-astral]: Komunikat o dołączeniu Astral do OpenAI (marzec 2026): [astral.sh/blog/openai](https://astral.sh/blog/openai).
-[^pep621]: PEP 621 — *Storing project metadata in pyproject.toml*. Zob. [peps.python.org/pep-0621](https://peps.python.org/pep-0621/).
+[^pep621]: PEP 621 – *Storing project metadata in pyproject.toml*. Zob. [peps.python.org/pep-0621](https://peps.python.org/pep-0621/).
